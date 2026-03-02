@@ -1,12 +1,31 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Navbar from "@/components/Navbar";
+import HeroSearch from "@/components/HeroSearch";
+import CategorySwiper from "@/components/CategorySwiper";
+import PopularCities from "@/components/PopularCities";
+import FeaturedVenues from "@/components/FeaturedVenues";
+import VenueTypes from "@/components/VenueTypes";
+import InstantMatch from "@/components/InstantMatch";
+import HowItWorks from "@/components/HowItWorks";
+import VenueOwnerCTA from "@/components/VenueOwnerCTA";
+import Testimonials from "@/components/Testimonials";
+import PopularSearches from "@/components/PopularSearches";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <HeroSearch />
+      <CategorySwiper />
+      <PopularCities />
+      <FeaturedVenues />
+      <VenueTypes />
+      <InstantMatch />
+      <HowItWorks />
+      <VenueOwnerCTA />
+      <Testimonials />
+      <PopularSearches />
+      <Footer />
     </div>
   );
 };
