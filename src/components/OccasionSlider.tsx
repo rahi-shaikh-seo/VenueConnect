@@ -29,10 +29,10 @@ const OccasionSlider = () => {
   };
 
   return (
-    <section className="bg-white py-16">
-      <div className="container">
+    <section className="bg-white py-20" style={{ minHeight: '650px', display: 'flex', alignItems: 'center' }}>
+      <div className="container w-full">
         {/* Header */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-12 bg-primary/30" />
             <span className="text-[10.5px] font-semibold tracking-[3px] uppercase text-primary">
@@ -41,59 +41,59 @@ const OccasionSlider = () => {
             <div className="h-px w-12 bg-primary/30" />
           </div>
           
-          <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-3">
+          <h2 className="font-display text-5xl md:text-6xl font-semibold text-foreground mb-4">
             What's the <span className="text-primary">Occasion?</span>
           </h2>
           
-          <p className="text-[15px] text-muted-foreground max-w-xl mx-auto">
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
             Discover the perfect venue for every celebration across Gujarat
           </p>
         </div>
 
         {/* Slider Container */}
-        <div className="relative max-w-5xl mx-auto">
+        <div className="relative max-w-6xl mx-auto">
           {/* Left Arrow */}
           <button
             onClick={() => scroll('left')}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-lg border border-border flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 rounded-full bg-white shadow-lg border border-border flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-6 h-6" />
           </button>
 
           {/* Right Arrow */}
           <button
             onClick={() => scroll('right')}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-lg border border-border flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 rounded-full bg-white shadow-lg border border-border flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all"
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-6 h-6" />
           </button>
 
           {/* Scrollable Cards */}
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4 px-2"
+            className="flex gap-5 overflow-x-auto scrollbar-hide scroll-smooth pb-4 px-2"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {occasions.map((occasion, index) => (
               <div
                 key={index}
                 onClick={() => setSelectedIndex(index)}
-                className={`flex-shrink-0 w-[130px] group cursor-pointer transition-all duration-300 ${
+                className={`flex-shrink-0 w-[150px] group cursor-pointer transition-all duration-300 ${
                   selectedIndex === index ? 'scale-105' : ''
                 }`}
               >
-                <div className={`bg-white rounded-2xl p-5 transition-all duration-300 h-[150px] flex flex-col items-center justify-center ${
+                <div className={`bg-white rounded-2xl p-6 transition-all duration-300 h-[180px] flex flex-col items-center justify-center ${
                   selectedIndex === index 
-                    ? 'border-2 border-primary shadow-lg' 
+                    ? 'border-2 border-primary shadow-xl' 
                     : 'border-2 border-border hover:border-primary/50 hover:shadow-md'
                 }`}>
                   {/* Icon */}
-                  <div className="text-5xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                  <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
                     {occasion.icon}
                   </div>
                   
                   {/* Name */}
-                  <div className={`text-sm font-semibold text-center transition-colors ${
+                  <div className={`text-base font-semibold text-center transition-colors ${
                     selectedIndex === index ? 'text-primary' : 'text-foreground group-hover:text-primary'
                   }`}>
                     {occasion.name}
@@ -104,7 +104,7 @@ const OccasionSlider = () => {
           </div>
 
           {/* Dots Indicator */}
-          <div className="flex justify-center gap-2 mt-6">
+          <div className="flex justify-center gap-2 mt-8">
             <div className="w-8 h-1 rounded-full bg-primary" />
             <div className="w-1 h-1 rounded-full bg-border" />
             <div className="w-1 h-1 rounded-full bg-border" />

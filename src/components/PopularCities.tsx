@@ -1,48 +1,86 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { MapPin, ArrowRight } from "lucide-react";
 
 const cities = [
-  { name: "Ahmedabad", venues: 250, slug: "ahmedabad" },
-  { name: "Surat", venues: 180, slug: "surat" },
-  { name: "Vadodara", venues: 150, slug: "vadodara" },
-  { name: "Rajkot", venues: 120, slug: "rajkot" },
-  { name: "Gandhinagar", venues: 80, slug: "gandhinagar" },
-  { name: "Bhavnagar", venues: 60, slug: "bhavnagar" },
-  { name: "Jamnagar", venues: 55, slug: "jamnagar" },
-  { name: "Anand", venues: 45, slug: "anand" },
-  { name: "Mehsana", venues: 40, slug: "mehsana" },
-];
-
-const gradients = [
-  "from-primary to-accent",
-  "from-accent to-golden",
-  "from-venue-green to-accent",
-  "from-golden to-primary",
-  "from-primary to-venue-green",
-  "from-accent to-primary",
-  "from-golden to-accent",
-  "from-venue-green to-golden",
-  "from-primary to-golden",
+  { 
+    name: "Ahmedabad", 
+    venues: 250, 
+    slug: "ahmedabad",
+    image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=600&q=80"
+  },
+  { 
+    name: "Surat", 
+    venues: 180, 
+    slug: "surat",
+    image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&q=80"
+  },
+  { 
+    name: "Vadodara", 
+    venues: 150, 
+    slug: "vadodara",
+    image: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=600&q=80"
+  },
+  { 
+    name: "Rajkot", 
+    venues: 120, 
+    slug: "rajkot",
+    image: "https://images.unsplash.com/photo-1624454002302-36b824d7bd0a?w=600&q=80"
+  },
+  { 
+    name: "Gandhinagar", 
+    venues: 80, 
+    slug: "gandhinagar",
+    image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=600&q=80"
+  },
+  { 
+    name: "Bhavnagar", 
+    venues: 60, 
+    slug: "bhavnagar",
+    image: "https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?w=600&q=80"
+  },
+  { 
+    name: "Jamnagar", 
+    venues: 55, 
+    slug: "jamnagar",
+    image: "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=600&q=80"
+  },
+  { 
+    name: "Anand", 
+    venues: 45, 
+    slug: "anand",
+    image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&q=80"
+  },
 ];
 
 const PopularCities = () => {
   return (
-    <section className="py-16 bg-secondary/50">
+    <section className="py-20 bg-gradient-to-b from-white to-primary/5">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-10"
+          className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
-            Popular Cities in Gujarat
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="h-px w-12 bg-primary/30" />
+            <span className="text-[10.5px] font-semibold tracking-[3px] uppercase text-primary">
+              Explore Gujarat
+            </span>
+            <div className="h-px w-12 bg-primary/30" />
+          </div>
+          
+          <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-4">
+            Popular Cities in <span className="text-primary">Gujarat</span>
           </h2>
-          <p className="text-muted-foreground">Discover venues in top Gujarat cities</p>
+          
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+            Discover venues in top Gujarat cities
+          </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {cities.map((city, i) => (
             <motion.div
               key={city.slug}
@@ -53,14 +91,38 @@ const PopularCities = () => {
             >
               <Link
                 to={`/venues/${city.slug}`}
-                className="group block rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300"
+                className="group block relative rounded-2xl overflow-hidden h-64 shadow-lg hover:shadow-2xl transition-all duration-300"
               >
-                <div className={`bg-gradient-to-br ${gradients[i]} p-6 text-center relative overflow-hidden`}>
-                  <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_50%_120%,white_0%,transparent_60%)]" />
-                  <MapPin className="w-8 h-8 mx-auto mb-3 text-primary-foreground group-hover:scale-110 transition-transform" />
-                  <h3 className="text-lg font-bold text-primary-foreground">{city.name}</h3>
-                  <p className="text-sm text-primary-foreground/80 mt-1">{city.venues}+ Venues</p>
+                {/* City Image */}
+                <img 
+                  src={city.image} 
+                  alt={city.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col justify-end p-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <MapPin className="w-5 h-5 text-white" />
+                    <h3 className="text-2xl font-display font-semibold text-white">
+                      {city.name}
+                    </h3>
+                  </div>
+                  <p className="text-white/80 text-sm mb-3">
+                    {city.venues}+ Venues
+                  </p>
+                  
+                  <div className="flex items-center gap-2 text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span>Explore Venues</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
                 </div>
+
+                {/* Hover Border */}
+                <div className="absolute inset-0 border-2 border-transparent group-hover:border-primary transition-colors rounded-2xl" />
               </Link>
             </motion.div>
           ))}
