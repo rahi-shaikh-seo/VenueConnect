@@ -1,73 +1,111 @@
-# Welcome to your Lovable project
+# VenueConnect - Gujarat's Premier Venue Platform
 
-## Project info
+A modern, full-featured venue discovery and booking marketplace built with React, TypeScript, and Tailwind CSS.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 🎯 Features
 
-## How can I edit this code?
+- **18 Complete Homepage Sections** - Comprehensive marketplace experience
+- **Event Type Explorer** - Browse venues by occasion (Wedding, Corporate, Birthday, etc.)
+- **City Discovery** - Explore venues across 8+ Gujarat cities with beautiful imagery
+- **Trending Venues** - Most viewed and recently searched venues
+- **Venue Categories** - Browse by type (Banquet Halls, Farmhouses, Hotels, etc.)
+- **Mood/Style Discovery** - Find venues by atmosphere (Luxury, Traditional, Modern, etc.)
+- **Lead Generation** - Quote request forms with discount offers
+- **Event Gallery** - Inspiration from real events
+- **Local Area Discovery** - SEO-optimized area-wise venue listings
+- **Testimonials** - Social proof and reviews
+- **Popular Searches** - SEO engine for venue discovery
 
-There are several ways of editing your application.
+## 🚀 Tech Stack
 
-**Use Lovable**
+- **React 18** with TypeScript
+- **Vite** for blazing fast development
+- **Tailwind CSS** for styling
+- **Shadcn/ui** for UI components
+- **Framer Motion** for animations
+- **React Router** for navigation
+- **Tanstack Query** for data fetching
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## 📦 Installation
 
-Changes made via Lovable will be committed automatically to this repo.
+```bash
+# Install dependencies
+npm install
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-**Edit a file directly in GitHub**
+## 🎨 Design System
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **Primary Color**: Pink/Magenta (#9b1f6b)
+- **Typography**: Cormorant Garamond (headings) + Jost (body)
+- **Components**: Premium marketplace design with smooth animations
+- **Responsive**: Mobile-first approach
 
-**Use GitHub Codespaces**
+## 📁 Project Structure
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```
+src/
+├── components/          # React components
+│   ├── ui/             # Shadcn UI components
+│   ├── HeroSearch.tsx  # Hero section with search
+│   ├── OccasionSlider.tsx
+│   ├── EventTypeExplorer.tsx
+│   ├── PopularCities.tsx
+│   ├── TrendingVenues.tsx
+│   ├── FeaturedVenues.tsx
+│   └── ...
+├── pages/              # Page components
+├── hooks/              # Custom React hooks
+├── lib/                # Utility functions
+└── main.tsx           # App entry point
+```
 
-## What technologies are used for this project?
+## 🌟 Key Sections
 
-This project is built with:
+1. Hero with simplified search (Event Type + City)
+2. Occasion Slider (650px height, interactive cards)
+3. Event Type Explorer (Large visual cards)
+4. Popular Cities (Image-based city cards)
+5. Trending Venues (Most viewed/searched)
+6. Browse by Venue Type (8 categories)
+7. Featured & Verified Venues (No pricing)
+8. Venue Mood/Style Discovery
+9. Get Quote CTA (Lead generation)
+10. Recently Added Venues
+11. How It Works (4 steps)
+12. Venue Owner CTA
+13. Local Area Discovery (SEO)
+14. Event Gallery (Inspiration)
+15. Testimonials
+16. Popular Searches (SEO engine)
+17. Stats Band (Trust indicators)
+18. Footer (Complete with social links)
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🔧 Configuration
 
-## How can I deploy this project?
+The project uses:
+- **Vite Config**: `vite.config.ts`
+- **Tailwind Config**: `tailwind.config.ts`
+- **TypeScript Config**: `tsconfig.json`
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## 📝 License
 
-## Can I connect a custom domain to my Lovable project?
+All rights reserved © 2026 VenueConnect
 
-Yes, you can!
+## 🤝 Contributing
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+This is a private project. For inquiries, please contact the development team.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 📧 Contact
+
+- Email: info@venueconnect.in
+- Phone: +91 98765 43210
+- Location: Ahmedabad, Gujarat, India
