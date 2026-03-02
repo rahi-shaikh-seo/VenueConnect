@@ -12,7 +12,7 @@ import RecentlyAddedVenues from "@/components/RecentlyAddedVenues";
 import HowItWorks from "@/components/HowItWorks";
 import VenueOwnerCTA from "@/components/VenueOwnerCTA";
 import LocalAreaDiscovery from "@/components/LocalAreaDiscovery";
-import RealEvents from "@/components/RealEvents";
+import EventGallery from "@/components/EventGallery";
 import Testimonials from "@/components/Testimonials";
 import PopularSearches from "@/components/PopularSearches";
 import StatsBand from "@/components/StatsBand";
@@ -35,7 +35,7 @@ const Index = () => {
       <HowItWorks />
       <VenueOwnerCTA />
       <LocalAreaDiscovery />
-      <RealEvents />
+      <EventGallery />
       <Testimonials />
       <PopularSearches />
       <StatsBand />
