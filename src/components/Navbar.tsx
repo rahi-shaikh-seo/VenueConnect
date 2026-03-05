@@ -10,9 +10,9 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-border/50 shadow-sm">
       <div className="container flex items-center justify-between h-20 px-6">
         <Link to="/" className="flex items-center hover:opacity-80 transition-opacity">
-          <img 
-            src="/logo.webp" 
-            alt="VenueConnect" 
+          <img
+            src="/logo.webp"
+            alt="VenueConnect"
             className="h-12 w-auto"
           />
         </Link>
@@ -26,6 +26,10 @@ const Navbar = () => {
             Venues
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
           </Link>
+          <Link to="/vendors" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
+            Vendors
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
+          </Link>
           <Link to="/cities" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
             Cities
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
@@ -37,25 +41,25 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="border-primary/30 text-primary hover:bg-primary/5 hover:border-primary font-medium" 
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-primary/30 text-primary hover:bg-primary/5 hover:border-primary font-medium"
             asChild
           >
             <Link to="/list-venue">List Your Venue</Link>
           </Button>
-          <Button 
-            size="sm" 
-            className="bg-primary hover:bg-primary/90 text-white font-medium shadow-md hover:shadow-lg transition-all" 
+          <Button
+            size="sm"
+            className="bg-primary hover:bg-primary/90 text-white font-medium shadow-md hover:shadow-lg transition-all"
             asChild
           >
             <Link to="/login">Login</Link>
           </Button>
         </div>
 
-        <button 
-          className="md:hidden p-2 hover:bg-primary/5 rounded-lg transition-colors" 
+        <button
+          className="md:hidden p-2 hover:bg-primary/5 rounded-lg transition-colors"
           onClick={() => setOpen(!open)}
         >
           {open ? <X className="w-6 h-6 text-primary" /> : <Menu className="w-6 h-6 text-primary" />}
@@ -69,6 +73,9 @@ const Navbar = () => {
           </Link>
           <Link to="/venues" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             Venues
+          </Link>
+          <Link to="/vendors" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
+            Vendors
           </Link>
           <Link to="/cities" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             Cities

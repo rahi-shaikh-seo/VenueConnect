@@ -1,71 +1,123 @@
-import { Camera, Utensils, Music, Flower2, Cake, Car, Shirt, Gift } from "lucide-react";
+import { useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-const categories = [
-  { icon: Camera, name: "Photographers", count: "2,400+", color: "bg-blue-50 text-blue-600" },
-  { icon: Utensils, name: "Caterers", count: "1,800+", color: "bg-orange-50 text-orange-600" },
-  { icon: Music, name: "DJs & Music", count: "900+", color: "bg-purple-50 text-purple-600" },
-  { icon: Flower2, name: "Decorators", count: "1,500+", color: "bg-pink-50 text-pink-600" },
-  { icon: Cake, name: "Bakers", count: "650+", color: "bg-yellow-50 text-yellow-600" },
-  { icon: Car, name: "Transport", count: "420+", color: "bg-green-50 text-green-600" },
-  { icon: Shirt, name: "Makeup Artists", count: "1,200+", color: "bg-red-50 text-red-600" },
-  { icon: Gift, name: "Gift Services", count: "380+", color: "bg-indigo-50 text-indigo-600" },
+const vendors = [
+  {
+    name: "Photographers",
+    image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80",
+  },
+  {
+    name: "Makeup Artists",
+    image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800&q=80",
+  },
+  {
+    name: "Mehndi Artists",
+    image: "https://images.unsplash.com/photo-1610041321427-8c710f5451ff?w=800&q=80",
+  },
+  {
+    name: "Bands",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80",
+  },
+  {
+    name: "Decorators",
+    image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80",
+  },
+  {
+    name: "Caterers",
+    image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80",
+  },
+  {
+    name: "Planners",
+    image: "https://images.unsplash.com/photo-1505366518421-18cece5ebf4c?w=800&q=80",
+  }
 ];
 
 const VendorCategories = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = 300;
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-primary/5">
-      <div className="container">
+    <section className="py-20 bg-muted/30">
+      <div className="w-full px-4 relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-12 bg-primary/30" />
-            <span className="text-[10.5px] font-semibold tracking-[3px] uppercase text-primary">
-              Complete Event Solutions
-            </span>
-            <div className="h-px w-12 bg-primary/30" />
-          </div>
-          
-          <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-4">
-            Browse <em className="italic text-primary">Vendors</em> & Services
+          <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4">
+            Vendors By Category
           </h2>
-          
-          <p className="text-[15px] text-muted-foreground max-w-xl mx-auto">
-            Connect with verified vendors for every aspect of your event
-          </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {categories.map((category, i) => {
-            const Icon = category.icon;
-            return (
+        <div className="relative max-w-7xl mx-auto">
+          {/* Left Arrow */}
+          <button
+            onClick={() => scroll("left")}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-md border border-border flex items-center justify-center hover:bg-primary hover:text-white transition-all hidden sm:flex"
+            aria-label="Scroll left"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+
+          {/* Right Arrow */}
+          <button
+            onClick={() => scroll("right")}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-md border border-border flex items-center justify-center hover:bg-primary hover:text-white transition-all hidden sm:flex"
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+
+          {/* Scrollable Container */}
+          <div
+            ref={scrollRef}
+            className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth pb-8 pt-4 px-2"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            {vendors.map((vendor, index) => (
               <motion.div
-                key={category.name}
+                key={vendor.name}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="group bg-white rounded-xl p-6 border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                transition={{ delay: index * 0.1 }}
+                className="flex-shrink-0 w-[240px] group cursor-pointer"
               >
-                <div className={`w-14 h-14 rounded-full ${category.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  <Icon className="w-7 h-7" />
+                <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-border/50">
+                  <div className="h-40 overflow-hidden">
+                    <img
+                      src={vendor.image}
+                      alt={vendor.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-4 text-center bg-white">
+                    <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                      {vendor.name}
+                    </h3>
+                  </div>
                 </div>
-                
-                <h3 className="font-semibold text-foreground text-base mb-1 group-hover:text-primary transition-colors">
-                  {category.name}
-                </h3>
-                
-                <p className="text-sm text-muted-foreground">
-                  {category.count} vendors
-                </p>
               </motion.div>
-            );
-          })}
+            ))}
+          </div>
         </div>
+
+        <style>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
       </div>
     </section>
   );

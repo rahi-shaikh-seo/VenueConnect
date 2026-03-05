@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeroSearch from "@/components/HeroSearch";
 import OccasionSlider from "@/components/OccasionSlider";
 import EventTypeExplorer from "@/components/EventTypeExplorer";
+import VendorCategories from "@/components/VendorCategories";
 import PopularCities from "@/components/PopularCities";
 import TrendingVenues from "@/components/TrendingVenues";
 import VenueTypesBrowse from "@/components/VenueTypesBrowse";
@@ -24,6 +25,7 @@ const Index = () => {
       <Navbar />
       <HeroSearch />
       <OccasionSlider />
+      <VendorCategories />
       <EventTypeExplorer />
       <PopularCities />
       <TrendingVenues />
