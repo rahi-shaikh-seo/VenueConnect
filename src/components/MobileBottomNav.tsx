@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Building2, Store, Mail } from "lucide-react";
+import { Home, Building2, Store, MapPin } from "lucide-react";
 
 const MobileBottomNav = () => {
   const location = useLocation();
@@ -26,10 +26,10 @@ const MobileBottomNav = () => {
           <span className="text-[10px] font-semibold">Vendors</span>
         </Link>
 
-        {/* E-Invites */}
-        <Link to="/e-invitations" className={`flex flex-col items-center gap-0.5 flex-1 py-2 transition-colors ${isActive('/e-invitations') ? 'text-primary' : 'text-slate-500'}`}>
-          <Mail className={`w-5 h-5 ${isActive('/e-invitations') ? 'text-primary' : ''}`} />
-          <span className="text-[10px] font-semibold">E-invites</span>
+        {/* Cities */}
+        <Link to="/cities" className={`flex flex-col items-center gap-0.5 flex-1 py-2 transition-colors ${isActive('/cities') ? 'text-primary' : 'text-slate-500'}`}>
+          <MapPin className={`w-5 h-5 ${isActive('/cities') ? 'text-primary' : ''}`} />
+          <span className="text-[10px] font-semibold">Cities</span>
         </Link>
 
         {/* WhatsApp */}

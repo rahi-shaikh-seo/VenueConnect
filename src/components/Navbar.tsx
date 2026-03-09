@@ -79,10 +79,7 @@ const Navbar = () => {
             Blog
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
           </Link>
-          <Link to="/e-invitations" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors relative group underline underline-offset-4 decoration-primary/30">
-            E-Invites 💌
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
-          </Link>
+
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
@@ -179,9 +176,7 @@ const Navbar = () => {
           <Link to="/cities" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             Cities
           </Link>
-          <Link to="/e-invitations" className="block text-sm font-medium py-3 text-primary transition-colors" onClick={() => setOpen(false)}>
-            E-Invitations 💌
-          </Link>
+
           <Link to="/list-business" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             List Your Business
           </Link>
