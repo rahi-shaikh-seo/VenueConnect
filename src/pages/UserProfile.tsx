@@ -30,6 +30,7 @@ const UserProfile = () => {
     phone_number: "",
     planned_event_date: ""
   });
+  const [userRole, setUserRole] = useState<string>('user');
 
   const [favorites, setFavorites] = useState<any[]>([]);
 
@@ -58,6 +59,7 @@ const UserProfile = () => {
         phone_number: data.phone_number || "",
         planned_event_date: data.planned_event_date || ""
       });
+      setUserRole(data.role || 'user');
     }
   };
 
@@ -133,7 +135,15 @@ const UserProfile = () => {
             </TabsList>
 
             <TabsContent value="profile" className="bg-white p-8 rounded-2xl border border-border/50 shadow-sm">
-                <h3 className="text-2xl font-display font-semibold mb-6">Personal Details</h3>
+                <div className="flex items-center gap-3 mb-6">
+                    <h3 className="text-2xl font-display font-semibold">Personal Details</h3>
+                    {userRole === 'admin' && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-700 uppercase tracking-wider">Super Admin</span>
+                    )}
+                    {userRole === 'owner' && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700 uppercase tracking-wider">Verified Lister</span>
+                    )}
+                </div>
                 <form onSubmit={handleProfileUpdate} className="space-y-6 max-w-2xl">
                     <div className="space-y-2">
                         <Label htmlFor="email">Email Address</Label>

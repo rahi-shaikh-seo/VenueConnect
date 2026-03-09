@@ -14,21 +14,33 @@ import {
 const Navbar = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [session, setSession] = useState<Record<string, unknown> | null>(null);
+  const [session, setSession] = useState<any>(null);
+  const [userRole, setUserRole] = useState<string>('user');
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      if (session?.user?.id) fetchUserRole(session.user.id);
     });
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      if (session?.user?.id) fetchUserRole(session.user.id);
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const fetchUserRole = async (userId: string) => {
+    const { data } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', userId)
+      .single();
+    if (data) setUserRole(data.role);
+  };
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -91,9 +103,25 @@ const Navbar = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                <div className="px-2 py-1.5 text-sm font-medium border-b mb-1 truncate">
-                  {session.user.user_metadata?.full_name || session.user.email}
+                <div className="px-2 py-1.5 text-sm font-medium border-b mb-1">
+                  <div className="truncate mb-1">{session.user.user_metadata?.full_name || session.user.email}</div>
+                  {userRole === 'admin' && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-100 text-indigo-700 uppercase tracking-wider">Super Admin</span>
+                  )}
+                  {userRole === 'owner' && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700 uppercase tracking-wider">Verified Lister</span>
+                  )}
                 </div>
+                {userRole === 'admin' && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/admin" className="cursor-pointer text-indigo-700 font-medium">Admin Dashboard</Link>
+                  </DropdownMenuItem>
+                )}
+                {userRole === 'owner' && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/owner" className="cursor-pointer text-amber-700 font-medium">Lister Dashboard</Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem asChild>
                   <Link to="/profile" className="cursor-pointer">My Profile</Link>
                 </DropdownMenuItem>
@@ -149,9 +177,23 @@ const Navbar = () => {
           {session ? (
             <>
               <div className="py-2 border-y my-2 text-sm">
-                <p className="font-medium px-2 py-1 text-muted-foreground truncate">
-                  Signed in as: {session.user.user_metadata?.full_name || session.user.email}
-                </p>
+                <div className="px-2 py-1 mb-2">
+                  <p className="font-medium text-muted-foreground truncate">
+                    {session.user.user_metadata?.full_name || session.user.email}
+                  </p>
+                  {userRole === 'admin' && (
+                    <span className="inline-flex items-center px-2 mt-1 py-0.5 rounded text-[10px] font-bold bg-indigo-100 text-indigo-700 uppercase tracking-wider">Super Admin</span>
+                  )}
+                  {userRole === 'owner' && (
+                    <span className="inline-flex items-center px-2 mt-1 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700 uppercase tracking-wider">Verified Lister</span>
+                  )}
+                </div>
+                {userRole === 'admin' && (
+                  <Link to="/admin" className="block px-2 py-2 text-indigo-700 font-medium" onClick={() => setOpen(false)}>Admin Dashboard</Link>
+                )}
+                {userRole === 'owner' && (
+                  <Link to="/owner" className="block px-2 py-2 text-amber-700 font-medium" onClick={() => setOpen(false)}>Lister Dashboard</Link>
+                )}
                 <Link to="/profile" className="block px-2 py-2 hover:text-primary" onClick={() => setOpen(false)}>My Profile</Link>
                 <Link to="/profile" className="block px-2 py-2 hover:text-primary" onClick={() => setOpen(false)}>Saved Shortlist</Link>
               </div>
