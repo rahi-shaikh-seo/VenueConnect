@@ -24,7 +24,7 @@ const Vendors = () => {
     const fetchVendors = async () => {
         setLoading(true);
         try {
-            let query = supabase.from("vendors").select("*").eq("status", "approved");
+            let query = supabase.from("vendors").select("*");
 
             if (searchCity) {
                 query = query.ilike("city", `%${searchCity}%`);
