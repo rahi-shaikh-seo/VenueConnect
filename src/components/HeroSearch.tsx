@@ -183,7 +183,10 @@ const HeroSearch = () => {
               {["Wedding", "Birthday Party", "Engagement", "Corporate Event", "Sangeet Ceremony"].map(label => (
                 <button
                   key={label}
-                  onClick={() => { setSearchText(label); }}
+                  onClick={() => {
+                    setSearchText(label);
+                    navigate(`/venues?q=${encodeURIComponent(label)}`);
+                  }}
                   className="text-xs text-white/45 hover:text-white/80 transition-colors bg-white/5 border border-white/10 rounded-full px-3 py-1"
                 >
                   {label}
