@@ -55,7 +55,7 @@ const HeroSearch = () => {
           </h1>
 
           {/* Search Box */}
-          <div className="bg-white/20 backdrop-blur-md border border-white/40 rounded-3xl p-8 max-w-3xl mx-auto mb-12 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+          <div className="bg-black/30 backdrop-blur-md border border-white/15 rounded-2xl p-6 max-w-3xl mx-auto mb-12 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
             <h3 className="font-display text-2xl text-white font-medium mb-6 text-center tracking-wide drop-shadow-md">
               Find Your Perfect Match
             </h3>
@@ -134,13 +134,20 @@ const HeroSearch = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex gap-4 justify-center flex-wrap mt-8">
+          <div className="flex gap-3 justify-center flex-wrap mt-8">
             <Button
               size="lg"
               onClick={() => navigate('/list-venue')}
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-xs font-semibold tracking-wider uppercase shadow-lg"
+            >
+              List a Venue
+            </Button>
+            <Button
+              size="lg"
+              onClick={() => navigate('/list-vendor')}
               className="bg-white/10 backdrop-blur-sm border border-white/45 text-white hover:bg-white/20 hover:border-white px-8 py-6 text-xs font-semibold tracking-wider uppercase"
             >
-              List Your Business / Service
+              List a Vendor Service
             </Button>
           </div>
         </div>
