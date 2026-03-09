@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Star, MapPin, CheckCircle2, ChevronLeft, Phone, Mail, Share2, Heart, Users, Calendar, Clock, IndianRupee, Wind, Wifi, Utensils, Info, Camera, Music, CarFront, CreditCard, Banknote, AlertCircle, Plane, BusFront, Check } from "lucide-react";
+import { Star, MapPin, CheckCircle2, ChevronLeft, Phone, Mail, Share2, Heart, Users, Calendar, Clock, IndianRupee, Wind, Wifi, Utensils, Info, Camera, Music, CarFront, CreditCard, Banknote, AlertCircle, Plane, BusFront, Check, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import GetQuoteModal from "@/components/GetQuoteModal";
 import ReviewsList from "@/components/ReviewsList";
@@ -12,9 +12,13 @@ export default function VenueDetails() {
     const { id } = useParams();
     const [venue, setVenue] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [userSession, setUserSession] = useState<any>(null);
 
     useEffect(() => {
         fetchVenue();
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setUserSession(session);
+        });
     }, [id]);
 
     const fetchVenue = async () => {
@@ -87,6 +91,22 @@ export default function VenueDetails() {
                     <Link to="/venues" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary mb-6 transition-colors">
                         <ChevronLeft className="w-4 h-4 mr-1" /> Back to Venues
                     </Link>
+
+                    {userSession?.user?.id === venue.owner_id && (
+                        <div className="mb-6 bg-amber-50 border border-amber-200 rounded-lg p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div>
+                                <h3 className="font-semibold text-amber-800 flex items-center gap-2">
+                                    <Award className="w-5 h-5" /> You are the Lister for this Venue
+                                </h3>
+                                <p className="text-sm text-amber-700 mt-1">
+                                    Go to your Lister Dashboard to manage details, view incoming leads, and respond to clients.
+                                </p>
+                            </div>
+                            <Button asChild className="bg-amber-600 hover:bg-amber-700 text-white shrink-0">
+                                <Link to="/owner">Go to Dashboard</Link>
+                            </Button>
+                        </div>
+                    )}
 
                     {/* Header Info */}
                     <div className="mb-6 flex flex-col md:flex-row md:items-start justify-between gap-4">
