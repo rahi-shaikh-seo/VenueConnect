@@ -99,28 +99,26 @@ const HeroSearch = () => {
           </h1>
 
           {/* Search Box */}
-          <div className="bg-black/30 backdrop-blur-md border border-white/15 rounded-2xl p-6 max-w-3xl mx-auto mb-8 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
-            <h3 className="font-display text-xl text-white font-medium mb-5 text-center tracking-wide drop-shadow-md">
+          <div className="bg-black/30 backdrop-blur-md border border-white/15 rounded-2xl p-5 max-w-3xl mx-auto mb-8 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+            <h3 className="font-display text-xl text-white font-medium mb-4 text-center tracking-wide drop-shadow-md">
               Find Your Perfect Match
             </h3>
 
-            <div className="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-3">
-              {/* Event Search (text with dropdown) */}
-              <div ref={searchRef} className="relative">
-                <label className="text-[9px] font-semibold tracking-[2px] uppercase text-white/40 mb-2 block">
-                  Event Type
-                </label>
+            {/* Unified search bar */}
+            <div className="flex flex-col md:flex-row gap-2 bg-white/10 border border-white/20 rounded-xl p-2">
+              {/* Text search with autocomplete */}
+              <div ref={searchRef} className="relative flex-1 min-w-0">
                 <input
                   type="text"
                   value={searchText}
                   onChange={e => { setSearchText(e.target.value); setShowSuggestions(true); }}
                   onFocus={() => setShowSuggestions(true)}
                   onKeyDown={handleKeyDown}
-                  placeholder="e.g. Wedding, Birthday..."
-                  className="w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-md px-3 h-12 text-sm focus:outline-none focus:border-white/40"
+                  placeholder="Search wedding, birthday, engagement..."
+                  className="w-full bg-transparent text-white placeholder-white/40 px-3 h-11 text-sm focus:outline-none"
                 />
                 {showSuggestions && searchText && filtered.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl z-50 max-h-56 overflow-y-auto border border-border">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl z-50 max-h-60 overflow-y-auto border border-border">
                     {filtered.map(s => (
                       <button
                         key={s}
@@ -135,63 +133,58 @@ const HeroSearch = () => {
                 )}
               </div>
 
+              {/* Divider */}
+              <div className="hidden md:block w-px bg-white/20 my-1" />
+
               {/* Looking For */}
-              <div>
-                <label className="text-[9px] font-semibold tracking-[2px] uppercase text-white/40 mb-2 block">
-                  Looking For
-                </label>
-                <Select value={serviceType} onValueChange={setServiceType}>
-                  <SelectTrigger className="bg-white/10 border-white/20 text-white h-12 hover:bg-white/15">
-                    <SelectValue placeholder="Venue or Vendor?" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="venues">Venues</SelectItem>
-                    <SelectItem value="photographers">Photographers</SelectItem>
-                    <SelectItem value="makeup artists">Makeup Artists</SelectItem>
-                    <SelectItem value="decorators">Decorators</SelectItem>
-                    <SelectItem value="caterers">Caterers</SelectItem>
-                    <SelectItem value="mehndi artists">Mehndi Artists</SelectItem>
-                    <SelectItem value="bands">Bands / DJ</SelectItem>
-                    <SelectItem value="planners">Event Planners</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Select value={serviceType} onValueChange={setServiceType}>
+                <SelectTrigger className="bg-transparent border-0 text-white h-11 w-full md:w-40 focus:ring-0 hover:bg-white/5 rounded-lg">
+                  <SelectValue placeholder="Looking for..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="venues">Venues</SelectItem>
+                  <SelectItem value="photographers">Photographers</SelectItem>
+                  <SelectItem value="makeup artists">Makeup Artists</SelectItem>
+                  <SelectItem value="decorators">Decorators</SelectItem>
+                  <SelectItem value="caterers">Caterers</SelectItem>
+                  <SelectItem value="mehndi artists">Mehndi Artists</SelectItem>
+                  <SelectItem value="bands">Bands / DJ</SelectItem>
+                  <SelectItem value="planners">Event Planners</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {/* Divider */}
+              <div className="hidden md:block w-px bg-white/20 my-1" />
 
               {/* City */}
-              <div>
-                <label className="text-[9px] font-semibold tracking-[2px] uppercase text-white/40 mb-2 block">
-                  City
-                </label>
-                <Select value={city} onValueChange={setCity}>
-                  <SelectTrigger className="bg-white/10 border-white/20 text-white h-12 hover:bg-white/15">
-                    <SelectValue placeholder="Select city" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {gujaratCities.map(c => (
-                      <SelectItem key={c} value={c.toLowerCase()}>{c}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <Select value={city} onValueChange={setCity}>
+                <SelectTrigger className="bg-transparent border-0 text-white h-11 w-full md:w-36 focus:ring-0 hover:bg-white/5 rounded-lg">
+                  <SelectValue placeholder="Select city" />
+                </SelectTrigger>
+                <SelectContent>
+                  {gujaratCities.map(c => (
+                    <SelectItem key={c} value={c.toLowerCase()}>{c}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
-              <div className="flex items-end">
-                <Button
-                  onClick={handleSearch}
-                  className="w-full md:w-auto bg-primary hover:bg-primary/90 text-primary-foreground h-12 px-6 text-[11px] font-semibold tracking-[2px] uppercase shadow-lg transition-all hover:scale-105 duration-300"
-                >
-                  <Search className="w-4 h-4 mr-2" />
-                  Search
-                </Button>
-              </div>
+              {/* Search Button */}
+              <Button
+                onClick={handleSearch}
+                className="bg-primary hover:bg-primary/90 text-white h-11 px-6 text-xs font-semibold tracking-wider uppercase shadow-md rounded-lg flex-shrink-0"
+              >
+                <Search className="w-4 h-4 mr-2" />
+                Search
+              </Button>
             </div>
 
             {/* Popular Searches */}
-            <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap gap-2 justify-center">
+            <div className="mt-4 flex flex-wrap gap-2 justify-center">
               {["Wedding", "Birthday Party", "Engagement", "Corporate Event", "Sangeet Ceremony"].map(label => (
                 <button
                   key={label}
                   onClick={() => { setSearchText(label); }}
-                  className="text-xs text-white/50 hover:text-white/80 transition-colors bg-white/5 border border-white/10 rounded-full px-3 py-1"
+                  className="text-xs text-white/45 hover:text-white/80 transition-colors bg-white/5 border border-white/10 rounded-full px-3 py-1"
                 >
                   {label}
                 </button>
