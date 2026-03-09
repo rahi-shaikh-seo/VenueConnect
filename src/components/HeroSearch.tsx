@@ -1,32 +1,76 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, MapPin } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { gujaratCities } from "@/lib/cities";
+
+const EVENT_SUGGESTIONS = [
+  // Wedding
+  "Wedding", "Wedding Reception", "Wedding Anniversary", "Ring Ceremony",
+  "Pre Wedding Mehendi Party", "Sangeet Ceremony", "Bachelor Party", "Bridal Shower",
+  // Birthday
+  "Birthday Party", "First Birthday Party", "Kids Birthday Party",
+  // Festivals
+  "Holi Party",
+  // Corporate
+  "Brand Promotion", "Business Dinner", "Conference", "Corporate Event",
+  "Corporate Offsite", "Corporate Party", "Corporate Training", "Dealers Meet",
+  "Exhibition", "Fashion Show", "Meeting", "Musical Concert", "Product Launch",
+  "Team Building", "Team Outing", "Training", "Walkin Interview", "Annual Fest", "MICE",
+  // Other
+  "Baby Shower", "Childrens Party", "Christian Communion", "Class Reunion",
+  "Cocktail Dinner", "Engagement", "House Party", "Family Function",
+  "Family Get Together", "Farewell", "Freshers Party", "Game Watch", "Get Together",
+  "Group Dining", "Kitty Party", "Naming Ceremony", "Photo Shoots", "Pool Party",
+  "Residential Conference", "Social Mixer", "Stage Event", "Adventure Party",
+  "Aqueeqa Ceremony",
+];
 
 const HeroSearch = () => {
   const navigate = useNavigate();
   const [serviceType, setServiceType] = useState("venues");
   const [city, setCity] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  const filtered = EVENT_SUGGESTIONS.filter(e =>
+    e.toLowerCase().includes(searchText.toLowerCase())
+  ).slice(0, 8);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
     if (city) params.append("city", city);
-    
+    if (searchText) params.append("q", searchText);
     if (serviceType === "venues") {
-        navigate(`/venues?${params.toString()}`);
+      navigate(`/venues?${params.toString()}`);
     } else {
-        params.append("category", serviceType);
-        navigate(`/vendors?${params.toString()}`);
+      params.append("category", serviceType);
+      navigate(`/vendors?${params.toString()}`);
     }
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") handleSearch();
+  };
+
   return (
     <section className="relative min-h-screen flex flex-col justify-end overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&q=80"
+          src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1920&q=80"
           alt="Luxury Event Venue"
           className="w-full h-full object-cover animate-[zoomOut_12s_ease_forwards]"
         />
@@ -42,7 +86,7 @@ const HeroSearch = () => {
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="h-px w-6 bg-white/30" />
             <span className="text-[10.5px] font-semibold tracking-[3px] uppercase text-white/55">
-              India's Premier Venue Platform
+              Gujarat's Premier Venue Platform
             </span>
             <div className="h-px w-6 bg-white/30" />
           </div>
@@ -55,30 +99,65 @@ const HeroSearch = () => {
           </h1>
 
           {/* Search Box */}
-          <div className="bg-black/30 backdrop-blur-md border border-white/15 rounded-2xl p-6 max-w-3xl mx-auto mb-12 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
-            <h3 className="font-display text-2xl text-white font-medium mb-6 text-center tracking-wide drop-shadow-md">
+          <div className="bg-black/30 backdrop-blur-md border border-white/15 rounded-2xl p-6 max-w-3xl mx-auto mb-8 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+            <h3 className="font-display text-xl text-white font-medium mb-5 text-center tracking-wide drop-shadow-md">
               Find Your Perfect Match
             </h3>
 
-            <div className="grid md:grid-cols-[1fr_1fr_auto] gap-3">
+            <div className="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-3">
+              {/* Event Search (text with dropdown) */}
+              <div ref={searchRef} className="relative">
+                <label className="text-[9px] font-semibold tracking-[2px] uppercase text-white/40 mb-2 block">
+                  Event Type
+                </label>
+                <input
+                  type="text"
+                  value={searchText}
+                  onChange={e => { setSearchText(e.target.value); setShowSuggestions(true); }}
+                  onFocus={() => setShowSuggestions(true)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="e.g. Wedding, Birthday..."
+                  className="w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-md px-3 h-12 text-sm focus:outline-none focus:border-white/40"
+                />
+                {showSuggestions && searchText && filtered.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl z-50 max-h-56 overflow-y-auto border border-border">
+                    {filtered.map(s => (
+                      <button
+                        key={s}
+                        type="button"
+                        onClick={() => { setSearchText(s); setShowSuggestions(false); }}
+                        className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-primary/10 hover:text-primary transition-colors"
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Looking For */}
               <div>
                 <label className="text-[9px] font-semibold tracking-[2px] uppercase text-white/40 mb-2 block">
                   Looking For
                 </label>
                 <Select value={serviceType} onValueChange={setServiceType}>
                   <SelectTrigger className="bg-white/10 border-white/20 text-white h-12 hover:bg-white/15">
-                    <SelectValue placeholder="What are you looking for?" />
+                    <SelectValue placeholder="Venue or Vendor?" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="venues">All Venues</SelectItem>
+                    <SelectItem value="venues">Venues</SelectItem>
                     <SelectItem value="photographers">Photographers</SelectItem>
                     <SelectItem value="makeup artists">Makeup Artists</SelectItem>
                     <SelectItem value="decorators">Decorators</SelectItem>
                     <SelectItem value="caterers">Caterers</SelectItem>
+                    <SelectItem value="mehndi artists">Mehndi Artists</SelectItem>
+                    <SelectItem value="bands">Bands / DJ</SelectItem>
+                    <SelectItem value="planners">Event Planners</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
+              {/* City */}
               <div>
                 <label className="text-[9px] font-semibold tracking-[2px] uppercase text-white/40 mb-2 block">
                   City
@@ -89,7 +168,7 @@ const HeroSearch = () => {
                   </SelectTrigger>
                   <SelectContent>
                     {gujaratCities.map(c => (
-                        <SelectItem key={c} value={c.toLowerCase()}>{c}</SelectItem>
+                      <SelectItem key={c} value={c.toLowerCase()}>{c}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -98,7 +177,7 @@ const HeroSearch = () => {
               <div className="flex items-end">
                 <Button
                   onClick={handleSearch}
-                  className="w-full md:w-auto bg-primary hover:bg-primary/90 text-primary-foreground h-12 px-8 text-[11px] font-semibold tracking-[2px] uppercase shadow-lg transition-all hover:scale-105 duration-300"
+                  className="w-full md:w-auto bg-primary hover:bg-primary/90 text-primary-foreground h-12 px-6 text-[11px] font-semibold tracking-[2px] uppercase shadow-lg transition-all hover:scale-105 duration-300"
                 >
                   <Search className="w-4 h-4 mr-2" />
                   Search
@@ -107,34 +186,21 @@ const HeroSearch = () => {
             </div>
 
             {/* Popular Searches */}
-            <div className="mt-4 pt-4 border-t border-white/10">
-              <p className="text-xs text-white/40 mb-2">Popular Searches:</p>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { label: "Wedding Venues", val: "venues", type: "venues" },
-                  { label: "Best Photographers", val: "photographers", type: "vendors" },
-                  { label: "Makeup Artists", val: "makeup artists", type: "vendors" }
-                ].map((search) => (
-                  <button
-                    key={search.label}
-                    onClick={() => {
-                        if (search.type === "venues") {
-                            navigate('/venues');
-                        } else {
-                            navigate(`/vendors?category=${search.val}`);
-                        }
-                    }}
-                    className="text-xs text-white/60 hover:text-white transition-colors underline bg-transparent border-none p-0 cursor-pointer"
-                  >
-                    {search.label}
-                  </button>
-                ))}
-              </div>
+            <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap gap-2 justify-center">
+              {["Wedding", "Birthday Party", "Engagement", "Corporate Event", "Sangeet Ceremony"].map(label => (
+                <button
+                  key={label}
+                  onClick={() => { setSearchText(label); }}
+                  className="text-xs text-white/50 hover:text-white/80 transition-colors bg-white/5 border border-white/10 rounded-full px-3 py-1"
+                >
+                  {label}
+                </button>
+              ))}
             </div>
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex gap-3 justify-center flex-wrap mt-8">
+          <div className="flex gap-3 justify-center flex-wrap mt-2">
             <Button
               size="lg"
               onClick={() => navigate('/list-venue')}
