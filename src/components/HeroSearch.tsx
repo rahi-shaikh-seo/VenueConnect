@@ -77,7 +77,7 @@ const HeroSearch = () => {
       </div>
 
       {/* Overlay */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[rgba(18,8,14,0.95)] via-[rgba(18,8,14,0.55)] to-[rgba(18,8,14,0.15)]" />
+      <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[rgba(10,5,10,0.97)] via-[rgba(18,8,14,0.75)] to-[rgba(18,8,14,0.45)]" />
 
       {/* Content */}
       <div className="relative z-[2] container pb-20 pt-40">
