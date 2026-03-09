@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Star, MapPin, CheckCircle2, ChevronLeft, Phone, Mail, Globe, Share2, Heart, Award, IndianRupee } from "lucide-react";
+import { Star, MapPin, CheckCircle2, ChevronLeft, Phone, Mail, Globe, Share2, Heart, Award, IndianRupee, Camera, Video, Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import GetQuoteModal from "@/components/GetQuoteModal";
 import ReviewsList from "@/components/ReviewsList";
@@ -9,20 +9,27 @@ import ReviewsList from "@/components/ReviewsList";
 const VENDOR_DB: Record<string, any> = {
     "vd1": {
         name: "Light & Shade Photography",
-        category: "Photographers",
+        category: "Photographer",
         city: "Ahmedabad",
+        address: "Navrangpura, Ahmedabad, Gujarat 380009",
         rating: 4.9,
         reviews: 124,
         startingPrice: 50000,
-        description: "Award-winning wedding photography and cinematography team specializing in capturing candid moments, portraits, and traditional ceremonies across India.",
-        portfolio: [
+        advancePayment: 30,
+        description: "Award-winning wedding photography and cinematography team specializing in capturing candid moments, portraits, and traditional ceremonies across India. With over 10 years of experience, we bring your memories to life with a cinematic touch.",
+        images: [
             "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80",
             "https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=800&q=80",
             "https://images.unsplash.com/photo-1583939411023-14783179e581?w=800&q=80",
-            "https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=800&q=80"
+            "https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=800&q=80",
+            "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&q=80"
         ],
         verified: true,
-        services: ["Candid Photography", "Pre-wedding Shoots", "Cinematography", "Traditional Videos", "Drone Shoots"]
+        services: ["Candid Photography", "Pre-wedding Shoots", "Cinematography", "Traditional Videos", "Drone Shoots", "Albums"],
+        travelsOutstation: true,
+        yearsExperience: "10+",
+        deliveryTime: "4-6 Weeks",
+        teamSize: "4-6 Members"
     }
 };
 
@@ -36,86 +43,132 @@ const VendorDetails = () => {
         <div className="min-h-screen bg-background flex flex-col">
             <Navbar />
 
-            <main className="flex-grow py-8">
-                <div className="container">
+            <main className="flex-grow py-8 bg-slate-50">
+                <div className="container px-4 md:px-6">
                     <Link to="/vendors" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary mb-6 transition-colors">
                         <ChevronLeft className="w-4 h-4 mr-1" /> Back to Vendors
                     </Link>
 
-                    <div className="bg-white rounded-2xl border border-border p-6 md:p-8 mb-8 flex flex-col md:flex-row gap-8 items-start relative shadow-sm">
-                        <div className="w-full md:w-48 h-48 shrink-0 rounded-full overflow-hidden border-4 border-background shadow-lg mx-auto md:mx-0">
-                            <img src={vendor.portfolio[0]} alt={vendor.name} className="w-full h-full object-cover" />
-                        </div>
-
-                        <div className="flex-grow text-center md:text-left">
-                            <div className="flex flex-col md:flex-row md:items-center gap-3 mb-2">
-                                <h1 className="font-display text-4xl font-semibold text-foreground">{vendor.name}</h1>
+                    {/* Header Info */}
+                    <div className="mb-6 flex flex-col md:flex-row md:items-start justify-between gap-4">
+                        <div>
+                            <div className="flex items-center gap-3 mb-2">
+                                <h1 className="font-display text-3xl md:text-4xl font-bold text-slate-900">{vendor.name}</h1>
                                 {vendor.verified && (
-                                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold self-center md:self-auto">
-                                        <CheckCircle2 className="w-4 h-4" /> Verified Professional
+                                    <div className="flex items-center gap-1.5 px-2.5 py-0.5 bg-blue-100 text-blue-700 rounded-full text-[11px] font-bold tracking-wider uppercase">
+                                        <CheckCircle2 className="w-3.5 h-3.5" /> Verified Pro
                                     </div>
                                 )}
                             </div>
-
-                            <div className="flex items-center justify-center md:justify-start gap-4 text-sm text-foreground font-medium mb-4">
-                                <span className="px-3 py-1 bg-muted rounded-full">{vendor.category}</span>
-                                <span className="flex items-center gap-1.5">
-                                    <MapPin className="w-4 h-4 text-primary" /> {vendor.city}
-                                </span>
-                                <span className="flex items-center gap-1.5">
-                                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                                    {vendor.rating} ({vendor.reviews})
-                                </span>
+                            
+                            <div className="flex items-center gap-2 text-muted-foreground mb-3 text-sm md:text-base">
+                                <MapPin className="w-4 h-4 text-primary" /> 
+                                <span>{vendor.address || `${vendor.city}`}</span>
                             </div>
 
-                            <p className="text-muted-foreground max-w-2xl leading-relaxed mb-6">
-                                {vendor.description}
-                            </p>
+                            <div className="flex flex-wrap items-center gap-3 md:gap-4 text-sm font-medium">
+                                <div className="flex items-center gap-1 bg-yellow-50 text-yellow-700 px-2 py-1 rounded">
+                                    <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                                    <span>{vendor.rating} ({vendor.reviews} Reviews)</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 text-slate-600 bg-white border px-3 py-1 rounded-full shadow-sm">
+                                    <span className="bg-slate-100 text-slate-700 text-xs font-bold px-2 py-0.5 rounded uppercase">{vendor.category}</span>
+                                </div>
+                            </div>
+                        </div>
 
-                            <div className="flex items-center justify-center md:justify-start gap-3">
-                                <Button className="bg-primary hover:bg-primary/90 text-white shadow-md">
-                                    <Phone className="w-4 h-4 mr-2" /> Contact Now
-                                </Button>
-                                <Button variant="outline" className="border-border text-foreground hover:bg-muted">
-                                    <Mail className="w-4 h-4 mr-2" /> Message
-                                </Button>
-                                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-red-500 rounded-full">
-                                    <Heart className="w-5 h-5" />
-                                </Button>
-                                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-blue-500 rounded-full">
-                                    <Share2 className="w-5 h-5" />
-                                </Button>
+                        <div className="flex gap-3 md:self-start">
+                            <Button variant="outline" className="gap-2 bg-white shadow-sm border-slate-200 text-slate-700 hover:text-red-500 hover:border-red-200 hover:bg-red-50">
+                                <Heart className="w-4 h-4" /> Save
+                            </Button>
+                            <Button variant="outline" className="gap-2 bg-white shadow-sm border-slate-200 text-slate-700 hover:text-blue-500 hover:border-blue-200 hover:bg-blue-50">
+                                <Share2 className="w-4 h-4" /> Share
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* Hero Image Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-3 mb-10 h-[40vh] md:h-[55vh] min-h-[350px]">
+                        <div className="md:col-span-2 md:row-span-2 rounded-xl md:rounded-l-2xl overflow-hidden relative group">
+                            <img src={vendor.images?.[0] || vendor.portfolio?.[0]} alt={vendor.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        </div>
+                        <div className="hidden md:block rounded-xl overflow-hidden">
+                            <img src={vendor.images?.[1] || vendor.portfolio?.[1]} alt="Gallery 1" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <div className="hidden md:block rounded-xl md:rounded-tr-2xl overflow-hidden">
+                            <img src={vendor.images?.[2] || vendor.portfolio?.[2]} alt="Gallery 2" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <div className="hidden md:block rounded-xl overflow-hidden relative group">
+                            <img src={vendor.images?.[3] || vendor.portfolio?.[3]} alt="Gallery 3" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <div className="hidden md:block rounded-xl md:rounded-br-2xl overflow-hidden relative group cursor-pointer">
+                            <img src={vendor.images?.[4] || vendor.portfolio?.[4] || vendor.portfolio?.[0]} alt="Gallery 4" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-white backdrop-blur-[2px] opacity-0 md:group-hover:opacity-100 transition-opacity">
+                                <Camera className="w-8 h-8 mb-2" />
+                                <span className="font-semibold">View Portfolio</span>
                             </div>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                        {/* Main Content */}
-                        <div className="lg:col-span-2 space-y-10">
 
-                            {/* Portfolio Grid */}
-                            <section>
-                                <div className="flex items-center justify-between mb-6">
-                                    <h2 className="text-2xl font-semibold font-display">Portfolio</h2>
-                                    <Button variant="link" className="text-primary pr-0">View All Media &rarr;</Button>
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    {vendor.portfolio.slice(1).map((img: string, idx: number) => (
-                                        <div key={idx} className={`rounded-xl overflow-hidden cursor-pointer group ${idx === 0 ? 'col-span-2 h-[300px]' : 'h-[200px]'}`}>
-                                            <img src={img} alt={`Portfolio ${idx}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+                        
+                        {/* Main Content */}
+                        <div className="lg:col-span-8 space-y-10">
+
+                            {/* Service Highlights */}
+                            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                                <h2 className="text-xl font-semibold mb-6">Service Highlights</h2>
+                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-4">
+                                    <div className="flex items-start gap-3">
+                                        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0"><Award className="w-5 h-5"/></div>
+                                        <div>
+                                            <p className="text-xs text-slate-500 font-medium tracking-wide uppercase">Experience</p>
+                                            <p className="font-semibold text-slate-900">{vendor.yearsExperience || "5+ Years"}</p>
                                         </div>
-                                    ))}
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <div className="p-2 bg-purple-50 text-purple-600 rounded-lg shrink-0"><Globe className="w-5 h-5"/></div>
+                                        <div>
+                                            <p className="text-xs text-slate-500 font-medium tracking-wide uppercase">Travel</p>
+                                            <p className="font-semibold text-slate-900">{vendor.travelsOutstation ? "Travels Outstation" : "Local Only"}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <div className="p-2 bg-amber-50 text-amber-600 rounded-lg shrink-0"><Clock className="w-5 h-5"/></div>
+                                        <div>
+                                            <p className="text-xs text-slate-500 font-medium tracking-wide uppercase">Delivery In</p>
+                                            <p className="font-semibold text-slate-900 text-sm">{vendor.deliveryTime || "Not specified"}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg shrink-0"><Calendar className="w-5 h-5"/></div>
+                                        <div>
+                                            <p className="text-xs text-slate-500 font-medium tracking-wide uppercase">Advance</p>
+                                            <p className="font-semibold text-slate-900 text-sm">{vendor.advancePayment || "50"}% to book</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* About Section */}
+                            <section className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                                <h2 className="text-2xl font-display font-semibold mb-4">About {vendor.name}</h2>
+                                <div className="prose text-slate-600 max-w-none">
+                                    <p className="leading-relaxed">
+                                        {vendor.description}
+                                    </p>
                                 </div>
                             </section>
 
-                            {/* Services */}
-                            <section>
-                                <h2 className="text-2xl font-semibold font-display mb-4 flex items-center gap-2">
+                            {/* Services Offered */}
+                            <section className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                                <h2 className="text-2xl font-display font-semibold mb-6 flex items-center gap-2">
                                     <Award className="w-6 h-6 text-primary" />
                                     Services Offered
                                 </h2>
                                 <div className="flex flex-wrap gap-3">
-                                    {vendor.services.map((item: string, idx: number) => (
+                                    {vendor.services && vendor.services.map((item: string, idx: number) => (
                                         <span key={idx} className="px-4 py-2 rounded-full border border-primary/20 bg-primary/5 text-primary text-sm font-medium">
                                             {item}
                                         </span>
@@ -123,48 +176,62 @@ const VendorDetails = () => {
                                 </div>
                             </section>
 
+                            {/* Portfolio Preview */}
+                            <section>
+                                <div className="flex items-center justify-between mb-6">
+                                    <h2 className="text-2xl font-semibold font-display">Portfolio Snippets</h2>
+                                    <Button variant="link" className="text-primary pr-0">View All Work &rarr;</Button>
+                                </div>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                    {(vendor.images || vendor.portfolio)?.slice(1, 4).map((img: string, idx: number) => (
+                                        <div key={idx} className="h-48 rounded-xl overflow-hidden cursor-pointer group border border-slate-200">
+                                            <img src={img} alt={`Work ${idx}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+
                             {/* Reviews Section */}
-                            <ReviewsList venueId={vendor.id || id || "vd1"} />
+                            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                                <ReviewsList listingId={vendor.id || id || "vd1"} listingType="vendor" />
+                            </div>
 
                         </div>
 
-                        {/* Sidebar Pricing & Info */}
-                        <div className="lg:col-span-1">
+                        {/* Sidebar Pricing & CTA */}
+                        <div className="lg:col-span-4">
                             <div className="sticky top-24 space-y-6">
 
-                                <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
-                                    <h3 className="text-lg font-semibold font-display mb-4">Pricing Package</h3>
+                                <div className="bg-white rounded-2xl border border-primary/20 p-6 shadow-xl shadow-primary/5">
+                                    <h3 className="text-xl font-display font-bold text-slate-900 mb-6 border-b pb-4">Starting Pricing</h3>
 
-                                    <div className="flex items-start gap-3 p-4 bg-muted/20 rounded-xl mb-4 border border-border/50">
-                                        <IndianRupee className="w-6 h-6 text-primary shrink-0 mt-1" />
+                                    <div className="flex items-start gap-4 mb-6">
+                                        <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
+                                            <Camera className="w-6 h-6" />
+                                        </div>
                                         <div>
-                                            <div className="text-sm text-muted-foreground font-medium mb-1">Starting Price</div>
-                                            <div className="text-2xl font-bold text-foreground">₹{vendor.startingPrice.toLocaleString('en-IN')}</div>
-                                            <div className="text-xs text-muted-foreground mt-1">Inclusive of standard taxes</div>
+                                            <div className="text-xs text-slate-500 font-bold uppercase tracking-wide mb-1">Standard Package Starts</div>
+                                            <div className="text-3xl font-bold text-slate-900">₹{(vendor.startingPrice || 50000).toLocaleString('en-IN')} <span className="text-sm font-normal text-slate-500">/ day</span></div>
+                                            <div className="text-xs text-slate-500 mt-1">Pricing depends on event & requirements</div>
                                         </div>
                                     </div>
 
-                                    <GetQuoteModal businessName={vendor.name} />
-                                </div>
-
-                                <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
-                                    <h3 className="text-lg font-semibold font-display mb-4">More Information</h3>
-                                    <div className="space-y-4 text-sm">
-                                        <div className="flex items-center justify-between py-2 border-b border-border">
-                                            <span className="text-muted-foreground">Travels outstation</span>
-                                            <span className="font-medium">Yes</span>
-                                        </div>
-                                        <div className="flex items-center justify-between py-2 border-b border-border">
-                                            <span className="text-muted-foreground">Years of Experience</span>
-                                            <span className="font-medium">5+ Years</span>
-                                        </div>
-                                        <div className="flex items-center justify-between py-2">
-                                            <span className="text-muted-foreground">Booking Advance</span>
-                                            <span className="font-medium">50%</span>
-                                        </div>
+                                    <div className="space-y-4">
+                                        <GetQuoteModal 
+                                            businessName={vendor.name} 
+                                            listingId={vendor.id || id || "vd1"}
+                                            listingType="vendor"
+                                            ownerId={vendor.owner_id}
+                                        />
+                                        <Button variant="outline" className="w-full border-2 border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-base h-12 font-semibold">
+                                            <Phone className="w-4 h-4 mr-2" /> Show Contact Number
+                                        </Button>
+                                        <Button variant="ghost" className="w-full text-slate-500 hover:text-slate-900 text-sm">
+                                            <Mail className="w-4 h-4 mr-2" /> Send Email Enquiry
+                                        </Button>
                                     </div>
                                 </div>
-
+                                
                             </div>
                         </div>
 

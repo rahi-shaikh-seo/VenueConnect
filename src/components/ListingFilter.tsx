@@ -1,4 +1,4 @@
-import { Search, MapPin, Filter, SlidersHorizontal } from "lucide-react";
+import { Search, MapPin, Filter, SlidersHorizontal, CheckSquare, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -12,8 +12,8 @@ const VENDOR_TYPES = ['Photographers', 'Makeup Artists', 'Decorators', 'Caterers
 
 const VENUE_CAPACITIES = ['Under 100', '100 - 500', '500 - 1000', '1000+'];
 
-const VENUE_PRICES = ['Under ₹1 Lakh', '₹1L - ₹3L', '₹3L - ₹5L', 'Above ₹5L'];
-const VENDOR_PRICES = ['Under ₹20,000', '₹20k - ₹50k', '₹50k - ₹1L', 'Above ₹1L'];
+const VENUE_PRICES = ['Under ₹1000', '₹1000 - ₹2000', '₹2000 - ₹3000', 'Above ₹3000'];
+const VENDOR_PRICES = ['Under ₹20k', '₹20k - ₹50k', '₹50k - ₹1L', 'Above ₹1L'];
 
 const ListingFilter = ({ type }: ListingFilterProps) => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -22,6 +22,13 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
     const [selectedTypes, setSelectedTypes] = useState<string[]>(searchParams.getAll("type"));
     const [selectedCapacity, setSelectedCapacity] = useState<string>(searchParams.get("capacity") || "");
     const [selectedPrices, setSelectedPrices] = useState<string[]>(searchParams.getAll("price"));
+    
+    // New Boolean Amenities
+    const [hasAc, setHasAc] = useState(searchParams.get("ac") === "true");
+    const [hasWifi, setHasWifi] = useState(searchParams.get("wifi") === "true");
+    const [alcoholAllowed, setAlcoholAllowed] = useState(searchParams.get("alcohol") === "true");
+    const [hasRooms, setHasRooms] = useState(searchParams.get("rooms") === "true");
+
 
     // Sync state if URL changes externally
     useEffect(() => {
@@ -29,6 +36,10 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
         setSelectedTypes(searchParams.getAll("type"));
         setSelectedCapacity(searchParams.get("capacity") || "");
         setSelectedPrices(searchParams.getAll("price"));
+        setHasAc(searchParams.get("ac") === "true");
+        setHasWifi(searchParams.get("wifi") === "true");
+        setAlcoholAllowed(searchParams.get("alcohol") === "true");
+        setHasRooms(searchParams.get("rooms") === "true");
     }, [searchParams]);
 
     const handleTypeToggle = (t: string) => {
@@ -36,6 +47,8 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
     };
 
     const handlePriceToggle = (p: string) => {
+        // Allow multiple or single price selection? Usually price ranges are singular or array. 
+        // We will keep it array but users typically click one.
         setSelectedPrices(prev => prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p]);
     };
 
@@ -51,6 +64,19 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
         if (type === 'venues') {
             if (selectedCapacity) newParams.set("capacity", selectedCapacity);
             else newParams.delete("capacity");
+            
+            // Boolean params
+            if (hasAc) newParams.set("ac", "true");
+            else newParams.delete("ac");
+            
+            if (hasWifi) newParams.set("wifi", "true");
+            else newParams.delete("wifi");
+            
+            if (alcoholAllowed) newParams.set("alcohol", "true");
+            else newParams.delete("alcohol");
+            
+            if (hasRooms) newParams.set("rooms", "true");
+            else newParams.delete("rooms");
         }
 
         newParams.delete("price");
@@ -64,6 +90,10 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
         setSelectedTypes([]);
         setSelectedCapacity("");
         setSelectedPrices([]);
+        setHasAc(false);
+        setHasWifi(false);
+        setAlcoholAllowed(false);
+        setHasRooms(false);
         setSearchParams(new URLSearchParams());
     };
     return (
@@ -153,7 +183,7 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
 
                 {/* Price Range */}
                 <div className="space-y-3">
-                    <label className="text-sm font-medium text-foreground">Budget Range</label>
+                    <label className="text-sm font-medium text-foreground text-xs uppercase tracking-wider text-slate-500">{type === 'venues' ? 'Veg Plate Price' : 'Starting Price'}</label>
                     <div className="space-y-2">
                         {(type === 'venues' ? VENUE_PRICES : VENDOR_PRICES).map((range) => (
                             <label key={range} className="flex items-center gap-3 cursor-pointer group">
@@ -168,6 +198,31 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
                         ))}
                     </div>
                 </div>
+
+                {/* Amenities (Venues Only) */}
+                {type === 'venues' && (
+                    <div className="space-y-3 border-t pt-4">
+                        <label className="text-xs uppercase tracking-wider font-semibold text-slate-500">Must Have Amenities</label>
+                        <div className="space-y-2">
+                            <label className="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" checked={hasAc} onChange={(e) => setHasAc(e.target.checked)} className="w-4 h-4 rounded border-border text-primary focus:ring-primary/20 cursor-pointer" />
+                                <span className="text-sm text-muted-foreground group-hover:text-foreground">Air Conditioned</span>
+                            </label>
+                            <label className="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" checked={hasWifi} onChange={(e) => setHasWifi(e.target.checked)} className="w-4 h-4 rounded border-border text-primary focus:ring-primary/20 cursor-pointer" />
+                                <span className="text-sm text-muted-foreground group-hover:text-foreground">Free WiFi</span>
+                            </label>
+                            <label className="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" checked={hasRooms} onChange={(e) => setHasRooms(e.target.checked)} className="w-4 h-4 rounded border-border text-primary focus:ring-primary/20 cursor-pointer" />
+                                <span className="text-sm text-muted-foreground group-hover:text-foreground">Rooms Available</span>
+                            </label>
+                            <label className="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" checked={alcoholAllowed} onChange={(e) => setAlcoholAllowed(e.target.checked)} className="w-4 h-4 rounded border-border text-primary focus:ring-primary/20 cursor-pointer" />
+                                <span className="text-sm text-muted-foreground group-hover:text-foreground">Liquor Permitted</span>
+                            </label>
+                        </div>
+                    </div>
+                )}
 
                 <Button onClick={applyFilters} className="w-full bg-primary hover:bg-primary/90 text-white shadow-md">
                     Apply Filters

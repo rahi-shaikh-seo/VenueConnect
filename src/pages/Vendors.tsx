@@ -1,112 +1,82 @@
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import ListingFilter from "@/components/ListingFilter";
 import VendorCard, { VendorData } from "@/components/VendorCard";
-
-const DUMMY_VENDORS: VendorData[] = [
-    {
-        id: "vd1",
-        name: "Light & Shade Photography",
-        category: "Photographers",
-        city: "Ahmedabad",
-        rating: 4.9,
-        reviews: 124,
-        startingPrice: 50000,
-        image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80",
-        featured: true,
-        verified: true,
-    },
-    {
-        id: "vd2",
-        name: "Glamour Looks by Priya",
-        category: "Makeup Artists",
-        city: "Surat",
-        rating: 4.8,
-        reviews: 89,
-        startingPrice: 15000,
-        image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800&q=80",
-        verified: true,
-    },
-    {
-        id: "vd3",
-        name: "Golden Events Decorators",
-        category: "Decorators",
-        city: "Vadodara",
-        rating: 4.7,
-        reviews: 210,
-        startingPrice: 100000,
-        image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80",
-        featured: true,
-        verified: true,
-    },
-    {
-        id: "vd4",
-        name: "Rhythm Beats Band",
-        category: "Bands",
-        city: "Rajkot",
-        rating: 4.6,
-        reviews: 56,
-        startingPrice: 30000,
-        image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80",
-    },
-    {
-        id: "vd5",
-        name: "Royal Feast Caterers",
-        category: "Caterers",
-        city: "Ahmedabad",
-        rating: 4.8,
-        reviews: 345,
-        startingPrice: 800, // Cost per plate usually
-        image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80",
-        featured: true,
-        verified: true,
-    },
-    {
-        id: "vd6",
-        name: "Henna Art by Radhika",
-        category: "Mehndi Artists",
-        city: "Surat",
-        rating: 4.9,
-        reviews: 178,
-        startingPrice: 5000,
-        image: "https://images.unsplash.com/photo-1610041321427-8c710f5451ff?w=800&q=80",
-        verified: true,
-    }
-];
+import { supabase } from "@/integrations/supabase/client";
 
 const Vendors = () => {
     const [searchParams] = useSearchParams();
     const searchCity = searchParams.get("city")?.toLowerCase();
-    const categoryFilter = searchParams.get("category")?.toLowerCase();
-    const filterTypes = searchParams.getAll("type");
+    const queryCategory = searchParams.get("category")?.toLowerCase(); // from search bar
+    const filterTypes = searchParams.getAll("type"); // from sidebar
     const filterPrices = searchParams.getAll("price");
 
-    const filteredVendors = DUMMY_VENDORS.filter(vendor => {
-        let match = true;
+    const [vendors, setVendors] = useState<VendorData[]>([]);
+    const [loading, setLoading] = useState(true);
 
-        if (searchCity && vendor.city.toLowerCase() !== searchCity) match = false;
+    useEffect(() => {
+        fetchVendors();
+    }, [searchParams]);
 
-        if (categoryFilter && categoryFilter !== 'wedding' && !vendor.category.toLowerCase().includes(categoryFilter)) match = false;
+    const fetchVendors = async () => {
+        setLoading(true);
+        try {
+            let query = supabase.from("vendors").select("*").eq("status", "approved");
 
-        if (filterTypes.length > 0) {
-            if (!filterTypes.includes(vendor.category)) match = false;
-        }
-
-        if (filterPrices.length > 0) {
-            let priceMatch = false;
-            for (const p of filterPrices) {
-                if (p === 'Under ₹20,000' && vendor.startingPrice < 20000) priceMatch = true;
-                if (p === '₹20k - ₹50k' && vendor.startingPrice >= 20000 && vendor.startingPrice <= 50000) priceMatch = true;
-                if (p === '₹50k - ₹1L' && vendor.startingPrice >= 50000 && vendor.startingPrice <= 100000) priceMatch = true;
-                if (p === 'Above ₹1L' && vendor.startingPrice > 100000) priceMatch = true;
+            if (searchCity) {
+                query = query.ilike("city", `%${searchCity}%`);
             }
-            if (!priceMatch) match = false;
-        }
 
-        return match;
-    });
+            // Combine category from search bar and sidebar
+            const typeFilters = [...filterTypes];
+            if (queryCategory && queryCategory !== 'wedding' && !typeFilters.includes(queryCategory)) {
+                // simple mapping if needed, otherwise exact match. ilike on category
+                query = query.ilike("category", `%${queryCategory}%`);
+            } else if (typeFilters.length > 0) {
+                query = query.in("category", typeFilters);
+            }
+
+            const { data, error } = await query;
+            if (error) throw error;
+
+            let mappedData: (VendorData & { rawPrice: number })[] = (data || []).map(v => ({
+                id: v.id,
+                name: v.name || 'Unnamed Vendor',
+                category: v.category || 'Professional',
+                city: v.city || 'Unknown Location',
+                rating: 4.8, // Mocking rating for now until a reviews table is added
+                reviews: Math.floor(Math.random() * 200) + 50, // Mock reviews
+                startingPrice: v.starting_price || 0,
+                image: v.images?.[0] || v.logo_url || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80",
+                featured: false,
+                verified: true,
+                rawPrice: v.starting_price || 0
+            }));
+
+            // Filter by Price Ranges post-fetch
+            if (filterPrices.length > 0) {
+                 mappedData = mappedData.filter(v => {
+                     const p = v.rawPrice;
+                     return filterPrices.some(range => {
+                         if (range === 'Under ₹20k') return p < 20000;
+                         if (range === '₹20k - ₹50k') return p >= 20000 && p <= 50000;
+                         if (range === '₹50k - ₹1L') return p > 50000 && p <= 100000;
+                         if (range === 'Above ₹1L') return p > 100000;
+                         return false;
+                     });
+                 });
+            }
+
+            setVendors(mappedData);
+        } catch (error) {
+            console.error("Error fetching vendors:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
@@ -128,7 +98,7 @@ const Vendors = () => {
                         <div className="flex-grow">
                             <div className="mb-6 flex items-center justify-between">
                                 <h2 className="text-2xl font-semibold text-foreground font-display">
-                                    {filteredVendors.length} Professionals Found {searchCity && `in ${searchParams.get("city")}`}
+                                    {vendors.length} Professionals Found {searchCity && `in ${searchParams.get("city")}`}
                                 </h2>
                                 <div className="flex items-center gap-2">
                                     <span className="text-sm text-muted-foreground hidden sm:inline-block">Sort by:</span>
@@ -149,14 +119,16 @@ const Vendors = () => {
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                                {filteredVendors.length > 0 ? (
-                                    filteredVendors.map((vendor) => (
+                                {loading ? (
+                                    <div className="col-span-full py-12 text-center text-muted-foreground animate-pulse">Loading amazing vendors...</div>
+                                ) : vendors.length > 0 ? (
+                                    vendors.map((vendor) => (
                                         <VendorCard key={vendor.id} vendor={vendor} />
                                     ))
                                 ) : (
-                                    <div className="col-span-full py-12 text-center">
-                                        <h3 className="text-lg font-medium text-foreground mb-2">No professionals found</h3>
-                                        <p className="text-muted-foreground">Try adjusting your filters or search criteria.</p>
+                                    <div className="col-span-full py-12 text-center bg-slate-50 border border-dashed rounded-xl border-slate-200">
+                                        <h3 className="text-lg font-medium text-slate-800 mb-2">No professionals matching your criteria</h3>
+                                        <p className="text-slate-500">Try removing some filters or searching a different area.</p>
                                     </div>
                                 )}
                             </div>

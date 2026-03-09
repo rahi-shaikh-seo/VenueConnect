@@ -83,7 +83,8 @@ const VenueCard = ({ venue }: VenueCardProps) => {
                 .insert({
                     user_id: user.id,
                     venue_id: venue.id,
-                    venue_data: venue
+                    item_type: 'venue',
+                    item_data: venue
                 });
 
             if (!error) {

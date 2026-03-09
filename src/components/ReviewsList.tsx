@@ -10,15 +10,16 @@ interface Review {
     created_at: string;
     user_name: string;
     rating: number;
-    comment: string;
+    review_text: string;
     user_id: string;
 }
 
 interface ReviewsListProps {
-    venueId: string;
+    listingId: string;
+    listingType: 'venue' | 'vendor';
 }
 
-const ReviewsList = ({ venueId }: ReviewsListProps) => {
+const ReviewsList = ({ listingId, listingType }: ReviewsListProps) => {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentUser, setCurrentUser] = useState<any>(null);
@@ -31,12 +32,11 @@ const ReviewsList = ({ venueId }: ReviewsListProps) => {
     useEffect(() => {
         checkUser();
         fetchReviews();
-    }, [venueId]);
+    }, [listingId]);
 
     const checkUser = async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
-            // Also fetch user profile info for name if needed
             setCurrentUser(user);
         }
     };
@@ -44,13 +44,31 @@ const ReviewsList = ({ venueId }: ReviewsListProps) => {
     const fetchReviews = async () => {
         try {
             const { data, error } = await supabase
-                .from('venue_reviews')
-                .select('*')
-                .eq('venue_id', venueId)
+                .from('reviews')
+                .select(`
+                    id, 
+                    created_at, 
+                    rating, 
+                    review_text, 
+                    user_id,
+                    profiles:user_id(full_name)
+                `)
+                .eq('item_id', listingId)
+                .eq('item_type', listingType)
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
-            setReviews(data || []);
+            
+            const mappedReviews = (data || []).map((r: any) => ({
+                id: r.id,
+                created_at: r.created_at,
+                rating: r.rating,
+                review_text: r.review_text,
+                user_id: r.user_id,
+                user_name: r.profiles?.full_name || 'Guest User'
+            }));
+
+            setReviews(mappedReviews);
         } catch (error) {
             console.error("Error fetching reviews:", error);
         } finally {
@@ -72,15 +90,13 @@ const ReviewsList = ({ venueId }: ReviewsListProps) => {
 
         setSubmitting(true);
         try {
-            const userName = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || "Guest";
-
-            const { error } = await supabase.from('venue_reviews').insert([
+            const { error } = await supabase.from('reviews').insert([
                 {
-                    venue_id: venueId,
+                    item_id: listingId,
+                    item_type: listingType,
                     user_id: currentUser.id,
-                    user_name: userName,
                     rating,
-                    comment
+                    review_text: comment
                 }
             ]);
 
@@ -199,7 +215,7 @@ const ReviewsList = ({ venueId }: ReviewsListProps) => {
                                             ))}
                                         </div>
                                         <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
-                                            {review.comment}
+                                            {review.review_text}
                                         </p>
                                     </div>
                                 </div>

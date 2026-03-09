@@ -6,14 +6,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 const HeroSearch = () => {
   const navigate = useNavigate();
-  const [eventType, setEventType] = useState("");
+  const [serviceType, setServiceType] = useState("venues");
   const [city, setCity] = useState("");
 
   const handleSearch = () => {
     const params = new URLSearchParams();
-    if (eventType) params.append("category", eventType);
     if (city) params.append("city", city);
-    navigate(`/venues?${params.toString()}`);
+    
+    if (serviceType === "venues") {
+        navigate(`/venues?${params.toString()}`);
+    } else {
+        params.append("category", serviceType);
+        navigate(`/vendors?${params.toString()}`);
+    }
   };
   return (
     <section className="relative min-h-screen flex flex-col justify-end overflow-hidden">
@@ -56,26 +61,24 @@ const HeroSearch = () => {
           {/* Search Box */}
           <div className="bg-white/20 backdrop-blur-md border border-white/40 rounded-3xl p-8 max-w-3xl mx-auto mb-12 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
             <h3 className="font-display text-2xl text-white font-medium mb-6 text-center tracking-wide drop-shadow-md">
-              Find Your Perfect Venue
+              Find Your Perfect Match
             </h3>
 
             <div className="grid md:grid-cols-[1fr_1fr_auto] gap-3">
               <div>
                 <label className="text-[9px] font-semibold tracking-[2px] uppercase text-white/40 mb-2 block">
-                  Event Type
+                  Looking For
                 </label>
-                <Select value={eventType} onValueChange={setEventType}>
+                <Select value={serviceType} onValueChange={setServiceType}>
                   <SelectTrigger className="bg-white/10 border-white/20 text-white h-12 hover:bg-white/15">
-                    <SelectValue placeholder="Select event type" />
+                    <SelectValue placeholder="What are you looking for?" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="wedding">Wedding</SelectItem>
-                    <SelectItem value="reception">Reception</SelectItem>
-                    <SelectItem value="engagement">Engagement</SelectItem>
-                    <SelectItem value="birthday">Birthday</SelectItem>
-                    <SelectItem value="corporate">Corporate</SelectItem>
-                    <SelectItem value="kitty">Kitty Party</SelectItem>
-                    <SelectItem value="pool">Pool Party</SelectItem>
+                    <SelectItem value="venues">All Venues</SelectItem>
+                    <SelectItem value="photographers">Photographers</SelectItem>
+                    <SelectItem value="makeup artists">Makeup Artists</SelectItem>
+                    <SelectItem value="decorators">Decorators</SelectItem>
+                    <SelectItem value="caterers">Caterers</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -114,16 +117,23 @@ const HeroSearch = () => {
             <div className="mt-4 pt-4 border-t border-white/10">
               <p className="text-xs text-white/40 mb-2">Popular Searches:</p>
               <div className="flex flex-wrap gap-2">
-                {["Wedding Venues", "Banquet Halls", "Farmhouses", "Party Plots"].map((search) => (
+                {[
+                  { label: "Wedding Venues", val: "venues", type: "venues" },
+                  { label: "Best Photographers", val: "photographers", type: "vendors" },
+                  { label: "Makeup Artists", val: "makeup artists", type: "vendors" }
+                ].map((search) => (
                   <button
-                    key={search}
+                    key={search.label}
                     onClick={() => {
-                      setEventType("wedding");
-                      setTimeout(handleSearch, 100);
+                        if (search.type === "venues") {
+                            navigate('/venues');
+                        } else {
+                            navigate(`/vendors?category=${search.val}`);
+                        }
                     }}
                     className="text-xs text-white/60 hover:text-white transition-colors underline bg-transparent border-none p-0 cursor-pointer"
                   >
-                    {search}
+                    {search.label}
                   </button>
                 ))}
               </div>
@@ -137,7 +147,7 @@ const HeroSearch = () => {
               onClick={() => navigate('/list-venue')}
               className="bg-white/10 backdrop-blur-sm border border-white/45 text-white hover:bg-white/20 hover:border-white px-8 py-6 text-xs font-semibold tracking-wider uppercase"
             >
-              List Your Venue
+              List Your Venue / Service
             </Button>
           </div>
         </div>

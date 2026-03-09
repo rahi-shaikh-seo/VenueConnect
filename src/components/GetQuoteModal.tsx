@@ -7,10 +7,13 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface GetQuoteModalProps {
     businessName: string;
+    listingId: string;
+    listingType: 'venue' | 'vendor';
+    ownerId?: string | null;
     triggerButton?: React.ReactNode;
 }
 
-const GetQuoteModal = ({ businessName, triggerButton }: GetQuoteModalProps) => {
+const GetQuoteModal = ({ businessName, listingId, listingType, ownerId, triggerButton }: GetQuoteModalProps) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -27,15 +30,16 @@ const GetQuoteModal = ({ businessName, triggerButton }: GetQuoteModalProps) => {
         setLoading(true);
 
         try {
-            const { error } = await supabase.from('venue_leads').insert([
+            const { error } = await supabase.from('leads').insert([
                 {
-                    venue_name: businessName,
-                    name,
-                    email,
-                    phone,
-                    event_date: eventDate,
-                    guest_count: parseInt(guests),
-                    requirements
+                    listing_id: listingId,
+                    listing_type: listingType,
+                    owner_id: ownerId || null,
+                    customer_name: name,
+                    customer_email: email,
+                    customer_phone: phone,
+                    event_date: eventDate || null,
+                    message: `Requirements: ${requirements} | Guests: ${guests}`
                 }
             ]);
 

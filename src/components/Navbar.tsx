@@ -14,7 +14,7 @@ import {
 const Navbar = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [session, setSession] = useState<any>(null);
+  const [session, setSession] = useState<Record<string, unknown> | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -95,10 +95,10 @@ const Navbar = () => {
                   {session.user.user_metadata?.full_name || session.user.email}
                 </div>
                 <DropdownMenuItem asChild>
-                  <Link to="/dashboard" className="cursor-pointer">My Profile</Link>
+                  <Link to="/profile" className="cursor-pointer">My Profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/dashboard" className="cursor-pointer">My Bookings</Link>
+                  <Link to="/profile" className="cursor-pointer">Saved Shortlist</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive focus:text-destructive">
@@ -152,8 +152,8 @@ const Navbar = () => {
                 <p className="font-medium px-2 py-1 text-muted-foreground truncate">
                   Signed in as: {session.user.user_metadata?.full_name || session.user.email}
                 </p>
-                <Link to="/dashboard" className="block px-2 py-2 hover:text-primary" onClick={() => setOpen(false)}>My Profile</Link>
-                <Link to="/dashboard" className="block px-2 py-2 hover:text-primary" onClick={() => setOpen(false)}>My Bookings</Link>
+                <Link to="/profile" className="block px-2 py-2 hover:text-primary" onClick={() => setOpen(false)}>My Profile</Link>
+                <Link to="/profile" className="block px-2 py-2 hover:text-primary" onClick={() => setOpen(false)}>Saved Shortlist</Link>
               </div>
               <Button
                 variant="destructive"

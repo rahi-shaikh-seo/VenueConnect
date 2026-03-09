@@ -19,6 +19,11 @@ import Dashboard from "./pages/Dashboard";
 import EInvitations from "./pages/EInvitations";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import { AdminRoute } from "./components/AdminRoute";
+import UserProfile from "./pages/UserProfile";
+import { OwnerRoute } from "./components/OwnerRoute";
+import OwnerDashboard from "./pages/owner/OwnerDashboard";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +49,20 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/e-invitations" element={<EInvitations />} />
+          <Route path="/profile" element={<UserProfile />} />
+          
+          <Route path="/admin" element={
+            <AdminRoute>
+               <AdminDashboard />
+            </AdminRoute>
+          } />
+
+          <Route path="/owner/*" element={
+            <OwnerRoute>
+              <OwnerDashboard />
+            </OwnerRoute>
+          } />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
