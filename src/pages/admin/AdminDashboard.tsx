@@ -67,6 +67,14 @@ const AdminDashboard = () => {
         throw insertError;
       }
 
+      // Upgrade the user to an 'owner' role so they can access the Owner Dashboard
+      if (app.user_id) {
+        await supabase
+          .from('profiles')
+          .update({ role: 'owner' })
+          .eq('id', app.user_id);
+      }
+
       toast.success("Application approved successfully.");
       setApplications(applications.filter(a => a.id !== app.id));
     } catch (error: any) {
