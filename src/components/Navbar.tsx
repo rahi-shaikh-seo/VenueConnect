@@ -92,7 +92,7 @@ const Navbar = () => {
             className="border-primary/30 text-primary hover:bg-primary/5 hover:border-primary font-medium"
             asChild
           >
-            <Link to="/list-venue">List Your Business</Link>
+            <Link to="/list-business">List Your Business</Link>
           </Button>
 
           {session ? (
@@ -170,7 +170,7 @@ const Navbar = () => {
           <Link to="/e-invitations" className="block text-sm font-medium py-3 text-primary transition-colors" onClick={() => setOpen(false)}>
             E-Invitations 💌
           </Link>
-          <Link to="/list-venue" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
+          <Link to="/list-business" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             List Your Business
           </Link>
 

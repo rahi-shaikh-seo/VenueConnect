@@ -12,6 +12,7 @@ import VenueDetails from "./pages/VenueDetails";
 import VendorDetails from "./pages/VendorDetails";
 import ListVenue from "./pages/ListVenue";
 import ListVendor from "./pages/ListVendor";
+import ListBusiness from "./pages/ListBusiness";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/vendors/:id" element={<VendorDetails />} />
           <Route path="/cities" element={<Cities />} />
+          <Route path="/list-business" element={<ListBusiness />} />
           <Route path="/list-venue" element={<ListVenue />} />
           <Route path="/list-vendor" element={<ListVendor />} />
           <Route path="/about" element={<About />} />
