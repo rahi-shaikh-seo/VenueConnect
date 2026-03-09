@@ -62,17 +62,35 @@ const AdminDashboard = () => {
           insertData = {
               ...insertData,
               type: app.venue_type,
+              image_url: app.image_url || (app.images && app.images.length > 0 ? app.images[0] : null),
+              images: app.images || [],
               veg_price_per_plate: app.veg_price_per_plate ? parseInt(app.veg_price_per_plate.toString()) : 0,
               nonveg_price_per_plate: app.nonveg_price_per_plate ? parseInt(app.nonveg_price_per_plate.toString()) : 0,
               min_capacity: app.min_capacity || 0,
               max_capacity: app.max_capacity || 0,
-              starting_price: app.veg_price_per_plate ? parseInt(app.veg_price_per_plate.toString()) : 0
+              starting_price: app.veg_price_per_plate ? parseInt(app.veg_price_per_plate.toString()) : 0,
+              description: app.description || null,
+              has_ac: app.has_ac || false,
+              has_wifi: app.has_wifi || false,
+              alcohol_served: app.alcohol_served || false,
+              catering_policy: app.catering_policy || null,
+              operating_hours: app.operating_hours || null,
+              indoor_spaces: app.indoor_spaces || 0,
+              outdoor_spaces: app.outdoor_spaces || 0,
+              rooms_count: app.rooms_count || 0,
+              amenities: app.amenities || [],
+              cuisines: app.cuisines || [],
+              payment_methods: app.payment_methods || [],
+              advance_payment_percentage: app.advance_payment_percentage || 50,
           };
       } else {
           insertData = {
               ...insertData,
+              image_url: app.image_url || (app.images && app.images.length > 0 ? app.images[0] : null),
+              images: app.images || [],
               category: app.vendor_category || 'Other',
-              starting_price: app.veg_price_per_plate ? parseInt(app.veg_price_per_plate.toString()) : 0
+              starting_price: app.veg_price_per_plate ? parseInt(app.veg_price_per_plate.toString()) : 0,
+              description: app.description || null,
           };
       }
 

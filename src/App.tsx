@@ -26,6 +26,7 @@ import { AdminRoute } from "./components/AdminRoute";
 import UserProfile from "./pages/UserProfile";
 import { OwnerRoute } from "./components/OwnerRoute";
 import OwnerDashboard from "./pages/owner/OwnerDashboard";
+import MobileBottomNav from "./components/MobileBottomNav";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <MobileBottomNav />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/venues" element={<Venues />} />
