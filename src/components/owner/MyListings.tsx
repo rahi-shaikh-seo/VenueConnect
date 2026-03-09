@@ -68,11 +68,13 @@ export default function MyListings() {
                     <div className="bg-slate-50 w-20 h-20 rounded-full flex items-center justify-center mb-4">
                         <Store className="w-10 h-10 text-slate-400" />
                     </div>
-                    <h3 className="text-xl font-semibold text-slate-900 mb-2">You don't have any listings yet</h3>
-                    <p className="text-slate-500 max-w-sm mb-6">List your venue or vendor services to start receiving leads from customers.</p>
-                    <Link to="/list-venue">
-                        <Button className="gap-2"><Building className="w-4 h-4"/> Create Your First Listing</Button>
-                    </Link>
+                    <h3 className="text-xl font-display font-semibold text-slate-900 mb-2">No listings yet</h3>
+                    <p className="text-slate-500 max-w-sm mb-6">List your business or vendor services to start receiving leads from customers.</p>
+                    <Button asChild className="bg-primary hover:bg-primary/90 text-white font-medium shadow-md transition-all">
+                        <Link to="/list-venue" className="gap-2 flex items-center">
+                            <Building className="w-4 h-4"/> Create Your First Listing
+                        </Link>
+                    </Button>
                 </div>
             )}
 
@@ -82,8 +84,8 @@ export default function MyListings() {
                         <Building className="w-5 h-5 text-primary" /> My Venues
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        {venues.map(venue => (
-                            <ListingCard key={venue.id} data={venue} type="venue" />
+                        {venues.map((venue, index) => (
+                            <ListingCard key={String(venue.id) || index} data={venue} type="venue" />
                         ))}
                     </div>
                 </div>
@@ -95,8 +97,8 @@ export default function MyListings() {
                         <Store className="w-5 h-5 text-primary" /> My Vendor Services
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        {vendors.map(vendor => (
-                            <ListingCard key={vendor.id} data={vendor} type="vendor" />
+                        {vendors.map((vendor, index) => (
+                            <ListingCard key={String(vendor.id) || index} data={vendor} type="vendor" />
                         ))}
                     </div>
                 </div>

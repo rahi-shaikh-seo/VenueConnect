@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { MapPin, Mail, Phone, Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
+import { Building2, Mail, Phone, MapPin, Instagram, Facebook, Twitter, Linkedin, Heart } from "lucide-react";
+import { gujaratCities } from "@/lib/cities";
 
 const Footer = () => {
   return (
@@ -64,17 +65,18 @@ const Footer = () => {
 
           <div>
             <h4 className="text-[10px] tracking-[3px] uppercase font-semibold text-white/80 mb-8 border-b border-white/10 pb-4 inline-block">Quick Links</h4>
-            <ul className="space-y-3">
+            <ul className="space-y-3 mt-4">
               <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors inline-block">About Us</Link></li>
-              <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors inline-block">Contact Support</Link></li>
-              <li><Link to="/list-venue" className="text-muted-foreground hover:text-primary transition-colors inline-block">List Your Venue</Link></li>
+              <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors inline-block">Contact Us</Link></li>
+              <li><Link to="/list-venue" className="text-muted-foreground hover:text-primary transition-colors inline-block">List Your Business</Link></li>
+              <li><Link to="/faq" className="text-muted-foreground hover:text-primary transition-colors inline-block">FAQs</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-[10px] tracking-[3px] uppercase font-semibold text-white/80 mb-8 border-b border-white/10 pb-4 inline-block">Top Destinations</h4>
             <div className="space-y-4">
-              {["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Gandhinagar"].map(c => (
+              {gujaratCities.slice(0, 5).map(c => (
                 <Link key={c} to={`/venues/${c.toLowerCase()}`} className="block text-sm text-white/50 hover:text-primary transition-colors font-light">
                   Luxury Venues in {c}
                 </Link>

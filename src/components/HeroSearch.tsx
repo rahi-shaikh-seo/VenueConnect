@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Search, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { gujaratCities } from "@/lib/cities";
 
 const HeroSearch = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const HeroSearch = () => {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1920&q=80"
+          src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&q=80"
           alt="Luxury Event Venue"
           className="w-full h-full object-cover animate-[zoomOut_12s_ease_forwards]"
         />
@@ -52,11 +53,6 @@ const HeroSearch = () => {
             <em className="italic text-primary drop-shadow-[0_2px_10px_rgba(255,255,255,0.7)] bg-white/10 px-4 rounded-full">Celebration</em><br />
             Begins
           </h1>
-
-          {/* Subheading */}
-          <p className="text-[15px] font-light text-white/60 leading-relaxed mb-10 max-w-2xl mx-auto">
-            Discover and book extraordinary venues across India — from grand palace weddings to intimate rooftop gatherings. Curated, verified, and exceptional.
-          </p>
 
           {/* Search Box */}
           <div className="bg-white/20 backdrop-blur-md border border-white/40 rounded-3xl p-8 max-w-3xl mx-auto mb-12 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
@@ -92,12 +88,9 @@ const HeroSearch = () => {
                     <SelectValue placeholder="Select city" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="ahmedabad">Ahmedabad</SelectItem>
-                    <SelectItem value="surat">Surat</SelectItem>
-                    <SelectItem value="vadodara">Vadodara</SelectItem>
-                    <SelectItem value="rajkot">Rajkot</SelectItem>
-                    <SelectItem value="gandhinagar">Gandhinagar</SelectItem>
-                    <SelectItem value="bhavnagar">Bhavnagar</SelectItem>
+                    {gujaratCities.map(c => (
+                        <SelectItem key={c} value={c.toLowerCase()}>{c}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -147,7 +140,7 @@ const HeroSearch = () => {
               onClick={() => navigate('/list-venue')}
               className="bg-white/10 backdrop-blur-sm border border-white/45 text-white hover:bg-white/20 hover:border-white px-8 py-6 text-xs font-semibold tracking-wider uppercase"
             >
-              List Your Venue / Service
+              List Your Business / Service
             </Button>
           </div>
         </div>

@@ -1,5 +1,6 @@
-import { CheckCircle, ArrowRight } from "lucide-react";
+import { CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const benefits = [
@@ -29,22 +30,22 @@ const VenueOwnerCTA = () => {
             <span className="inline-block px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-[10px] tracking-[3px] uppercase font-semibold mb-6">
               For Venue Owners
             </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold text-white mb-6 leading-[1.1]">
-              List Your Venue <br className="hidden md:block" />
-              <span className="italic text-primary font-light">for Free</span>
+            <h2 className="text-3xl md:text-5xl font-display font-semibold text-white leading-tight mb-4">
+              List Your Business <br className="hidden md:block" />
+              and get more bookings
             </h2>
             <div className="space-y-5 mb-10">
-              {benefits.map((b) => (
-                <div key={b} className="flex items-start gap-4">
-                  <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <CheckCircle className="w-3.5 h-3.5 text-primary" />
-                  </div>
-                  <span className="text-white/70 font-light text-base">{b}</span>
+              {benefits.map((b, index) => (
+                <div key={index} className="flex items-center gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-white shrink-0" />
+                  <span className="text-white/90 text-sm md:text-base">{b}</span>
                 </div>
               ))}
             </div>
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground border-0 text-xs font-semibold tracking-[2px] uppercase px-8 h-14 shadow-lg hover:shadow-primary/25 transition-all">
-              List Your Venue <ArrowRight className="w-4 h-4 ml-3" />
+            <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-medium px-8 w-full sm:w-auto" asChild>
+              <Link to="/list-venue">
+                List Your Business <ArrowRight className="w-4 h-4 ml-3" />
+              </Link>
             </Button>
           </div>
 

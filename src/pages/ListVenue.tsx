@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, Building2, MapPin, Camera, Info, UploadCloud, X, Users, Utensils, IndianRupee, Wifi, Wind, Map, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { gujaratCities } from "@/lib/cities";
 
 const ListVenue = () => {
     const navigate = useNavigate();
@@ -225,8 +226,8 @@ const ListVenue = () => {
             <Navbar />
 
             <PageHeader
-                title="Partner With Us"
-                subtitle="List your venue or services and reach thousands of customers across Gujarat."
+                title="List Your Business"
+                subtitle="List your business or services and reach thousands of customers across Gujarat."
                 image="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80"
             />
 
@@ -325,10 +326,9 @@ const ListVenue = () => {
                                                     required
                                                 >
                                                     <option value="">Select city</option>
-                                                    <option value="Ahmedabad">Ahmedabad</option>
-                                                    <option value="Surat">Surat</option>
-                                                    <option value="Vadodara">Vadodara</option>
-                                                    <option value="Rajkot">Rajkot</option>
+                                                    {gujaratCities.map(city => (
+                                                        <option key={city} value={city}>{city}</option>
+                                                    ))}
                                                 </select>
                                             </div>
                                             <div className="space-y-2">
@@ -591,12 +591,11 @@ const ListVenue = () => {
                                         
                                         <div className="bg-slate-50 rounded-2xl p-6 md:p-8 border border-slate-200">
                                             
-                                            <div className="flex justify-between items-start mb-6">
-                                                <div>
-                                                    <h2 className="text-2xl font-display font-bold text-slate-900">{formData.businessName || 'Business Name'}</h2>
-                                                    <p className="text-slate-500 text-sm flex items-center gap-1 mt-1"><MapPin className="w-3 h-3"/> {formData.address}, {formData.city}</p>
-                                                </div>
-                                                <span className="bg-slate-200 text-slate-700 text-xs font-bold px-3 py-1 rounded uppercase tracking-wider">{formData.category}</span>
+                                            <div className="text-center w-full">
+                                                <h3 className="text-2xl font-display font-bold text-slate-800 mb-2">List Your Business on VenueConnect</h3>
+                                                <p className="text-slate-500 text-sm max-w-md mx-auto">
+                                                    Join thousands of other businesses reaching engaged couples daily. Fill out the application below to get started.
+                                                </p>
                                             </div>
 
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">

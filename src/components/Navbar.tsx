@@ -48,7 +48,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-border/50 shadow-sm">
+    <header className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
       <div className="container flex items-center justify-between h-20 px-6">
         <Link to="/" className="flex items-center hover:opacity-80 transition-opacity">
           <img
@@ -92,7 +92,7 @@ const Navbar = () => {
             className="border-primary/30 text-primary hover:bg-primary/5 hover:border-primary font-medium"
             asChild
           >
-            <Link to="/list-venue">List Your Venue</Link>
+            <Link to="/list-venue">List Your Business</Link>
           </Button>
 
           {session ? (
@@ -171,7 +171,7 @@ const Navbar = () => {
             E-Invitations 💌
           </Link>
           <Link to="/list-venue" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
-            List Your Venue
+            List Your Business
           </Link>
 
           {session ? (

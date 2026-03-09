@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Gift, Sparkles } from "lucide-react";
+import { Calendar as CalendarIcon, CheckCircle2, Gift, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
+import { gujaratCities } from "@/lib/cities";
 
 const GetQuoteCTA = () => {
   return (
@@ -68,10 +69,9 @@ const GetQuoteCTA = () => {
                       <SelectValue placeholder="Select City" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="ahmedabad">Ahmedabad</SelectItem>
-                      <SelectItem value="surat">Surat</SelectItem>
-                      <SelectItem value="vadodara">Vadodara</SelectItem>
-                      <SelectItem value="rajkot">Rajkot</SelectItem>
+                      {gujaratCities.map(c => (
+                          <SelectItem key={c} value={c.toLowerCase()}>{c}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
 
