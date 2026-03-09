@@ -119,22 +119,27 @@ const ListVenue = () => {
         try {
             const imageUrls: string[] = [];
 
-            // Upload all images
+            // Upload all images (non-blocking - form submits even if upload fails)
             for (const file of imageFiles) {
-                const fileExt = file.name.split('.').pop();
-                const fileName = `${Math.random()}.${fileExt}`;
+                try {
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${fileExt}`;
 
-                const { error: uploadError } = await supabase.storage
-                    .from('venue_applications_images')
-                    .upload(fileName, file);
+                    const { error: uploadError } = await supabase.storage
+                        .from('venue_applications_images')
+                        .upload(fileName, file);
 
-                if (uploadError) throw new Error(`Image upload failed: ${uploadError.message}`);
-
-                const { data: { publicUrl } } = supabase.storage
-                    .from('venue_applications_images')
-                    .getPublicUrl(fileName);
-
-                imageUrls.push(publicUrl);
+                    if (!uploadError) {
+                        const { data: { publicUrl } } = supabase.storage
+                            .from('venue_applications_images')
+                            .getPublicUrl(fileName);
+                        imageUrls.push(publicUrl);
+                    } else {
+                        console.warn('Image upload failed:', uploadError.message);
+                    }
+                } catch (imgErr) {
+                    console.warn('Image upload skipped:', imgErr);
+                }
             }
 
             const { error } = await supabase.from('venue_applications').insert([
