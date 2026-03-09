@@ -47,7 +47,7 @@ const AdminDashboard = () => {
       // Note: we are currently assigning to venues/vendors depending on venue_type with dummy data for missing fields. 
       // In a real application, the venues/vendors tables would match these fields perfectly.
       const table = app.venue_type === 'vendor' ? 'vendors' : 'venues';
-      const insertData = {
+      let insertData: any = {
         name: app.business_name,
         city: app.city,
         location: app.city + ', Gujarat',
@@ -55,14 +55,26 @@ const AdminDashboard = () => {
         rating: 0,
         reviews: 0,
         image: app.images && app.images.length > 0 ? app.images[0] : (app.image_url || "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=600&auto=format&fit=crop"),
-        type: app.venue_type,
         owner_id: app.user_id,
-        veg_price_per_plate: app.veg_price_per_plate ? parseInt(app.veg_price_per_plate.toString()) : 0,
-        nonveg_price_per_plate: app.nonveg_price_per_plate ? parseInt(app.nonveg_price_per_plate.toString()) : 0,
-        min_capacity: app.min_capacity || 0,
-        max_capacity: app.max_capacity || 0,
-        starting_price: app.veg_price_per_plate ? parseInt(app.veg_price_per_plate.toString()) : 0
       };
+
+      if (table === 'venues') {
+          insertData = {
+              ...insertData,
+              type: app.venue_type,
+              veg_price_per_plate: app.veg_price_per_plate ? parseInt(app.veg_price_per_plate.toString()) : 0,
+              nonveg_price_per_plate: app.nonveg_price_per_plate ? parseInt(app.nonveg_price_per_plate.toString()) : 0,
+              min_capacity: app.min_capacity || 0,
+              max_capacity: app.max_capacity || 0,
+              starting_price: app.veg_price_per_plate ? parseInt(app.veg_price_per_plate.toString()) : 0
+          };
+      } else {
+          insertData = {
+              ...insertData,
+              category: app.vendor_category || 'Other',
+              starting_price: app.veg_price_per_plate ? parseInt(app.veg_price_per_plate.toString()) : 0
+          };
+      }
 
       const { error: insertError } = await supabase.from(table).insert([insertData]);
       
