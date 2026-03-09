@@ -53,7 +53,8 @@ const Vendors = () => {
                 image: v.images?.[0] || v.logo_url || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80",
                 featured: false,
                 verified: true,
-                rawPrice: v.starting_price || 0
+                rawPrice: v.starting_price || 0,
+                owner_id: v.owner_id
             }));
 
             // Filter by Price Ranges post-fetch

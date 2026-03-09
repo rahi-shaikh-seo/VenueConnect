@@ -19,6 +19,7 @@ export interface VenueData {
     amenities?: string[];
     venueType?: string;
     pricePerPlate?: number;
+    owner_id?: string;
 }
 
 interface VenueCardProps {
@@ -124,10 +125,12 @@ const VenueCard = ({ venue }: VenueCardProps) => {
                             Featured
                         </span>
                     )}
-                    {venue.verified && (
-                        <div className="absolute top-12 right-3 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm z-10">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                            <span className="text-[10px] font-medium text-foreground uppercase tracking-wider">Verified</span>
+                    {(venue.verified || venue.owner_id) && (
+                        <div className={`absolute top-12 right-3 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm z-10 border ${venue.owner_id ? 'border-amber-200 shadow-sm' : ''}`}>
+                            <CheckCircle2 className={`w-3.5 h-3.5 ${venue.owner_id ? 'text-amber-500' : 'text-green-600'}`} />
+                            <span className={`text-[10px] font-medium uppercase tracking-wider ${venue.owner_id ? 'text-amber-700 font-bold' : 'text-foreground'}`}>
+                                {venue.owner_id ? 'Verified Lister' : 'Verified'}
+                            </span>
                         </div>
                     )}
                     <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-foreground/80 backdrop-blur-sm text-white text-xs font-semibold z-10">

@@ -1,16 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Users, Building, LayoutDashboard, Settings, LogOut } from "lucide-react";
+import { Users, Building, LayoutDashboard, Settings, LogOut, X, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link, useNavigate } from "react-router-dom";
 import LeadsManager from "@/components/owner/LeadsManager";
 import MyListings from "@/components/owner/MyListings";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 export default function OwnerDashboard() {
     const [activeTab, setActiveTab] = useState<'overview' | 'leads' | 'listings'>('leads');
+    const [showWelcome, setShowWelcome] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const hasSeenWelcome = localStorage.getItem('owner_onboarding_seen');
+        if (!hasSeenWelcome) {
+            setShowWelcome(true);
+        }
+    }, []);
+
+    const closeWelcome = () => {
+        localStorage.setItem('owner_onboarding_seen', 'true');
+        setShowWelcome(false);
+    };
 
     const handleSignOut = async () => {
         try {
@@ -26,6 +40,46 @@ export default function OwnerDashboard() {
         <div className="min-h-screen bg-slate-50 flex flex-col">
             <Navbar />
             
+            {/* Welcome Onboarding Modal */}
+            {showWelcome && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+                        <div className="bg-amber-500 p-6 text-white text-center relative">
+                            <button onClick={closeWelcome} className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors">
+                                <X className="w-5 h-5" />
+                            </button>
+                            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-md">
+                                <Sparkles className="w-8 h-8 text-white" />
+                            </div>
+                            <h2 className="text-2xl font-display font-bold mb-2">Welcome to your Lister Dashboard!</h2>
+                            <p className="text-amber-100 text-sm">You are now a Verified Lister on VenueConnect</p>
+                        </div>
+                        <div className="p-6 md:p-8 space-y-6">
+                            <div className="space-y-4 text-slate-600">
+                                <div className="flex gap-4">
+                                    <div className="bg-blue-50 text-blue-600 p-2 rounded-lg shrink-0 h-min"><Users className="w-5 h-5" /></div>
+                                    <div>
+                                        <h3 className="font-semibold text-slate-900">Manage Your Leads</h3>
+                                        <p className="text-sm">View incoming inquiries from potential customers and contact them directly.</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-4">
+                                    <div className="bg-purple-50 text-purple-600 p-2 rounded-lg shrink-0 h-min"><Building className="w-5 h-5" /></div>
+                                    <div>
+                                        <h3 className="font-semibold text-slate-900">Update Your Listings</h3>
+                                        <p className="text-sm">Keep your pricing, photos, and availability up to date to attract more bookings.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <Button onClick={closeWelcome} className="w-full bg-amber-500 hover:bg-amber-600 text-white h-12 text-base font-semibold">
+                                Get Started
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <div className="flex-1 flex flex-col md:flex-row max-w-7xl w-full mx-auto p-4 md:p-6 lg:p-8 gap-6">
                 
                 {/* Sidebar */}

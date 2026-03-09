@@ -70,7 +70,8 @@ const Venues = () => {
                 verified: true, 
                 venueType: v.type || 'Venue',
                 pricePerPlate: v.veg_price_per_plate || 0,
-                rawPrice: v.veg_price_per_plate || 0
+                rawPrice: v.veg_price_per_plate || 0,
+                owner_id: v.owner_id
             }));
 
             // Filter by Price Ranges post-fetch

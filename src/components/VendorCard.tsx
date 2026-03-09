@@ -16,6 +16,7 @@ export interface VendorData {
     image: string;
     featured?: boolean;
     verified?: boolean;
+    owner_id?: string;
 }
 
 interface VendorCardProps {
@@ -127,9 +128,10 @@ const VendorCard = ({ vendor }: VendorCardProps) => {
                         </span>
                     </div>
 
-                    {vendor.verified && (
-                        <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm shadow-sm">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-blue-500" />
+                    {(vendor.verified || vendor.owner_id) && (
+                        <div className={`absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm shadow-sm border ${vendor.owner_id ? 'border-amber-200' : ''}`}>
+                            <CheckCircle2 className={`w-3.5 h-3.5 ${vendor.owner_id ? 'text-amber-500' : 'text-blue-500'}`} />
+                            {vendor.owner_id && <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider">Verified Lister</span>}
                         </div>
                     )}
 
