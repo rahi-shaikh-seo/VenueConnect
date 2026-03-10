@@ -10,6 +10,8 @@ import { supabase } from "@/integrations/supabase/client";
 const Venues = () => {
     const [searchParams] = useSearchParams();
     const searchCity = searchParams.get("city")?.toLowerCase();
+    const searchArea = searchParams.get("area");
+    const searchQuery = searchParams.get("q")?.toLowerCase();
     const filterTypes = searchParams.getAll("type"); // e.g., Hotel, Resort
     const filterCapacity = searchParams.get("capacity");
     const filterPrices = searchParams.getAll("price");
@@ -27,14 +29,40 @@ const Venues = () => {
         fetchVenues();
     }, [searchParams]);
 
+    // Dynamic page title for SEO
+    useEffect(() => {
+        const city = searchParams.get("city");
+        const area = searchParams.get("area");
+        const q = searchParams.get("q");
+        if (area && city) {
+            document.title = `Venues in ${area}, ${city} | VenueConnect Gujarat`;
+        } else if (city) {
+            document.title = `Wedding & Event Venues in ${city} | VenueConnect`;
+        } else if (q) {
+            document.title = `${q} Venues in Gujarat | VenueConnect`;
+        } else {
+            document.title = `Find Venues in Gujarat – Banquet, Farmhouse, Hotel | VenueConnect`;
+        }
+    }, [searchParams]);
+
     const fetchVenues = async () => {
         setLoading(true);
         try {
             let query = supabase.from("venues").select("*");
 
-            // Apply filters directly to query where possible
+            // City filter
             if (searchCity) {
                 query = query.ilike("city", `%${searchCity}%`);
+            }
+
+            // Area / locality filter (searches in address field)
+            if (searchArea) {
+                query = query.ilike("address", `%${searchArea}%`);
+            }
+
+            // Full-text search filter (q param)
+            if (searchQuery) {
+                query = query.or(`name.ilike.%${searchQuery}%,address.ilike.%${searchQuery}%,type.ilike.%${searchQuery}%`);
             }
 
             if (filterTypes.length > 0) {
@@ -114,19 +142,42 @@ const Venues = () => {
                         </aside>
 
                         <div className="flex-grow">
-                            <div className="mb-6 flex items-center justify-between">
+                            <div className="mb-6">
+                                {(searchArea || searchCity || searchParams.get("q")) && (
+                                    <div className="flex flex-wrap gap-2 mb-3">
+                                        {searchParams.get("city") && (
+                                            <span className="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full">
+                                                📍 {searchParams.get("city")}
+                                            </span>
+                                        )}
+                                        {searchArea && (
+                                            <span className="inline-flex items-center gap-1 bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                                🏘️ {searchArea}
+                                            </span>
+                                        )}
+                                        {searchParams.get("q") && (
+                                            <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-1 rounded-full">
+                                                🔍 {searchParams.get("q")}
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
                                 <h2 className="text-2xl font-semibold text-foreground font-display">
-                                    {venues.length} Venues Found {searchCity && `in ${searchParams.get("city")}`}
+                                    {loading ? "Searching..." : `${venues.length} Venue${venues.length !== 1 ? 's' : ''} Found`}
+                                    {searchArea && <span className="text-primary"> · {searchArea}</span>}
+                                    {!searchArea && searchParams.get("city") && <span className="text-primary"> in {searchParams.get("city")}</span>}
                                 </h2>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-sm text-muted-foreground hidden sm:inline-block">Sort by:</span>
-                                    <select className="text-sm border-border rounded-md px-3 py-1.5 focus:ring-primary focus:border-primary bg-background">
-                                        <option>Recommended</option>
-                                        <option>Rating (High to Low)</option>
-                                        <option>Capacity (High to Low)</option>
-                                        <option>Price (Low to High)</option>
-                                    </select>
-                                </div>
+                            </div>
+
+                            {/* Sort bar */}
+                            <div className="flex items-center gap-2 mb-6">
+                                <span className="text-sm text-muted-foreground hidden sm:inline-block">Sort by:</span>
+                                <select className="text-sm border-border rounded-md px-3 py-1.5 focus:ring-primary focus:border-primary bg-background">
+                                    <option>Recommended</option>
+                                    <option>Rating (High to Low)</option>
+                                    <option>Capacity (High to Low)</option>
+                                    <option>Price (Low to High)</option>
+                                </select>
                             </div>
 
                             {/* Mobile Filter Button */}

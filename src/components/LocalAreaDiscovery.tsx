@@ -1,7 +1,8 @@
 import { MapPin, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
-const areas = {
+const areas: Record<string, string[]> = {
   Ahmedabad: [
     "SG Highway", "Bopal", "Vastrapur", "Satellite", "Prahlad Nagar",
     "Thaltej", "Bodakdev", "Maninagar", "Naranpura", "Chandkheda"
@@ -37,11 +38,9 @@ const LocalAreaDiscovery = () => {
             </span>
             <div className="h-px w-12 bg-primary/30" />
           </div>
-          
           <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-4">
             Explore Venues by <em className="italic text-primary">Area</em>
           </h2>
-          
           <p className="text-[15px] text-muted-foreground max-w-2xl mx-auto">
             Find the perfect venue in your preferred locality
           </p>
@@ -59,23 +58,28 @@ const LocalAreaDiscovery = () => {
             >
               <div className="flex items-center gap-2 mb-5">
                 <MapPin className="w-5 h-5 text-primary" />
-                <h3 className="font-display text-2xl font-semibold text-foreground">
-                  {city}
-                </h3>
+                <h3 className="font-display text-2xl font-semibold text-foreground">{city}</h3>
+                <Link
+                  to={`/venues?city=${encodeURIComponent(city)}`}
+                  className="ml-auto text-xs text-primary hover:underline font-medium"
+                >
+                  All in {city} →
+                </Link>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                {localities.map((area, i) => (
-                  <a
-                    key={i}
-                    href={`/venues/${city.toLowerCase()}/${area.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="group flex items-center justify-between px-4 py-3 rounded-lg bg-primary/5 hover:bg-primary hover:text-white transition-all duration-200 cursor-pointer"
+              <div className="grid grid-cols-2 gap-2">
+                {localities.map((area) => (
+                  <Link
+                    key={area}
+                    to={`/venues?city=${encodeURIComponent(city)}&area=${encodeURIComponent(area)}`}
+                    className="group flex items-center justify-between px-4 py-3 rounded-lg bg-primary/5 hover:bg-primary hover:text-white transition-all duration-200"
+                    title={`Venues in ${area}, ${city}`}
                   >
                     <span className="text-sm font-medium text-foreground group-hover:text-white">
                       {area}
                     </span>
                     <ChevronRight className="w-4 h-4 text-primary group-hover:text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </a>
+                  </Link>
                 ))}
               </div>
             </motion.div>
