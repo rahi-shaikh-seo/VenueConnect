@@ -36,6 +36,7 @@ const ListVenue = () => {
         businessName: "",
         category: "venue",
         city: "",
+        area: "",
         address: "",
         contactName: "",
         phone: "",
@@ -152,7 +153,9 @@ const ListVenue = () => {
                     business_name: formData.businessName,
                     venue_type: formData.category,
                     city: formData.city,
-                    address: formData.address,
+                    address: formData.area
+                        ? `${formData.area}, ${formData.address}`
+                        : formData.address,
                     contact_person: formData.contactName,
                     business_phone: formData.phone,
                     business_email: formData.email,
@@ -339,6 +342,32 @@ const ListVenue = () => {
                                                         <option key={city} value={city}>{city}</option>
                                                     ))}
                                                 </select>
+                                            </div>
+                                            {/* Area / Locality dropdown — populated based on selected city */}
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-medium">Area / Locality *</label>
+                                                <select
+                                                    name="area"
+                                                    value={formData.area}
+                                                    onChange={handleChange}
+                                                    className="w-full border-border rounded-lg px-4 py-3 focus:ring-primary focus:border-primary bg-background"
+                                                    required
+                                                >
+                                                    <option value="">Select your area</option>
+                                                    {/* Ahmedabad areas */}
+                                                    {formData.city === 'Ahmedabad' && ["SG Highway","Bopal","Vastrapur","Satellite","Prahlad Nagar","Thaltej","Bodakdev","Maninagar","Naranpura","Chandkheda","Paldi","Navrangpura","Ellisbridge","Motera","Gota","New CG Road","Ambawadi","Memnagar","Other"].map(a => <option key={a} value={a}>{a}</option>)}
+                                                    {/* Surat areas */}
+                                                    {formData.city === 'Surat' && ["Adajan","Vesu","Pal","Althan","Piplod","Citylight","Ghod Dod Road","Udhna","Katargam","Rander","Athwa","Varachha","Bhatar","Dumas","Other"].map(a => <option key={a} value={a}>{a}</option>)}
+                                                    {/* Rajkot areas */}
+                                                    {formData.city === 'Rajkot' && ["Kalawad Road","University Road","Raiya Road","150 Feet Ring Road","Mavdi","Kotecha Chowk","Yagnik Road","Jamnagar Road","Gondal Road","Bhaktinagar","Aji Dam Road","Tagore Road","Other"].map(a => <option key={a} value={a}>{a}</option>)}
+                                                    {/* Vadodara areas */}
+                                                    {formData.city === 'Vadodara' && ["Alkapuri","Waghodia","Manjalpur","Gotri","Vasna","Akota","Fatehgunj","Sayajigunj","Karelibaug","Sama","Harni","Makarpura","Other"].map(a => <option key={a} value={a}>{a}</option>)}
+                                                    {/* Generic fallback for other cities */}
+                                                    {!['Ahmedabad','Surat','Rajkot','Vadodara'].includes(formData.city) && formData.city && <option value="Other">Other Area</option>}
+                                                </select>
+                                                {formData.area && formData.area !== 'Other' && (
+                                                    <p className="text-[11px] text-primary font-medium">✓ Customers searching "{formData.area}" will find your venue</p>
+                                                )}
                                             </div>
                                             <div className="space-y-2">
                                                 <label className="text-sm font-medium">Contact Person *</label>
