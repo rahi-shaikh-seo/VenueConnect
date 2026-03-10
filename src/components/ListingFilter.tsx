@@ -19,6 +19,7 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [location, setLocation] = useState(searchParams.get("city") || "");
+    const [area, setArea] = useState(searchParams.get("area") || "");
     const [selectedTypes, setSelectedTypes] = useState<string[]>(searchParams.getAll("type"));
     const [selectedCapacity, setSelectedCapacity] = useState<string>(searchParams.get("capacity") || "");
     const [selectedPrices, setSelectedPrices] = useState<string[]>(searchParams.getAll("price"));
@@ -33,6 +34,7 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
     // Sync state if URL changes externally
     useEffect(() => {
         setLocation(searchParams.get("city") || "");
+        setArea(searchParams.get("area") || "");
         setSelectedTypes(searchParams.getAll("type"));
         setSelectedCapacity(searchParams.get("capacity") || "");
         setSelectedPrices(searchParams.getAll("price"));
@@ -57,6 +59,9 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
 
         if (location) newParams.set("city", location);
         else newParams.delete("city");
+
+        if (area.trim()) newParams.set("area", area.trim());
+        else newParams.delete("area");
 
         newParams.delete("type");
         selectedTypes.forEach(t => newParams.append("type", t));
@@ -87,6 +92,7 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
 
     const clearFilters = () => {
         setLocation("");
+        setArea("");
         setSelectedTypes([]);
         setSelectedCapacity("");
         setSelectedPrices([]);
@@ -109,18 +115,41 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
             <div className="space-y-6">
                 {/* Location Search */}
                 <div className="space-y-3">
-                    <label className="text-sm font-medium text-foreground">Location</label>
+                    <label className="text-sm font-medium text-foreground">City</label>
                     <div className="relative">
                         <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <input
                             type="text"
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
-                            placeholder="Search city or area..."
+                            placeholder="Ahmedabad, Surat, Rajkot..."
                             className="w-full pl-9 pr-4 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-muted/20"
                         />
                     </div>
                 </div>
+
+                {/* Area / Locality Search — NEW */}
+                {type === 'venues' && (
+                    <div className="space-y-3">
+                        <label className="text-sm font-medium text-foreground">Area / Locality</label>
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                            <input
+                                type="text"
+                                value={area}
+                                onChange={(e) => setArea(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && applyFilters()}
+                                placeholder="Paldi, Bopal, Mavdi..."
+                                className="w-full pl-9 pr-4 py-2 text-sm border border-primary/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-primary/5"
+                            />
+                        </div>
+                        {area && (
+                            <p className="text-[11px] text-primary font-medium">
+                                Filtering venues in "{area}"
+                            </p>
+                        )}
+                    </div>
+                )}
 
                 {/* Categories */}
                 <div className="space-y-3">
