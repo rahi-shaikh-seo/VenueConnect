@@ -55,9 +55,14 @@ const Venues = () => {
                 query = query.ilike("city", `%${searchCity}%`);
             }
 
-            // Area / locality filter (searches in address field)
+            // Area / locality filter — search across address, city AND name so
+            // clicking "Mavdi" finds venues even if area is in any of these fields.
+            // NOTE: When city is already set, this narrows within that city.
+            // When only area is set (no city), it searches city too (e.g. "Rajkot" typed as area).
             if (searchArea) {
-                query = query.ilike("address", `%${searchArea}%`);
+                query = query.or(
+                    `address.ilike.%${searchArea}%,city.ilike.%${searchArea}%,name.ilike.%${searchArea}%`
+                );
             }
 
             // Full-text search filter (q param)
