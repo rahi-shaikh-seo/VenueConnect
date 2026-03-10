@@ -39,7 +39,11 @@ const ListVenue = () => {
         address: "",
         contactName: "",
         phone: "",
+        whatsapp: "",
         email: "",
+        instagram: "",
+        facebook: "",
+        website: "",
         
         // Step 2: Capacity & Pricing
         minCapacity: "",
@@ -362,7 +366,75 @@ const ListVenue = () => {
                                             </div>
                                         </div>
 
-                                        <div className="pt-6 mt-8 flex justify-end">
+                                        {/* Email & WhatsApp */}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-medium">Business Email *</label>
+                                                <input
+                                                    name="email"
+                                                    value={formData.email}
+                                                    onChange={handleChange}
+                                                    type="email"
+                                                    placeholder="hello@yourvenue.com"
+                                                    className="w-full px-4 py-3 text-sm border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-background"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-medium">WhatsApp Number</label>
+                                                <input
+                                                    name="whatsapp"
+                                                    value={formData.whatsapp}
+                                                    onChange={handleChange}
+                                                    type="tel"
+                                                    placeholder="Same as phone or different"
+                                                    className="w-full px-4 py-3 text-sm border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-background"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Social Media — Mandatory */}
+                                        <div className="p-4 bg-primary/5 border border-primary/20 rounded-xl space-y-4">
+                                            <p className="text-sm font-semibold text-primary">Social Media (Required)</p>
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-medium">Instagram *</label>
+                                                    <div className="relative">
+                                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">@</span>
+                                                        <input
+                                                            name="instagram"
+                                                            value={formData.instagram}
+                                                            onChange={handleChange}
+                                                            placeholder="yourvenue"
+                                                            className="w-full pl-7 pr-4 py-3 text-sm border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-background"
+                                                            required
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-medium">Facebook Page</label>
+                                                    <input
+                                                        name="facebook"
+                                                        value={formData.facebook}
+                                                        onChange={handleChange}
+                                                        placeholder="fb.com/yourvenue"
+                                                        className="w-full px-4 py-3 text-sm border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-background"
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-medium">Website</label>
+                                                    <input
+                                                        name="website"
+                                                        value={formData.website}
+                                                        onChange={handleChange}
+                                                        placeholder="https://yourvenue.com"
+                                                        className="w-full px-4 py-3 text-sm border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-background"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="pt-6 mt-4 flex justify-end">
                                             <Button type="submit" className="bg-primary px-8">Save & Next</Button>
                                         </div>
                                     </div>
