@@ -176,6 +176,12 @@ const Navbar = () => {
           <Link to="/cities" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             Cities
           </Link>
+          <Link to="/blog" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
+            Blog
+          </Link>
+          <Link to="/faqs" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
+            FAQs
+          </Link>
 
           <Link to="/list-business" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             List Your Business

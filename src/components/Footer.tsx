@@ -68,8 +68,9 @@ const Footer = () => {
             <ul className="space-y-3 mt-4">
               <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors inline-block">About Us</Link></li>
               <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors inline-block">Contact Us</Link></li>
+              <li><Link to="/blog" className="text-muted-foreground hover:text-primary transition-colors inline-block">Blog</Link></li>
               <li><Link to="/list-venue" className="text-muted-foreground hover:text-primary transition-colors inline-block">List Your Business</Link></li>
-              <li><Link to="/faq" className="text-muted-foreground hover:text-primary transition-colors inline-block">FAQs</Link></li>
+              <li><Link to="/faqs" className="text-muted-foreground hover:text-primary transition-colors inline-block">FAQs</Link></li>
             </ul>
           </div>
 
@@ -77,8 +78,8 @@ const Footer = () => {
             <h4 className="text-[10px] tracking-[3px] uppercase font-semibold text-white/80 mb-8 border-b border-white/10 pb-4 inline-block">Top Destinations</h4>
             <div className="space-y-4">
               {gujaratCities.slice(0, 5).map(c => (
-                <Link key={c} to={`/venues/${c.toLowerCase()}`} className="block text-sm text-white/50 hover:text-primary transition-colors font-light">
-                  Luxury Venues in {c}
+                <Link key={c} to={`/venues?city=${encodeURIComponent(c)}`} className="block text-sm text-white/50 hover:text-primary transition-colors font-light">
+                  Venues in {c}
                 </Link>
               ))}
             </div>
@@ -99,8 +100,8 @@ const Footer = () => {
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <Phone className="w-3.5 h-3.5 text-primary" />
                 </div>
-                <a href="tel:+919876543210" className="text-sm text-white/50 hover:text-primary transition-colors font-light mt-1.5">
-                  +91 98765 43210
+                <a href="tel:+919601015102" className="text-sm text-white/50 hover:text-primary transition-colors font-light mt-1.5">
+                  +91 9601015102
                 </a>
               </div>
               <div className="flex items-start gap-4">

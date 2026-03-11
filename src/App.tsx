@@ -27,6 +27,9 @@ import UserProfile from "./pages/UserProfile";
 import { OwnerRoute } from "./components/OwnerRoute";
 import OwnerDashboard from "./pages/owner/OwnerDashboard";
 import MobileBottomNav from "./components/MobileBottomNav";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import FAQs from "./pages/FAQs";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +59,9 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/e-invitations" element={<EInvitations />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<BlogPost />} />
+          <Route path="/faqs" element={<FAQs />} />
           
           <Route path="/admin" element={
             <AdminRoute>
