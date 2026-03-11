@@ -1,5 +1,6 @@
 import { Sparkles, Crown, TreePine, Building2, Castle, Flower2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const moods = [
   {
@@ -89,37 +90,41 @@ const VenueMoodExplorer = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="group relative h-72 rounded-2xl overflow-hidden cursor-pointer"
               >
-                <img
-                  src={mood.image}
-                  alt={mood.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                
-                <div className={`absolute inset-0 bg-gradient-to-t ${mood.color} group-hover:opacity-90 transition-opacity duration-300`} />
-                
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-                  <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <Icon className="w-8 h-8 text-white" />
+                <Link
+                  to={`/venues?q=${encodeURIComponent(mood.name)}`}
+                  className="group relative h-72 rounded-2xl overflow-hidden cursor-pointer block"
+                >
+                  <img
+                    src={mood.image}
+                    alt={mood.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  
+                  <div className={`absolute inset-0 bg-gradient-to-t ${mood.color} group-hover:opacity-90 transition-opacity duration-300`} />
+                  
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
+                    <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                      <Icon className="w-8 h-8 text-white" />
+                    </div>
+                    
+                    <h3 className="font-display text-2xl font-semibold text-white mb-2">
+                      {mood.name}
+                    </h3>
+                    
+                    <p className="text-white/90 text-sm mb-3">
+                      {mood.description}
+                    </p>
+                    
+                    <span className="text-white/80 text-xs font-medium">
+                      {mood.count} venues
+                    </span>
                   </div>
-                  
-                  <h3 className="font-display text-2xl font-semibold text-white mb-2">
-                    {mood.name}
-                  </h3>
-                  
-                  <p className="text-white/90 text-sm mb-3">
-                    {mood.description}
-                  </p>
-                  
-                  <span className="text-white/80 text-xs font-medium">
-                    {mood.count} venues
-                  </span>
-                </div>
 
-                <div className="absolute top-4 right-4">
-                  <Sparkles className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
+                  <div className="absolute top-4 right-4">
+                    <Sparkles className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                </Link>
               </motion.div>
             );
           })}
