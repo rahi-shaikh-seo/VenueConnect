@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useRef } from "react";
 
 const vendors = [
@@ -31,10 +31,10 @@ const vendors = [
 const row1 = vendors.slice(0, 11);
 const row2 = [...vendors.slice(11, 22)].reverse();
 
-const VendorCard = ({ name, image, onClick }: { name: string; image: string; onClick: () => void }) => (
-  <div
-    onClick={onClick}
-    className="flex-shrink-0 w-[160px] cursor-pointer group"
+const VendorCard = ({ name, image }: { name: string; image: string }) => (
+  <Link
+    to={`/vendors?category=${encodeURIComponent(name.toLowerCase())}`}
+    className="flex-shrink-0 w-[160px] cursor-pointer group block"
   >
     <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-border/50 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
       <div className="h-28 overflow-hidden">
@@ -48,13 +48,12 @@ const VendorCard = ({ name, image, onClick }: { name: string; image: string; onC
         <p className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors leading-tight">{name}</p>
       </div>
     </div>
-  </div>
+  </Link>
 );
 
-const InfiniteRow = ({ items, direction = "left", navigate }: {
+const InfiniteRow = ({ items, direction = "left" }: {
   items: typeof vendors;
   direction?: "left" | "right";
-  navigate: ReturnType<typeof useNavigate>;
 }) => {
   // Duplicate for seamless loop
   const doubled = [...items, ...items];
@@ -73,7 +72,6 @@ const InfiniteRow = ({ items, direction = "left", navigate }: {
             key={`${v.name}-${i}`}
             name={v.name}
             image={v.image}
-            onClick={() => navigate(`/vendors?category=${v.name.toLowerCase()}`)}
           />
         ))}
       </div>
@@ -82,7 +80,6 @@ const InfiniteRow = ({ items, direction = "left", navigate }: {
 };
 
 const VendorCategories = () => {
-  const navigate = useNavigate();
 
   return (
     <section className="py-20 bg-muted/30 overflow-hidden">
@@ -102,9 +99,9 @@ const VendorCategories = () => {
 
       <div className="space-y-4">
         {/* Row 1 → scrolls left */}
-        <InfiniteRow items={row1} direction="left" navigate={navigate} />
+        <InfiniteRow items={row1} direction="left" />
         {/* Row 2 → scrolls right */}
-        <InfiniteRow items={row2} direction="right" navigate={navigate} />
+        <InfiniteRow items={row2} direction="right" />
       </div>
 
       <style>{`

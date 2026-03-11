@@ -6,10 +6,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Phone, Mail } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const Contact = () => {
     return (
         <div className="min-h-screen bg-background flex flex-col">
+            <SEO 
+                title="Contact Us | VenueConnect Gujarat"
+                description="Have questions about booking a venue or listing your business? Contact the VenueConnect team. We're here to help you plan your perfect event in Gujarat."
+            />
             <Navbar />
 
             <PageHeader
@@ -35,7 +40,7 @@ const Contact = () => {
                                     </div>
                                     Call Us
                                 </div>
-                                <p className="text-muted-foreground pl-13">+91 98765 43210</p>
+                                <p className="text-muted-foreground pl-13">+91 9601015102</p>
                                 <p className="text-muted-foreground text-sm pl-13">Mon - Sat, 9am - 7pm</p>
                             </div>
 
@@ -46,7 +51,7 @@ const Contact = () => {
                                     </div>
                                     Email Us
                                 </div>
-                                <p className="text-muted-foreground pl-13">support@venuefinder.com</p>
+                                <p className="text-muted-foreground pl-13">info@venueconnect.in</p>
                             </div>
 
                             <div className="flex flex-col gap-2">

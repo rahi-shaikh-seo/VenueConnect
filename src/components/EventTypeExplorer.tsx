@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const eventTypes = [
   {
@@ -78,26 +79,30 @@ const EventTypeExplorer = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer"
             >
-              <img
-                src={event.image}
-                alt={event.name}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-              />
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-              
-              <div className="absolute inset-0 flex flex-col justify-end p-6">
-                <h3 className="font-display text-2xl font-semibold text-white mb-2">
-                  {event.name}
-                </h3>
-                <p className="text-white/80 text-sm">
-                  {event.count}
-                </p>
-              </div>
+              <Link
+                to={`/venues?q=${event.name}`}
+                className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer block"
+              >
+                <img
+                  src={event.image}
+                  alt={event.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                
+                <div className="absolute inset-0 flex flex-col justify-end p-6">
+                  <h3 className="font-display text-2xl font-semibold text-white mb-2">
+                    {event.name}
+                  </h3>
+                  <p className="text-white/80 text-sm">
+                    {event.count}
+                  </p>
+                </div>
 
-              <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300" />
+                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300" />
+              </Link>
             </motion.div>
           ))}
         </div>

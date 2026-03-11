@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import GetQuoteModal from "@/components/GetQuoteModal";
 import ReviewsList from "@/components/ReviewsList";
 import { supabase } from "@/integrations/supabase/client";
+import SEO from "@/components/SEO";
 
 export default function VenueDetails() {
     const { id } = useParams();
@@ -84,6 +85,12 @@ export default function VenueDetails() {
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
+            <SEO 
+                title={`${venue.name} in ${venue.city}`}
+                description={`Book ${venue.name} in ${venue.city} for your next event. Check prices, capacity, amenities, and read verified reviews for this ${venue.type} on VenueConnect.`}
+                ogType="article"
+                ogImage={images[0]}
+            />
             <Navbar />
 
             <main className="flex-grow py-8 bg-slate-50">

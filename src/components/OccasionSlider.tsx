@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const occasions = [
   { icon: "💑", name: "Wedding" },
@@ -75,8 +76,9 @@ const OccasionSlider = () => {
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {occasions.map((occasion, index) => (
-              <div
+              <Link
                 key={index}
+                to={occasion.name === "Banquet Hall" ? "/venues?type=Banquet+Hall" : `/venues?q=${occasion.name}`}
                 onClick={() => setSelectedIndex(index)}
                 className={`flex-shrink-0 w-[160px] group cursor-pointer transition-all duration-300 ${selectedIndex === index ? 'scale-105' : ''
                   }`}
@@ -84,19 +86,19 @@ const OccasionSlider = () => {
                 <div className={`bg-white rounded-2xl p-6 transition-all duration-300 h-[180px] flex flex-col items-center justify-center ${selectedIndex === index
                     ? 'border-2 border-primary shadow-xl'
                     : 'border-2 border-border hover:border-primary/50 hover:shadow-md'
-                  }`}>
+                   }`}>
                   {/* Icon */}
                   <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
                     {occasion.icon}
                   </div>
-
+ 
                   {/* Name */}
                   <div className={`text-base font-semibold text-center transition-colors ${selectedIndex === index ? 'text-primary' : 'text-foreground group-hover:text-primary'
                     }`}>
                     {occasion.name}
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 

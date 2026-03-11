@@ -1,10 +1,15 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
+import SEO from "@/components/SEO";
 
 const About = () => {
     return (
         <div className="min-h-screen bg-background flex flex-col">
+            <SEO 
+                title="About Us | VenueConnect Gujarat"
+                description="Learn about VenueConnect, Gujarat's premier venue discovery platform. Our mission is to simplify venue booking for weddings and events across Ahmedabad, Surat, Rajkot, and Vadodara."
+            />
             <Navbar />
 
             <PageHeader

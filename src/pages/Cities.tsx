@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 
 const CITIES = [
     {
@@ -45,6 +46,10 @@ const CITIES = [
 const Cities = () => {
     return (
         <div className="min-h-screen bg-background flex flex-col">
+            <SEO 
+                title="Venues by City in Gujarat"
+                description="Explore the best wedding venues and event professionals across Ahmedabad, Surat, Rajkot, Vadodara, and other major cities in Gujarat. Your local event planning partner."
+            />
             <Navbar />
 
             <PageHeader

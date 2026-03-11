@@ -30,6 +30,7 @@ import MobileBottomNav from "./components/MobileBottomNav";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import FAQs from "./pages/FAQs";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <MobileBottomNav />
         <Routes>
           <Route path="/" element={<Index />} />

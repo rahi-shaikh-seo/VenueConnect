@@ -1,5 +1,6 @@
 import { Building2, Home, TreePine, Hotel, Waves, UtensilsCrossed, Users2, Building } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const venueTypes = [
   {
@@ -89,25 +90,29 @@ const VenueTypesBrowse = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="group relative h-48 rounded-xl overflow-hidden cursor-pointer"
               >
-                <img
-                  src={type.image}
-                  alt={type.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20 group-hover:from-primary/90 group-hover:via-primary/60 transition-all duration-300" />
-                
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-                  <Icon className="w-10 h-10 text-white mb-3 group-hover:scale-110 transition-transform" />
-                  <h3 className="font-semibold text-white text-base mb-1">
-                    {type.name}
-                  </h3>
-                  <p className="text-white/80 text-sm">
-                    {type.count} venues
-                  </p>
-                </div>
+                <Link
+                  to={`/venues?type=${encodeURIComponent(type.name.replace(/s$/, ''))}`}
+                  className="group relative h-48 rounded-xl overflow-hidden cursor-pointer block"
+                >
+                  <img
+                    src={type.image}
+                    alt={type.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20 group-hover:from-primary/90 group-hover:via-primary/60 transition-all duration-300" />
+                  
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                    <Icon className="w-10 h-10 text-white mb-3 group-hover:scale-110 transition-transform" />
+                    <h3 className="font-semibold text-white text-base mb-1">
+                      {type.name}
+                    </h3>
+                    <p className="text-white/80 text-sm">
+                      {type.count} venues
+                    </p>
+                  </div>
+                </Link>
               </motion.div>
             );
           })}

@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Calendar, Clock, ArrowLeft, Tag, ArrowRight } from "lucide-react";
 import { blogPosts } from "./Blog";
+import SEO from "@/components/SEO";
 
 // Full article content keyed by ID
 const articleContent: Record<string, string> = {
@@ -165,10 +166,7 @@ const BlogPost = () => {
   const post = blogPosts.find(p => p.id === id);
 
   useEffect(() => {
-    if (post) {
-      document.title = `${post.title} | VenueConnect Gujarat Blog`;
-    }
-    window.scrollTo(0, 0);
+    // Scroll handled by ScrollToTop component
   }, [id, post]);
 
   if (!post) return (
@@ -184,6 +182,12 @@ const BlogPost = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SEO 
+        title={post.title}
+        description={post.excerpt}
+        ogType="article"
+        ogImage={post.image}
+      />
       <Navbar />
 
       <main className="flex-grow">

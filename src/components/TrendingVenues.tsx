@@ -1,6 +1,7 @@
 import { TrendingUp, Eye, Clock, Star, MapPin, Users, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const trendingVenues = [
   {
@@ -60,9 +61,11 @@ const TrendingVenues = () => {
             </h2>
           </div>
           
-          <Button variant="outline" className="hidden md:flex border-primary/30 text-primary hover:bg-primary/5">
-            View All Trending
-          </Button>
+          <Link to="/venues">
+            <Button variant="outline" className="hidden md:flex border-primary/30 text-primary hover:bg-primary/5">
+              View All Trending
+            </Button>
+          </Link>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -73,52 +76,56 @@ const TrendingVenues = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group bg-white rounded-2xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300"
             >
-              <div className="relative h-56 overflow-hidden">
-                <img
-                  src={venue.image}
-                  alt={venue.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1.5 rounded-full bg-primary text-white text-xs font-semibold flex items-center gap-1.5">
-                    <TrendingUp className="w-3 h-3" />
-                    {venue.badge}
-                  </span>
+              <Link
+                to="/venues"
+                className="group bg-white rounded-2xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 block h-full"
+              >
+                <div className="relative h-56 overflow-hidden">
+                  <img
+                    src={venue.image}
+                    alt={venue.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1.5 rounded-full bg-primary text-white text-xs font-semibold flex items-center gap-1.5">
+                      <TrendingUp className="w-3 h-3" />
+                      {venue.badge}
+                    </span>
+                  </div>
+
+                  <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-xs font-medium">
+                    <Eye className="w-3.5 h-3.5 text-primary" />
+                    <span>{venue.views}</span>
+                  </div>
+
+                  <div className="absolute bottom-4 right-4 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-foreground/80 backdrop-blur-sm text-white text-xs font-semibold">
+                    <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" /> 
+                    {venue.rating} <span className="text-white/60">({venue.reviews})</span>
+                  </div>
                 </div>
 
-                <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-xs font-medium">
-                  <Eye className="w-3.5 h-3.5 text-primary" />
-                  <span>{venue.views}</span>
+                <div className="p-5 space-y-3">
+                  <h3 className="font-display font-semibold text-foreground text-lg leading-tight group-hover:text-primary transition-colors">
+                    {venue.name}
+                  </h3>
+
+                  <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                    <MapPin className="w-4 h-4 text-primary" /> 
+                    <span>{venue.area}, {venue.city}</span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                    <Users className="w-4 h-4 text-primary" /> 
+                    <span>{venue.capacity} Guests</span>
+                  </div>
+
+                  <Button size="sm" className="w-full bg-primary hover:bg-primary/90 text-white mt-3">
+                    <Send className="w-3.5 h-3.5 mr-1.5" /> Send Enquiry
+                  </Button>
                 </div>
-
-                <div className="absolute bottom-4 right-4 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-foreground/80 backdrop-blur-sm text-white text-xs font-semibold">
-                  <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" /> 
-                  {venue.rating} <span className="text-white/60">({venue.reviews})</span>
-                </div>
-              </div>
-
-              <div className="p-5 space-y-3">
-                <h3 className="font-display font-semibold text-foreground text-lg leading-tight group-hover:text-primary transition-colors">
-                  {venue.name}
-                </h3>
-
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <MapPin className="w-4 h-4 text-primary" /> 
-                  <span>{venue.area}, {venue.city}</span>
-                </div>
-
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <Users className="w-4 h-4 text-primary" /> 
-                  <span>{venue.capacity} Guests</span>
-                </div>
-
-                <Button size="sm" className="w-full bg-primary hover:bg-primary/90 text-white mt-3">
-                  <Send className="w-3.5 h-3.5 mr-1.5" /> Send Enquiry
-                </Button>
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>

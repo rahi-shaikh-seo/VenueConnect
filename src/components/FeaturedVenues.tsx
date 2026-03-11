@@ -1,6 +1,7 @@
 import { Star, Users, MapPin, Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const venues = [
   {
@@ -88,69 +89,75 @@ const FeaturedVenues = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group bg-white rounded-xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 cursor-pointer"
             >
-              <div className="relative h-52 overflow-hidden">
-                <img
-                  src={venue.image}
-                  alt={venue.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                {venue.featured && (
-                  <span className="absolute top-3 left-3 px-3 py-1.5 rounded-full bg-primary text-xs font-semibold text-white">
-                    Featured
-                  </span>
-                )}
-                {venue.verified && (
-                  <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                    <span className="text-xs font-medium text-foreground">Verified</span>
-                  </div>
-                )}
-                <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-foreground/80 backdrop-blur-sm text-white text-xs font-semibold">
-                  <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" /> 
-                  {venue.rating} <span className="text-white/60">({venue.reviews})</span>
-                </div>
-              </div>
-
-              <div className="p-5 space-y-3">
-                <h3 className="font-display font-semibold text-foreground text-lg leading-tight group-hover:text-primary transition-colors">
-                  {venue.name}
-                </h3>
-
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <MapPin className="w-4 h-4 text-primary" /> 
-                  <span>{venue.city}</span>
-                </div>
-
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <Users className="w-4 h-4 text-primary" /> 
-                  <span>{venue.capacity} Guests</span>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5 pt-2">
-                  {venue.amenities.slice(0, 3).map((amenity, idx) => (
-                    <span 
-                      key={idx}
-                      className="text-[10px] px-2 py-1 rounded-full bg-primary/5 text-primary font-medium"
-                    >
-                      {amenity}
+              <Link
+                to="/venues"
+                className="group bg-white rounded-xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 cursor-pointer block h-full"
+              >
+                <div className="relative h-52 overflow-hidden">
+                  <img
+                    src={venue.image}
+                    alt={venue.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  {venue.featured && (
+                    <span className="absolute top-3 left-3 px-3 py-1.5 rounded-full bg-primary text-white text-[10px] font-bold uppercase tracking-wider">
+                      Featured
                     </span>
-                  ))}
+                  )}
+                  {venue.verified && (
+                    <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                      <span className="text-[10px] font-bold text-foreground">VERIFIED</span>
+                    </div>
+                  )}
+                  <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-foreground/80 backdrop-blur-sm text-white text-xs font-semibold">
+                    <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" /> 
+                    {venue.rating} <span className="text-white/60">({venue.reviews})</span>
+                  </div>
                 </div>
 
-                <Button size="sm" className="w-full bg-primary hover:bg-primary/90 text-white mt-3">
-                  <Send className="w-3.5 h-3.5 mr-1.5" /> Get Best Price
-                </Button>
-              </div>
+                <div className="p-5 space-y-3">
+                  <h3 className="font-display font-semibold text-foreground text-lg leading-tight group-hover:text-primary transition-colors">
+                    {venue.name}
+                  </h3>
+
+                  <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                    <MapPin className="w-4 h-4 text-primary" /> 
+                    <span>{venue.city}</span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                    <Users className="w-4 h-4 text-primary" /> 
+                    <span>{venue.capacity} Guests</span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    {venue.amenities.slice(0, 3).map((amenity, idx) => (
+                      <span 
+                        key={idx}
+                        className="text-[10px] px-2 py-1 rounded-full bg-primary/5 text-primary font-medium"
+                      >
+                        {amenity}
+                      </span>
+                    ))}
+                  </div>
+
+                  <Button size="sm" className="w-full bg-primary hover:bg-primary/90 text-white mt-3">
+                    <Send className="w-3.5 h-3.5 mr-1.5" /> Get Best Price
+                  </Button>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </div>
 
         <div className="text-center mt-10">
-          <Button variant="outline" size="lg" className="border-primary/30 text-primary hover:bg-primary/5">
-            View All Venues →
-          </Button>
+          <Link to="/venues">
+            <Button variant="outline" size="lg" className="border-primary/30 text-primary hover:bg-primary/5">
+              View All Venues →
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

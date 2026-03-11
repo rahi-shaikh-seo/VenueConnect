@@ -90,7 +90,7 @@ const PopularCities = () => {
               transition={{ delay: i * 0.05 }}
             >
               <Link
-                to={`/venues/${city.slug}`}
+                to={`/venues?city=${encodeURIComponent(city.name)}`}
                 className="group block relative rounded-2xl overflow-hidden h-64 shadow-lg hover:shadow-2xl transition-all duration-300"
               >
                 {/* City Image */}

@@ -6,6 +6,7 @@ import PageHeader from "@/components/PageHeader";
 import ListingFilter from "@/components/ListingFilter";
 import VendorCard, { VendorData } from "@/components/VendorCard";
 import { supabase } from "@/integrations/supabase/client";
+import SEO from "@/components/SEO";
 
 const Vendors = () => {
     const [searchParams] = useSearchParams();
@@ -20,6 +21,27 @@ const Vendors = () => {
     useEffect(() => {
         fetchVendors();
     }, [searchParams]);
+
+    const city = searchParams.get("city");
+    const category = searchParams.get("category");
+    const types = searchParams.getAll("type");
+
+    let seoTitle = "Find Wedding Vendors in Gujarat – Photographers, Decorators, Caterers";
+    let seoDescription = "Connect with the best wedding professionals in Gujarat. Find photographers, makeup artists, decorators, and caterers for your special event on VenueConnect.";
+
+    if (category && city) {
+        seoTitle = `Check ${category} in ${city}`;
+        seoDescription = `Find the top-rated ${category} in ${city} for your wedding or event. Browse profiles, see work, and contact vendors in ${city} directly.`;
+    } else if (city) {
+        seoTitle = `Wedding Vendors in ${city}`;
+        seoDescription = `Discover the best wedding professionals in ${city}. From decorators to makeup artists, find everything you need for your event in ${city}.`;
+    } else if (category) {
+        seoTitle = `Best ${category} in Gujarat`;
+        seoDescription = `Looking for ${category}? Discover the finest ${category.toLowerCase()} across Gujarat's major cities on VenueConnect.`;
+    } else if (types.length > 0) {
+        seoTitle = `${types.join(", ")} in Gujarat`;
+        seoDescription = `Connect with top ${types.join(" and ").toLowerCase()} in Gujarat for your upcoming celebration.`;
+    }
 
     const fetchVendors = async () => {
         setLoading(true);
@@ -81,6 +103,7 @@ const Vendors = () => {
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
+            <SEO title={seoTitle} description={seoDescription} />
             <Navbar />
 
             <PageHeader

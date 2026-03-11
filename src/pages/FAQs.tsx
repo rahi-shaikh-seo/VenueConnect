@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { ChevronDown, ChevronUp, HelpCircle, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 
 const FAQ_CATEGORIES = [
   {
@@ -164,10 +165,6 @@ const FAQItem = ({ q, a }: { q: string; a: string }) => {
 const FAQs = () => {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
-
-  useEffect(() => {
-    document.title = "FAQs – Venue Booking Questions Answered | VenueConnect Gujarat";
-  }, []);
 
   const filtered = FAQ_CATEGORIES.map(cat => ({
     ...cat,

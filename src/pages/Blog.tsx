@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Calendar, Clock, ArrowRight, Tag } from "lucide-react";
 import { motion } from "framer-motion";
+import SEO from "@/components/SEO";
 
 export const blogPosts = [
   {
@@ -108,12 +109,12 @@ const categoryColors: Record<string, string> = {
 };
 
 const Blog = () => {
-  useEffect(() => {
-    document.title = "Wedding & Event Blog | VenueConnect Gujarat – Tips, Ideas & Venue Guides";
-  }, []);
-
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SEO 
+        title="Wedding & Event Blog | VenueConnect Gujarat"
+        description="Expert tips, venue guides, and event inspiration for weddings, birthdays, and corporate functions across Gujarat. Plan your perfect event with VenueConnect."
+      />
       <Navbar />
 
       {/* Hero */}

@@ -6,6 +6,7 @@ import PageHeader from "@/components/PageHeader";
 import ListingFilter from "@/components/ListingFilter";
 import VenueCard, { VenueData } from "@/components/VenueCard";
 import { supabase } from "@/integrations/supabase/client";
+import SEO from "@/components/SEO";
 
 const Venues = () => {
     const [searchParams] = useSearchParams();
@@ -29,21 +30,27 @@ const Venues = () => {
         fetchVenues();
     }, [searchParams]);
 
-    // Dynamic page title for SEO
-    useEffect(() => {
-        const city = searchParams.get("city");
-        const area = searchParams.get("area");
-        const q = searchParams.get("q");
-        if (area && city) {
-            document.title = `Venues in ${area}, ${city} | VenueConnect Gujarat`;
-        } else if (city) {
-            document.title = `Wedding & Event Venues in ${city} | VenueConnect`;
-        } else if (q) {
-            document.title = `${q} Venues in Gujarat | VenueConnect`;
-        } else {
-            document.title = `Find Venues in Gujarat – Banquet, Farmhouse, Hotel | VenueConnect`;
-        }
-    }, [searchParams]);
+    const city = searchParams.get("city");
+    const area = searchParams.get("area");
+    const q = searchParams.get("q");
+    const types = searchParams.getAll("type");
+
+    let seoTitle = "Find Venues in Gujarat – Banquet, Farmhouse, Hotel";
+    let seoDescription = "Find the perfect wedding venues, banquet halls, farmhouses, and event spaces across Gujarat. Browse by city, area, price, and capacity on VenueConnect.";
+
+    if (area && city) {
+        seoTitle = `Venues in ${area}, ${city}`;
+        seoDescription = `Find the best banquet halls and event venues in ${area}, ${city}. Compare pricing, photos, and reviews for the perfect celebration in ${area}.`;
+    } else if (city) {
+        seoTitle = `Wedding & Event Venues in ${city}`;
+        seoDescription = `Browse the top-rated wedding venues, banquet halls, and party plots in ${city}. Find prices and contact venue owners in ${city} directly.`;
+    } else if (q) {
+        seoTitle = `${q} Venues in Gujarat`;
+        seoDescription = `Discover the best ${q} venues and event spaces in Gujarat. Find the perfect match for your ${q} event on VenueConnect.`;
+    } else if (types.length > 0) {
+        seoTitle = `${types.join(", ")} Venues in Gujarat`;
+        seoDescription = `Looking for ${types.join(" or ")}? Discover Gujarat's finest ${types.join(", ").toLowerCase()} on VenueConnect.`;
+    }
 
     const fetchVenues = async () => {
         setLoading(true);
@@ -131,6 +138,7 @@ const Venues = () => {
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
+            <SEO title={seoTitle} description={seoDescription} />
             <Navbar />
 
             <PageHeader

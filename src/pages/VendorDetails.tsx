@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import GetQuoteModal from "@/components/GetQuoteModal";
 import ReviewsList from "@/components/ReviewsList";
 import { supabase } from "@/integrations/supabase/client";
+import SEO from "@/components/SEO";
 
 const VENDOR_DB: Record<string, any> = {
     "vd1": {
@@ -50,6 +51,12 @@ const VendorDetails = () => {
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
+            <SEO 
+                title={`${vendor.name} - ${vendor.category} in ${vendor.city}`}
+                description={`Connect with ${vendor.name}, a top-rated ${vendor.category} in ${vendor.city}. View their work, check pricing, and book for your next event on VenueConnect.`}
+                ogType="article"
+                ogImage={vendor.images?.[0]}
+            />
             <Navbar />
 
             <main className="flex-grow py-8 bg-slate-50">

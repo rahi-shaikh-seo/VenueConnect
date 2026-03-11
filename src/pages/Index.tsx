@@ -18,10 +18,15 @@ import Testimonials from "@/components/Testimonials";
 import PopularSearches from "@/components/PopularSearches";
 import StatsBand from "@/components/StatsBand";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="VenueConnect Gujarat | Find & Book Wedding Venues, Banquet Halls & Party Plots"
+        description="Gujarat's premier venue discovery platform. Find the perfect banquet halls, farmhouses, hotels, and party plots for weddings and events across Ahmedabad, Surat, Rajkot, and Vadodara."
+      />
       <Navbar />
       <HeroSearch />
       <OccasionSlider />
