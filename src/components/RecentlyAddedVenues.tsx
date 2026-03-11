@@ -1,6 +1,7 @@
 import { Clock, MapPin, Users, Send, CheckCircle2, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const recentVenues = [
   {
@@ -67,9 +68,11 @@ const RecentlyAddedVenues = () => {
             </h2>
           </div>
           
-          <Button variant="outline" className="hidden md:flex border-primary/30 text-primary hover:bg-primary/5">
-            View All New
-          </Button>
+          <Link to="/venues">
+            <Button variant="outline" className="hidden md:flex border-primary/30 text-primary hover:bg-primary/5">
+              View All New
+            </Button>
+          </Link>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -80,59 +83,63 @@ const RecentlyAddedVenues = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group bg-white rounded-xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300"
             >
-              <div className="relative h-52 overflow-hidden">
-                <img
-                  src={venue.image}
-                  alt={venue.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1.5 rounded-full bg-green-500 text-white text-xs font-semibold flex items-center gap-1.5">
-                    <Clock className="w-3 h-3" />
-                    New
-                  </span>
-                </div>
-
-                {venue.verified && (
-                  <div className="absolute top-4 right-4 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                    <span className="text-xs font-medium text-foreground">Verified</span>
+              <Link 
+                to="/venues"
+                className="group bg-white rounded-xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 block h-full"
+              >
+                <div className="relative h-52 overflow-hidden">
+                  <img
+                    src={venue.image}
+                    alt={venue.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1.5 rounded-full bg-green-500 text-white text-xs font-semibold flex items-center gap-1.5">
+                      <Clock className="w-3 h-3" />
+                      New
+                    </span>
                   </div>
-                )}
 
-                <div className="absolute bottom-4 left-4 text-white/90 text-xs font-medium">
-                  Added {venue.addedDays}
-                </div>
-              </div>
+                  {venue.verified && (
+                    <div className="absolute top-4 right-4 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                      <span className="text-xs font-medium text-foreground">Verified</span>
+                    </div>
+                  )}
 
-              <div className="p-5 space-y-3">
-                <h3 className="font-display font-semibold text-foreground text-lg leading-tight group-hover:text-primary transition-colors">
-                  {venue.name}
-                </h3>
-
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <MapPin className="w-4 h-4 text-primary" /> 
-                  <span>{venue.area}, {venue.city}</span>
-                </div>
-
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-1.5 text-muted-foreground">
-                    <Users className="w-4 h-4 text-primary" /> 
-                    <span>{venue.capacity}</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-foreground font-semibold">
-                    <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-                    {venue.rating}
+                  <div className="absolute bottom-4 left-4 text-white/90 text-xs font-medium">
+                    Added {venue.addedDays}
                   </div>
                 </div>
 
-                <Button size="sm" className="w-full bg-primary hover:bg-primary/90 text-white mt-3">
-                  <Send className="w-3.5 h-3.5 mr-1.5" /> Send Enquiry
-                </Button>
-              </div>
+                <div className="p-5 space-y-3">
+                  <h3 className="font-display font-semibold text-foreground text-lg leading-tight group-hover:text-primary transition-colors">
+                    {venue.name}
+                  </h3>
+
+                  <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                    <MapPin className="w-4 h-4 text-primary" /> 
+                    <span>{venue.area}, {venue.city}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-1.5 text-muted-foreground">
+                      <Users className="w-4 h-4 text-primary" /> 
+                      <span>{venue.capacity}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-foreground font-semibold">
+                      <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                      {venue.rating}
+                    </div>
+                  </div>
+
+                  <Button size="sm" className="w-full bg-primary hover:bg-primary/90 text-white mt-3">
+                    <Send className="w-3.5 h-3.5 mr-1.5" /> Send Enquiry
+                  </Button>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </div>
