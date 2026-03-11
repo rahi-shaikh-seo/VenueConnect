@@ -52,7 +52,7 @@ const Navbar = () => {
       <div className="container flex items-center justify-between h-20 px-6">
         <Link to="/" className="flex items-center hover:opacity-80 transition-opacity">
           <img
-            src="/logo.webp"
+            src="/venue-connect.png"
             alt="VenueConnect"
             className="h-12 w-auto"
           />

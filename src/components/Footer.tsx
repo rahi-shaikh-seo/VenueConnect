@@ -37,9 +37,9 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <div className="mb-8">
               <img
-                src="/logo.webp"
+                src="/venue-connect.png"
                 alt="VenueConnect"
-                className="h-14 w-auto brightness-0 invert opacity-90"
+                className="h-14 w-auto invert grayscale brightness-200 contrast-200 mix-blend-screen opacity-90"
               />
             </div>
             <p className="text-white/50 text-sm leading-relaxed mb-8 font-light">
