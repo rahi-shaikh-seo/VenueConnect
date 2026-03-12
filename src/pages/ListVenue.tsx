@@ -124,7 +124,7 @@ const ListVenue = () => {
         try {
             const imageUrls: string[] = [];
 
-            // Upload all images (non-blocking - form submits even if upload fails)
+            // Upload all images and catch errors
             for (const file of imageFiles) {
                 try {
                     const fileExt = file.name.split('.').pop();
@@ -134,16 +134,26 @@ const ListVenue = () => {
                         .from('venue_applications_images')
                         .upload(fileName, file);
 
-                    if (!uploadError) {
-                        const { data: { publicUrl } } = supabase.storage
-                            .from('venue_applications_images')
-                            .getPublicUrl(fileName);
-                        imageUrls.push(publicUrl);
-                    } else {
-                        console.warn('Image upload failed:', uploadError.message);
+                    if (uploadError) {
+                        toast.error("Image Upload Failed", {
+                            description: "There was a problem uploading your images. Please try again or contact support."
+                        });
+                        console.error('Image upload failed:', uploadError.message);
+                        setIsSubmitting(false);
+                        return; // Stop submission if image upload fails
                     }
+                    
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('venue_applications_images')
+                        .getPublicUrl(fileName);
+                    imageUrls.push(publicUrl);
                 } catch (imgErr) {
-                    console.warn('Image upload skipped:', imgErr);
+                    console.error('Unexpected image upload error:', imgErr);
+                    toast.error("Image Upload Error", {
+                        description: "An unexpected error occurred while uploading. Please check your connection."
+                    });
+                    setIsSubmitting(false);
+                    return; // Stop submission
                 }
             }
 

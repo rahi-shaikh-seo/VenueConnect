@@ -13,5 +13,10 @@ export const gujaratCities = [
   "Morbi",
   "Nadiad",
   "Surendranagar",
-  "Bharuch"
+  "Bharuch",
+  "Mehsana",
+  "Bhuj",
+  "Porbandar",
+  "Palanpur",
+  "Valsad"
 ];

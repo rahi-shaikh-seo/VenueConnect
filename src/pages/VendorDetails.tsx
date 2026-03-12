@@ -9,45 +9,78 @@ import ReviewsList from "@/components/ReviewsList";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 
-const VENDOR_DB: Record<string, any> = {
-    "vd1": {
-        name: "Light & Shade Photography",
-        category: "Photographer",
-        city: "Ahmedabad",
-        address: "Navrangpura, Ahmedabad, Gujarat 380009",
-        rating: 4.9,
-        reviews: 124,
-        startingPrice: 50000,
-        advancePayment: 30,
-        description: "Award-winning wedding photography and cinematography team specializing in capturing candid moments, portraits, and traditional ceremonies across India. With over 10 years of experience, we bring your memories to life with a cinematic touch.",
-        images: [
-            "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80",
-            "https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=800&q=80",
-            "https://images.unsplash.com/photo-1583939411023-14783179e581?w=800&q=80",
-            "https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=800&q=80",
-            "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&q=80"
-        ],
-        verified: true,
-        services: ["Candid Photography", "Pre-wedding Shoots", "Cinematography", "Traditional Videos", "Drone Shoots", "Albums"],
-        travelsOutstation: true,
-        yearsExperience: "10+",
-        deliveryTime: "4-6 Weeks",
-        teamSize: "4-6 Members"
-    }
-};
-
 const VendorDetails = () => {
     const { id } = useParams();
     const [userSession, setUserSession] = useState<any>(null);
+    const [vendor, setVendor] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        fetchVendor();
         supabase.auth.getSession().then(({ data: { session } }) => {
             setUserSession(session);
         });
-    }, []);
+    }, [id]);
 
-    // Try to find the vendor or fallback to vd1 for preview
-    const vendor = VENDOR_DB[id as string] || VENDOR_DB["vd1"];
+    const fetchVendor = async () => {
+        if (!id) return;
+        setLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from('vendors')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (error) {
+                if (error.code === '22P02') console.warn("Invalid UUID format for vendor ID.");
+                else throw error;
+            } else {
+                setVendor(data);
+            }
+        } catch (error) {
+            console.error("Error fetching vendor:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background flex flex-col">
+                <Navbar />
+                <div className="flex-grow flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
+    // Default Images if null/empty
+    const images = vendor?.images && vendor.images.length > 0 ? vendor.images : (vendor?.portfolio && vendor.portfolio.length > 0 ? vendor.portfolio : [
+        "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80",
+        "https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=800&q=80",
+        "https://images.unsplash.com/photo-1583939411023-14783179e581?w=800&q=80",
+        "https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?w=800&q=80",
+        "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&q=80"
+    ]);
+
+    if (!vendor) {
+        return (
+            <div className="min-h-screen bg-background flex flex-col">
+                <Navbar />
+                <div className="flex-grow flex items-center justify-center flex-col">
+                    <h2 className="text-2xl font-bold mb-2">Vendor Not Found</h2>
+                    <p className="text-muted-foreground mb-4">The vendor you are looking for does not exist or has been removed.</p>
+                    <Link to="/vendors">
+                        <Button>Browse Vendors</Button>
+                    </Link>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
@@ -55,7 +88,7 @@ const VendorDetails = () => {
                 title={`${vendor.name} - ${vendor.category} in ${vendor.city}`}
                 description={`Connect with ${vendor.name}, a top-rated ${vendor.category} in ${vendor.city}. View their work, check pricing, and book for your next event on VenueConnect.`}
                 ogType="article"
-                ogImage={vendor.images?.[0]}
+                ogImage={images[0]}
             />
             <Navbar />
 
@@ -122,19 +155,19 @@ const VendorDetails = () => {
                     {/* Hero Image Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-3 mb-10 h-[40vh] md:h-[55vh] min-h-[350px]">
                         <div className="md:col-span-2 md:row-span-2 rounded-xl md:rounded-l-2xl overflow-hidden relative group">
-                            <img src={vendor.images?.[0] || vendor.portfolio?.[0]} alt={vendor.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                            <img src={images[0]} alt={vendor.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                         </div>
                         <div className="hidden md:block rounded-xl overflow-hidden">
-                            <img src={vendor.images?.[1] || vendor.portfolio?.[1]} alt="Gallery 1" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                            <img src={images[1 % images.length]} alt="Gallery 1" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                         </div>
                         <div className="hidden md:block rounded-xl md:rounded-tr-2xl overflow-hidden">
-                            <img src={vendor.images?.[2] || vendor.portfolio?.[2]} alt="Gallery 2" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                            <img src={images[2 % images.length]} alt="Gallery 2" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                         </div>
                         <div className="hidden md:block rounded-xl overflow-hidden relative group">
-                            <img src={vendor.images?.[3] || vendor.portfolio?.[3]} alt="Gallery 3" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <img src={images[3 % images.length]} alt="Gallery 3" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         </div>
                         <div className="hidden md:block rounded-xl md:rounded-br-2xl overflow-hidden relative group cursor-pointer">
-                            <img src={vendor.images?.[4] || vendor.portfolio?.[4] || vendor.portfolio?.[0]} alt="Gallery 4" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <img src={images[4 % images.length] || images[0]} alt="Gallery 4" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                             <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-white backdrop-blur-[2px] opacity-0 md:group-hover:opacity-100 transition-opacity">
                                 <Camera className="w-8 h-8 mb-2" />
                                 <span className="font-semibold">View Portfolio</span>
@@ -215,7 +248,7 @@ const VendorDetails = () => {
                                     <Button variant="link" className="text-primary pr-0">View All Work &rarr;</Button>
                                 </div>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                    {(vendor.images || vendor.portfolio)?.slice(1, 4).map((img: string, idx: number) => (
+                                    {images.slice(1, 4).map((img: string, idx: number) => (
                                         <div key={idx} className="h-48 rounded-xl overflow-hidden cursor-pointer group border border-slate-200">
                                             <img src={img} alt={`Work ${idx}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                         </div>

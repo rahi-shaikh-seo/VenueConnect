@@ -1,57 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MapPin, ArrowRight } from "lucide-react";
-
-const cities = [
-  {
-    name: "Ahmedabad",
-    venues: 250,
-    slug: "ahmedabad",
-    image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=600&q=80"
-  },
-  {
-    name: "Surat",
-    venues: 180,
-    slug: "surat",
-    image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&q=80"
-  },
-  {
-    name: "Vadodara",
-    venues: 150,
-    slug: "vadodara",
-    image: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=600&q=80"
-  },
-  {
-    name: "Rajkot",
-    venues: 120,
-    slug: "rajkot",
-    image: "https://images.unsplash.com/photo-1624454002302-36b824d7bd0a?w=600&q=80"
-  },
-  {
-    name: "Gandhinagar",
-    venues: 80,
-    slug: "gandhinagar",
-    image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=600&q=80"
-  },
-  {
-    name: "Bhavnagar",
-    venues: 60,
-    slug: "bhavnagar",
-    image: "https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?w=600&q=80"
-  },
-  {
-    name: "Jamnagar",
-    venues: 55,
-    slug: "jamnagar",
-    image: "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=600&q=80"
-  },
-  {
-    name: "Anand",
-    venues: 45,
-    slug: "anand",
-    image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&q=80"
-  },
-];
+import { citiesData } from "@/lib/citiesData";
 
 const PopularCities = () => {
   return (
@@ -80,8 +30,8 @@ const PopularCities = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {cities.map((city, i) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+          {citiesData.slice(0, 10).map((city, i) => (
             <motion.div
               key={city.slug}
               initial={{ opacity: 0, y: 20 }}
@@ -127,6 +77,12 @@ const PopularCities = () => {
               </Link>
             </motion.div>
           ))}
+        </div>
+        
+        <div className="mt-8 text-center">
+            <Link to="/cities" className="inline-flex items-center justify-center gap-2 pt-2 pb-2 pl-4 pr-6 bg-primary text-white rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
+                View All Cities <ArrowRight className="w-4 h-4 ml-1" />
+            </Link>
         </div>
       </div>
     </section>

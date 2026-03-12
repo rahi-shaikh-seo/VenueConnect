@@ -3,45 +3,7 @@ import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
-
-const CITIES = [
-    {
-        name: "Ahmedabad",
-        image: "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?w=800&q=80",
-        venues: 450,
-        vendors: 1200
-    },
-    {
-        name: "Surat",
-        image: "https://images.unsplash.com/photo-1571501679680-de32f1e7aad4?w=800&q=80",
-        venues: 380,
-        vendors: 950
-    },
-    {
-        name: "Vadodara",
-        image: "https://images.unsplash.com/photo-1588693892552-031e095ee038?w=800&q=80",
-        venues: 290,
-        vendors: 800
-    },
-    {
-        name: "Rajkot",
-        image: "https://images.unsplash.com/photo-1623910271167-17b51b3294ee?w=800&q=80",
-        venues: 210,
-        vendors: 550
-    },
-    {
-        name: "Gandhinagar",
-        image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800&q=80",
-        venues: 150,
-        vendors: 400
-    },
-    {
-        name: "Bhavnagar",
-        image: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=800&q=80",
-        venues: 90,
-        vendors: 250
-    }
-];
+import { citiesData } from "@/lib/citiesData";
 
 const Cities = () => {
     return (
@@ -70,7 +32,7 @@ const Cities = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {CITIES.map((city) => (
+                        {citiesData.map((city) => (
                             <Link
                                 key={city.name}
                                 to={`/venues?city=${city.name}`}
