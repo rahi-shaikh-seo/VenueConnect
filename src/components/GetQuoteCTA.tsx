@@ -7,7 +7,7 @@ import { gujaratCities } from "@/lib/cities";
 
 const GetQuoteCTA = () => {
   return (
-    <section className="py-20 bg-gradient-to-br from-primary/10 via-primary/5 to-white">
+    <section className="py-4 md:py-6 bg-gradient-to-br from-primary/10 via-primary/5 to-white">
       <div className="container">
         <div className="max-w-4xl mx-auto">
           <motion.div

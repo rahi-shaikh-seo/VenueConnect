@@ -82,8 +82,8 @@ const InfiniteRow = ({ items, direction = "left" }: {
 const VendorCategories = () => {
 
   return (
-    <section className="py-20 bg-muted/30 overflow-hidden">
-      <div className="container px-4 mb-10">
+    <section className="py-4 md:py-6 bg-muted/30 overflow-hidden">
+      <div className="container px-4 mb-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -97,7 +97,7 @@ const VendorCategories = () => {
         </motion.div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 pb-2">
         {/* Row 1 → scrolls left */}
         <InfiniteRow items={row1} direction="left" />
         {/* Row 2 → scrolls right */}

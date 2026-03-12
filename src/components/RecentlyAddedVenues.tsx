@@ -48,13 +48,13 @@ const recentVenues = [
 
 const RecentlyAddedVenues = () => {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-4 md:py-6 bg-white">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex items-center justify-between mb-12"
+          className="flex items-center justify-between mb-6"
         >
           <div>
             <div className="flex items-center gap-2 mb-3">

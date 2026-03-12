@@ -10,13 +10,13 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section className="py-16 bg-secondary/50">
+    <section className="py-8 bg-secondary/50">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-8 bg-primary/30" />

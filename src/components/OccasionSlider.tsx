@@ -30,10 +30,10 @@ const OccasionSlider = () => {
   };
 
   return (
-    <section className="bg-white py-20" style={{ minHeight: '650px', display: 'flex', alignItems: 'center' }}>
-      <div className="w-full px-4">
+    <section className="bg-white py-4 md:py-6">
+      <div className="container px-4">
         {/* Header */}
-        <div className="text-center mb-12 max-w-4xl mx-auto">
+        <div className="text-center mb-6 max-w-4xl mx-auto">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-12 bg-primary/30" />
             <span className="text-[10.5px] font-semibold tracking-[3px] uppercase text-primary">
@@ -42,7 +42,7 @@ const OccasionSlider = () => {
             <div className="h-px w-12 bg-primary/30" />
           </div>
 
-          <h2 className="font-display text-5xl md:text-6xl font-semibold text-foreground mb-4">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground mb-4">
             What's the <span className="text-primary">Occasion?</span>
           </h2>
 
@@ -56,7 +56,7 @@ const OccasionSlider = () => {
           {/* Left Arrow */}
           <button
             onClick={() => scroll('left')}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 rounded-full bg-white shadow-lg border border-border flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 rounded-full bg-white shadow-lg border border-border flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all hidden md:flex"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -64,7 +64,7 @@ const OccasionSlider = () => {
           {/* Right Arrow */}
           <button
             onClick={() => scroll('right')}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 rounded-full bg-white shadow-lg border border-border flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 rounded-full bg-white shadow-lg border border-border flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all hidden md:flex"
           >
             <ChevronRight className="w-6 h-6" />
           </button>
@@ -72,7 +72,7 @@ const OccasionSlider = () => {
           {/* Scrollable Cards */}
           <div
             ref={scrollRef}
-            className="flex gap-5 overflow-x-auto scrollbar-hide scroll-smooth py-8 px-4"
+            className="flex gap-5 overflow-x-auto scrollbar-hide scroll-smooth py-4 px-4"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {occasions.map((occasion, index) => (
@@ -103,7 +103,7 @@ const OccasionSlider = () => {
           </div>
 
           {/* Dots Indicator */}
-          <div className="flex justify-center gap-2 mt-8">
+          <div className="flex justify-center gap-2 mt-6">
             <div className="w-8 h-1 rounded-full bg-primary" />
             <div className="w-1 h-1 rounded-full bg-border" />
             <div className="w-1 h-1 rounded-full bg-border" />

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import GetQuoteModal from "./GetQuoteModal";
 
 export interface VenueData {
     id: string;
@@ -99,9 +100,8 @@ const VenueCard = ({ venue }: VenueCardProps) => {
     };
 
     return (
-        <Link to={`/venues/${venue.id}`} className="block group h-full">
-            <div className="bg-white rounded-xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 h-full flex flex-col relative">
-
+        <div className="bg-white rounded-xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 h-full flex flex-col relative group">
+            <Link to={`/venues/${venue.id}`} className="block relative">
                 {/* Favorite Button */}
                 <button
                     onClick={toggleFavorite}
@@ -138,13 +138,15 @@ const VenueCard = ({ venue }: VenueCardProps) => {
                         {venue.rating} <span className="text-white/60">({venue.reviews})</span>
                     </div>
                 </div>
+            </Link>
 
-                <div className="p-5 flex flex-col flex-grow">
-                    <h3 className="font-display font-semibold text-foreground text-xl leading-tight group-hover:text-primary transition-colors mb-2">
+            <div className="p-5 flex flex-col flex-grow relative overflow-hidden bg-white">
+                <Link to={`/venues/${venue.id}`} className="block hover:text-primary transition-colors">
+                    <h3 className="font-display font-semibold text-foreground text-xl leading-tight mb-2 z-10 relative truncate">
                         {venue.name}
                     </h3>
 
-                    <div className="space-y-2 mb-4 flex-grow">
+                    <div className="space-y-2 mb-4">
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <MapPin className="w-4 h-4 text-primary shrink-0" />
                             <span className="truncate">{venue.area ? `${venue.area}, ` : ""}{venue.city}</span>
@@ -155,13 +157,36 @@ const VenueCard = ({ venue }: VenueCardProps) => {
                             <span>{venue.capacity} Guests</span>
                         </div>
                     </div>
+                </Link>
 
-                    <Button size="sm" className="w-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors duration-300">
-                        <Send className="w-3.5 h-3.5 mr-2" /> View Details & Prices
-                    </Button>
+                <div className="mt-auto pt-2 space-y-3">
+                    {/* The GetQuoteModal CTA is always visible on mobile, and part of the card on desktop */}
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <GetQuoteModal 
+                            businessName={venue.name}
+                            listingId={venue.id}
+                            listingType="venue"
+                            ownerId={venue.owner_id}
+                            triggerButton={
+                                <Button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold uppercase py-6 shadow-md transition-transform active:scale-[0.98]">
+                                    GET FREE QUOTES
+                                </Button>
+                            }
+                        />
+                    </div>
+
+                    <div className="flex items-center justify-center gap-2 text-[11px] sm:text-xs text-blue-500 font-semibold uppercase tracking-wider">
+                        <Link to={`/venues/${venue.id}#amenities`} className="hover:text-blue-700 transition-colors">Amenities</Link>
+                        <span className="text-gray-300">|</span>
+                        <Link to={`/venues/${venue.id}#about`} className="hover:text-blue-700 transition-colors">Best For</Link>
+                        <span className="text-gray-300">|</span>
+                        <Link to={`/venues/${venue.id}#photos`} className="hover:text-blue-700 transition-colors">Photos</Link>
+                        <span className="text-gray-300">|</span>
+                        <Link to={`/venues/${venue.id}#reviews`} className="hover:text-blue-700 transition-colors">Reviews</Link>
+                    </div>
                 </div>
             </div>
-        </Link>
+        </div>
     );
 };
 

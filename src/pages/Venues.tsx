@@ -7,6 +7,7 @@ import ListingFilter from "@/components/ListingFilter";
 import VenueCard, { VenueData } from "@/components/VenueCard";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 const Venues = () => {
     const [searchParams] = useSearchParams();
@@ -195,9 +196,21 @@ const Venues = () => {
 
                             {/* Mobile Filter Button */}
                             <div className="md:hidden mb-6">
-                                <button className="w-full py-2.5 bg-white border border-border rounded-lg text-sm font-medium flex items-center justify-center gap-2 shadow-sm">
-                                    Filters
-                                </button>
+                                <Sheet>
+                                    <SheetTrigger asChild>
+                                        <button className="w-full py-2.5 bg-white border border-border rounded-lg text-sm font-medium flex items-center justify-center gap-2 shadow-sm">
+                                            Filters
+                                        </button>
+                                    </SheetTrigger>
+                                    <SheetContent side="bottom" className="h-[85vh] overflow-y-auto px-0 pt-6">
+                                        <SheetHeader className="px-5 pb-2">
+                                            <SheetTitle className="text-left">Filters</SheetTitle>
+                                        </SheetHeader>
+                                        <div className="px-5 pb-10 border-none shadow-none">
+                                            <ListingFilter type="venues" />
+                                        </div>
+                                    </SheetContent>
+                                </Sheet>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">

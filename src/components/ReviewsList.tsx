@@ -189,7 +189,7 @@ const ReviewsList = ({ listingId, listingType }: ReviewsListProps) => {
                 {/* Reviews List Column */}
                 <div className="md:col-span-2 space-y-4">
                     {loading ? (
-                        <div className="flex justify-center py-10">
+                        <div className="flex justify-center py-4 md:py-6">
                             <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                         </div>
                     ) : reviews.length > 0 ? (

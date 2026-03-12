@@ -7,7 +7,7 @@ const StatsBand = () => {
   ];
 
   return (
-    <div className="relative bg-primary py-16 overflow-hidden">
+    <div className="relative bg-primary py-8 overflow-hidden">
       {/* Pattern Background */}
       <div 
         className="absolute inset-0 opacity-[0.04]"

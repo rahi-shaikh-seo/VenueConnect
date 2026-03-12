@@ -12,7 +12,7 @@ const benefits = [
 
 const VenueOwnerCTA = () => {
   return (
-    <section className="py-24 relative overflow-hidden bg-[#12080E]">
+    <section className="py-12 relative overflow-hidden bg-[#12080E]">
       {/* Background accents */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[120px]" />
@@ -24,7 +24,7 @@ const VenueOwnerCTA = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="grid md:grid-cols-2 gap-12 items-center"
+          className="grid md:grid-cols-2 gap-6 items-center"
         >
           <div>
             <span className="inline-block px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-[10px] tracking-[3px] uppercase font-semibold mb-6">

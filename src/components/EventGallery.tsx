@@ -54,13 +54,13 @@ const galleryEvents = [
 
 const EventGallery = () => {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-4 md:py-6 bg-white">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-6"
         >
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-12 bg-primary/30" />

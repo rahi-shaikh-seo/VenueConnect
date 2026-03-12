@@ -13,7 +13,7 @@ const types = [
 
 const VenueTypes = () => {
   return (
-    <section className="py-16 bg-secondary/50">
+    <section className="py-8 bg-secondary/50">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

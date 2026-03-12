@@ -31,6 +31,7 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import FAQs from "./pages/FAQs";
 import ScrollToTop from "./components/ScrollToTop";
+import FloatingScrollToTop from "./components/FloatingScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <MobileBottomNav />
+        <FloatingScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/venues" element={<Venues />} />

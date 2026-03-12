@@ -24,7 +24,7 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <section className="py-16 bg-background">
+    <section className="py-8 bg-background">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

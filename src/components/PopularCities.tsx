@@ -55,13 +55,13 @@ const cities = [
 
 const PopularCities = () => {
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-primary/5">
+    <section className="py-4 md:py-6 bg-gradient-to-b from-white to-primary/5">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-6"
         >
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-12 bg-primary/30" />
@@ -80,7 +80,7 @@ const PopularCities = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {cities.map((city, i) => (
             <motion.div
               key={city.slug}
@@ -91,7 +91,7 @@ const PopularCities = () => {
             >
               <Link
                 to={`/venues?city=${encodeURIComponent(city.name)}`}
-                className="group block relative rounded-2xl overflow-hidden h-64 shadow-lg hover:shadow-2xl transition-all duration-300"
+                className="group block relative rounded-2xl overflow-hidden aspect-square shadow-lg hover:shadow-2xl transition-all duration-300"
               >
                 {/* City Image */}
                 <img
@@ -101,23 +101,24 @@ const PopularCities = () => {
                 />
 
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
                 {/* Content */}
-                <div className="absolute inset-0 flex flex-col justify-end p-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <MapPin className="w-5 h-5 text-white" />
-                    <h3 className="text-2xl font-display font-semibold text-white">
+                <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6">
+                  <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
+                    <MapPin className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                    <h3 className="text-xl md:text-2xl font-display font-semibold text-white leading-tight">
                       {city.name}
                     </h3>
                   </div>
-                  <p className="text-white/80 text-sm mb-3">
+                  <p className="text-white/80 text-xs md:text-sm mb-2 md:mb-3">
                     {city.venues}+ Venues
                   </p>
 
-                  <div className="flex items-center gap-2 text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span>Explore Venues</span>
-                    <ArrowRight className="w-4 h-4" />
+                  <div className="flex items-center gap-1.5 md:gap-2 text-white text-xs md:text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="hidden sm:inline">Explore Venues</span>
+                    <span className="sm:hidden">Explore</span>
+                    <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
                   </div>
                 </div>
 

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const InstantMatch = () => {
   return (
-    <section className="py-20 bg-background">
+    <section className="py-4 md:py-6 bg-background">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

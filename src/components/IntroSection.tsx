@@ -1,8 +1,8 @@
 const IntroSection = () => {
   return (
-    <section className="bg-white py-24">
+    <section className="bg-white py-6 md:py-8">
       <div className="container">
-        <div className="grid lg:grid-cols-[1fr_2px_1fr] gap-16 items-center">
+        <div className="grid lg:grid-cols-[1fr_2px_1fr] gap-8 items-center">
           {/* Left Side */}
           <div>
             <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground leading-tight mb-5">
