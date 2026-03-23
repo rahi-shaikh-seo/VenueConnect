@@ -1,10 +1,15 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
+import SEO from "@/components/SEO";
 
 const Terms = () => {
     return (
         <div className="min-h-screen bg-background flex flex-col">
+            <SEO 
+                title="Terms of Service | VenueConnect"
+                description="Read the terms of service that govern your use of the VenueConnect platform."
+            />
             <Navbar />
 
             <PageHeader

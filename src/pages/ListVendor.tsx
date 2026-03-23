@@ -141,6 +141,38 @@ const ListVendor = () => {
             }]);
 
             if (error) throw error;
+
+            // Send data to Webhook (Google Sheets + Email)
+            const webhookUrl = import.meta.env.VITE_WEBHOOK_URL;
+            if (webhookUrl) {
+                try {
+                    await fetch(webhookUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            type: 'Vendor Application',
+                            businessName: formData.businessName,
+                            category: formData.category,
+                            city: formData.city,
+                            contactName: formData.contactName,
+                            phone: formData.phone,
+                            email: formData.email,
+                            details: {
+                                address: formData.address,
+                                specialities: specialities.join(', '),
+                                serviceAreas: serviceAreas.join(', '),
+                                website: formData.website,
+                                instagram: formData.instagram,
+                                startingPrice: formData.startingPrice
+                            }
+                        })
+                    });
+                } catch (webhookErr) {
+                    console.error("Webhook failed:", webhookErr);
+                }
+            }
+
             setStep(5);
             toast.success("Application submitted! We'll review within 24 hours.");
         } catch (err: any) {

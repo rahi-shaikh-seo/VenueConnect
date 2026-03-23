@@ -201,6 +201,36 @@ const ListVenue = () => {
 
             if (error) throw error;
 
+            // Send data to Webhook (Google Sheets + Email)
+            const webhookUrl = import.meta.env.VITE_WEBHOOK_URL;
+            if (webhookUrl) {
+                try {
+                    await fetch(webhookUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            type: 'Venue Application',
+                            businessName: formData.businessName,
+                            category: formData.category,
+                            city: formData.city,
+                            contactName: formData.contactName,
+                            phone: formData.phone,
+                            email: formData.email,
+                            details: {
+                                address: formData.address,
+                                minCapacity: formData.minCapacity,
+                                maxCapacity: formData.maxCapacity,
+                                cuisines: cuisines.join(', '),
+                                amenities: amenities.join(', ')
+                            }
+                        })
+                    });
+                } catch (webhookErr) {
+                    console.error("Webhook failed:", webhookErr);
+                }
+            }
+
             toast.success("Application submitted successfully!", {
                 description: "Our team will review your comprehensive listing."
             });

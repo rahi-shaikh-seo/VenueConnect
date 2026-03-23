@@ -1,10 +1,15 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
+import SEO from "@/components/SEO";
 
 const Privacy = () => {
     return (
         <div className="min-h-screen bg-background flex flex-col">
+            <SEO 
+                title="Privacy Policy | VenueConnect"
+                description="Read VenueConnect's privacy policy to understand how we collect, use, and protect your data."
+            />
             <Navbar />
 
             <PageHeader
