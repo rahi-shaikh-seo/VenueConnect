@@ -105,10 +105,9 @@ const GetQuoteModal = ({ businessName, listingId, listingType, ownerId, triggerB
                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                             <input
                                 type="email"
-                                required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                placeholder="E.g., rahul@example.com"
+                                placeholder="E.g., rahul@example.com (Optional)"
                                 className="w-full pl-9 pr-4 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary"
                             />
                         </div>
@@ -136,7 +135,6 @@ const GetQuoteModal = ({ businessName, listingId, listingType, ownerId, triggerB
                                 <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                                 <input
                                     type="date"
-                                    required
                                     value={eventDate}
                                     onChange={(e) => setEventDate(e.target.value)}
                                     className="w-full pl-9 pr-2 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary"
@@ -150,11 +148,10 @@ const GetQuoteModal = ({ businessName, listingId, listingType, ownerId, triggerB
                                 <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                                 <input
                                     type="number"
-                                    min="10"
-                                    required
+                                    min="1"
                                     value={guests}
                                     onChange={(e) => setGuests(e.target.value)}
-                                    placeholder="E.g., 200"
+                                    placeholder="E.g., 200 (Optional)"
                                     className="w-full pl-9 pr-4 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary"
                                 />
                             </div>

@@ -25,7 +25,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <SEO 
         title="VenueConnect Gujarat | Find & Book Wedding Venues, Banquet Halls & Party Plots"
-        description="Gujarat's premier venue discovery platform. Find the perfect banquet halls, farmhouses, hotels, and party plots for weddings and events across Ahmedabad, Surat, Rajkot, and Vadodara."
+        description="Discover Gujarat's top wedding venues, banquet halls, hotels & party plots. Check prices and book your perfect event space in Ahmedabad, Surat, Rajkot & Vadodara today!"
       />
       <Navbar />
       <HeroSearch />
