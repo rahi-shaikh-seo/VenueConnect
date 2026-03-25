@@ -4,15 +4,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { gujaratCities } from "@/lib/cities";
-
-const VENDOR_CATEGORIES = [
-    "Astrologers", "Bands", "Bridal Wear", "Bus on Rent", "Cakes",
-    "Caterers", "Choreographers", "Decorators", "DJ", "Entertainers",
-    "Event Planners", "Florists", "Gifts", "Groom Wear", "Jewellers",
-    "Magician", "Makeup Artists", "Mehndi Artists", "Photographers",
-    "Tent Houses", "Wedding Photographers", "Wedding Planners"
-];
 
 const ListVendor = () => {
     const navigate = useNavigate();
@@ -20,16 +11,12 @@ const ListVendor = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const [formData, setFormData] = useState({
-        serviceType: "",
-        businessName: "",
-        businessAddress: "",
-        fullName: "",
-        phone: "",
-        email: "",
-        servicedCity: "",
+        contactName: "",
+        mobile: "",
+        email: ""
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
@@ -49,14 +36,14 @@ const ListVendor = () => {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             type: 'Vendor Application',
-                            businessName: formData.businessName,
-                            category: formData.serviceType,
-                            city: formData.servicedCity,
-                            contactName: formData.fullName,
-                            phone: formData.phone,
+                            businessName: formData.contactName + "'s Business",
+                            category: "vendor",
+                            city: "Not Provided",
+                            contactName: formData.contactName,
+                            phone: formData.mobile,
                             email: formData.email,
                             details: {
-                                address: formData.businessAddress
+                                address: "Not Provided"
                             }
                         })
                     });
@@ -68,15 +55,14 @@ const ListVendor = () => {
             // Insert to Supabase for backup tracking if needed
             try {
                 await supabase.from('venue_applications').insert([{
-                    business_name: formData.businessName,
+                    business_name: formData.contactName + "'s Business",
                     venue_type: 'vendor',
-                    vendor_category: formData.serviceType,
-                    city: formData.servicedCity,
-                    address: formData.businessAddress,
-                    contact_person: formData.fullName,
-                    business_phone: formData.phone,
+                    city: 'Not Provided',
+                    address: 'Not Provided',
+                    contact_person: formData.contactName,
+                    business_phone: formData.mobile,
                     business_email: formData.email,
-                    description: "Vendor Application",
+                    description: "Vendor Lead",
                     capacity: 0,
                     status: 'pending'
                 }]);
@@ -85,7 +71,7 @@ const ListVendor = () => {
             }
 
             setIsSubmitted(true);
-            toast.success("Application submitted successfully!");
+            toast.success("Details submitted successfully!");
             
             // Redirect after 3 seconds
             setTimeout(() => {
@@ -99,128 +85,88 @@ const ListVendor = () => {
         }
     };
 
-    const inputCls = "w-full border border-gray-300 rounded-md px-4 py-3 text-gray-700 focus:outline-none focus:border-red-500 bg-white";
+    const inputCls = "w-full border border-gray-300 rounded-md px-3 py-3 text-gray-700 focus:outline-none focus:border-red-500 bg-white placeholder:text-gray-400";
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <Navbar />
 
             <main className="flex-grow flex items-center justify-center py-12 px-4">
-                <div className="w-full max-w-xl bg-white rounded-lg shadow-sm border border-gray-100 p-8">
-                    {isSubmitted ? (
-                        <div className="text-center py-10">
-                            <h2 className="text-2xl font-bold text-green-600 mb-4">Thank You!</h2>
-                            <p className="text-gray-600">We have received your application. Our team will contact you shortly.</p>
-                        </div>
-                    ) : (
-                        <>
-                            <h1 className="text-2xl md:text-3xl font-bold text-center text-red-600 mb-8">
-                                Boost your business with VenueConnect!
-                            </h1>
-
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                <div>
-                                    <select 
-                                        name="serviceType" 
-                                        value={formData.serviceType} 
-                                        onChange={handleChange} 
-                                        className={inputCls} 
-                                        required
-                                    >
-                                        <option value="">Service Type</option>
-                                        {VENDOR_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-                                    </select>
+                {isSubmitted ? (
+                    <div className="w-full max-w-2xl bg-white rounded-lg shadow-sm border border-gray-100 p-10 text-center">
+                        <h2 className="text-2xl font-bold text-green-600 mb-4">Thank You!</h2>
+                        <p className="text-gray-600">We have received your details. Our team will contact you shortly.</p>
+                    </div>
+                ) : (
+                    <div className="w-full max-w-2xl bg-white rounded-lg shadow-sm border border-gray-100 p-8 md:p-12">
+                        <form onSubmit={handleSubmit}>
+                            {/* Contact Info Section */}
+                            <div className="mb-8">
+                                <h3 className="text-xl md:text-2xl font-serif text-center text-gray-900 mb-6 uppercase tracking-wider">
+                                    ADD CONTACT INFORMATION
+                                </h3>
+                                
+                                <div className="bg-red-50/80 py-4 px-4 text-center text-red-700 text-sm font-semibold mb-8 border border-red-100/50">
+                                    Lead notifications and updates from VenueConnect will be sent to this contact.
                                 </div>
 
-                                <div>
-                                    <input 
-                                        type="text"
-                                        name="businessName" 
-                                        value={formData.businessName} 
-                                        onChange={handleChange} 
-                                        className={inputCls} 
-                                        placeholder="Your business name" 
-                                        required 
-                                    />
+                                <div className="space-y-5">
+                                    <div>
+                                        <input 
+                                            type="text" 
+                                            name="contactName" 
+                                            value={formData.contactName} 
+                                            onChange={handleChange} 
+                                            placeholder="Vendor owner / Authorized person name *" 
+                                            className={inputCls} 
+                                            required 
+                                        />
+                                    </div>
+                                    
+                                    <div className="flex bg-white border border-gray-300 rounded-md focus-within:border-red-500 overflow-hidden">
+                                        <div className="flex items-center px-4 bg-gray-50 border-r border-gray-300 text-gray-500 text-sm font-medium">
+                                            +91
+                                        </div>
+                                        <input 
+                                            type="tel" 
+                                            name="mobile" 
+                                            value={formData.mobile} 
+                                            onChange={handleChange} 
+                                            placeholder="Mobile number *" 
+                                            className="w-full px-4 py-3 text-gray-700 focus:outline-none placeholder:text-gray-400" 
+                                            required 
+                                        />
+                                    </div>
+                                    
+                                    <div>
+                                        <input 
+                                            type="email" 
+                                            name="email" 
+                                            value={formData.email} 
+                                            onChange={handleChange} 
+                                            placeholder="Official email - id *" 
+                                            className={inputCls} 
+                                            required 
+                                        />
+                                    </div>
                                 </div>
+                            </div>
 
-                                <div>
-                                    <input 
-                                        type="text"
-                                        name="businessAddress" 
-                                        value={formData.businessAddress} 
-                                        onChange={handleChange} 
-                                        className={inputCls} 
-                                        placeholder="Your business address" 
-                                        required 
-                                    />
-                                </div>
-
-                                <div>
-                                    <input 
-                                        type="text"
-                                        name="fullName" 
-                                        value={formData.fullName} 
-                                        onChange={handleChange} 
-                                        className={inputCls} 
-                                        placeholder="Your full name" 
-                                        required 
-                                    />
-                                </div>
-
-                                <div>
-                                    <input 
-                                        type="tel"
-                                        name="phone" 
-                                        value={formData.phone} 
-                                        onChange={handleChange} 
-                                        className={inputCls} 
-                                        placeholder="Your phone" 
-                                        required 
-                                    />
-                                </div>
-
-                                <div>
-                                    <input 
-                                        type="email"
-                                        name="email" 
-                                        value={formData.email} 
-                                        onChange={handleChange} 
-                                        className={inputCls} 
-                                        placeholder="Your email" 
-                                        required 
-                                    />
-                                </div>
-
-                                <div>
-                                    <select 
-                                        name="servicedCity" 
-                                        value={formData.servicedCity} 
-                                        onChange={handleChange} 
-                                        className={inputCls} 
-                                        required
-                                    >
-                                        <option value="">Your serviced city</option>
-                                        {gujaratCities.map(c => <option key={c} value={c}>{c}</option>)}
-                                    </select>
-                                </div>
-
-                                <div className="text-center pt-4">
-                                    <p className="text-sm text-gray-700 mb-4">
-                                        By clicking on this button, you are accepting our terms and conditions
-                                    </p>
-                                    <button 
-                                        type="submit" 
-                                        disabled={isSubmitting}
-                                        className="bg-red-600 hover:bg-red-700 transition-colors text-white font-semibold py-3 px-8 rounded-md text-lg"
-                                    >
-                                        {isSubmitting ? "Submitting..." : "Add your business"}
-                                    </button>
-                                </div>
-                            </form>
-                        </>
-                    )}
-                </div>
+                            <div className="text-center pt-8 border-t border-gray-100">
+                                <p className="text-xs text-gray-500 mb-6 font-medium px-4">
+                                    By clicking on Submit and Get me Started button, I hereby agree to VenueConnect terms and Privacy Policy, and to receive emails, sms & updates
+                                </p>
+                                <button 
+                                    type="submit" 
+                                    disabled={isSubmitting}
+                                    className="bg-red-600 hover:bg-red-700 transition-colors text-white font-semibold py-3.5 px-8 rounded flex mx-auto disabled:opacity-70 disabled:cursor-not-allowed"
+                                >
+                                    {isSubmitting ? "Submitting..." : "Submit and Get me Started"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                )}
             </main>
 
             <Footer />
