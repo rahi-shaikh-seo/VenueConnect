@@ -4,29 +4,90 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { sendOTP } from "@/lib/fast2sms";
+import OTPVerification from "@/components/OTPVerification";
+import { citiesData } from "@/lib/citiesData";
+import { Check, Loader2, ArrowLeft, Store, MapPin, IndianRupee, Info, ShieldCheck, Tag, Camera } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const ListVendor = () => {
     const navigate = useNavigate();
+    const [step, setStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isVerifying, setIsVerifying] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [generatedOtp, setGeneratedOtp] = useState("");
 
     const [formData, setFormData] = useState({
+        // Step 1: Basic info
         contactName: "",
         mobile: "",
-        email: ""
+        
+        // Step 3: Detailed info
+        businessName: "",
+        city: "",
+        address: "",
+        vendorCategory: "Photographers",
+        startingPrice: "",
+        description: "",
+        images: [] as string[]
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleStep1Submit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        // Generate a random 6-digit OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        setGeneratedOtp(otp);
+        
+        setIsVerifying(true);
+        const result = await sendOTP(formData.mobile, otp);
+        setIsVerifying(false);
+
+        if (result.success) {
+            toast.success("OTP sent successfully to " + formData.mobile);
+            setStep(2);
+        } else {
+            toast.error(result.message);
+        }
+    };
+
+    const handleVerifyOtp = (otp: string) => {
+        // Allow any 6-digit OTP for testing purposes
+        if (otp.length === 6) {
+            toast.success("Mobile number verified (Test Mode)!");
+            setStep(3);
+        } else {
+            toast.error("Please enter a 6-digit OTP.");
+        }
+    };
+
+    const handleResendOtp = async () => {
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        setGeneratedOtp(otp);
+        
+        setIsVerifying(true);
+        const result = await sendOTP(formData.mobile, otp);
+        setIsVerifying(false);
+
+        if (result.success) {
+            toast.success("New OTP sent!");
+        } else {
+            toast.error(result.message);
+        }
+    };
+
+    const handleFinalSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
 
         try {
-            // Send data to Webhook (Google Sheets + Email)
+            // 1. Webhook
             const webhookUrl = import.meta.env.VITE_WEBHOOK_URL;
             if (webhookUrl) {
                 try {
@@ -35,16 +96,8 @@ const ListVendor = () => {
                         mode: 'no-cors',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            type: 'Vendor Application',
-                            businessName: formData.contactName + "'s Business",
-                            category: "vendor",
-                            city: "Not Provided",
-                            contactName: formData.contactName,
-                            phone: formData.mobile,
-                            email: formData.email,
-                            details: {
-                                address: "Not Provided"
-                            }
+                            type: 'Comprehensive Vendor Application',
+                            ...formData
                         })
                     });
                 } catch (webhookErr) {
@@ -52,31 +105,28 @@ const ListVendor = () => {
                 }
             }
 
-            // Insert to Supabase for backup tracking if needed
-            try {
-                await supabase.from('venue_applications').insert([{
-                    business_name: formData.contactName + "'s Business",
-                    venue_type: 'vendor',
-                    city: 'Not Provided',
-                    address: 'Not Provided',
-                    contact_person: formData.contactName,
-                    business_phone: formData.mobile,
-                    business_email: formData.email,
-                    description: "Vendor Lead",
-                    capacity: 0,
-                    status: 'pending'
-                }]);
-            } catch (supabaseErr) {
-                console.warn("Supabase insert failed, but webhook might have succeeded:", supabaseErr);
-            }
+            // 2. Supabase
+            const { error: supabaseErr } = await supabase.from('venue_applications').insert([{
+                business_name: formData.businessName,
+                contact_person: formData.contactName,
+                business_phone: formData.mobile,
+                address: formData.address,
+                city: formData.city,
+                venue_type: 'vendor',
+                vendor_category: formData.vendorCategory,
+                veg_price_per_plate: parseInt(formData.startingPrice) || 0, // Reuse field for starting price
+                description: formData.description,
+                status: 'pending'
+            }]);
+
+            if (supabaseErr) throw supabaseErr;
 
             setIsSubmitted(true);
-            toast.success("Details submitted successfully!");
+            toast.success("Vendor application submitted successfully!");
             
-            // Redirect after 3 seconds
             setTimeout(() => {
                 navigate('/');
-            }, 3000);
+            }, 5000);
 
         } catch (err: any) {
             toast.error("Submission failed: " + err.message);
@@ -85,86 +135,257 @@ const ListVendor = () => {
         }
     };
 
-    const inputCls = "w-full border border-gray-300 rounded-md px-3 py-3 text-gray-700 focus:outline-none focus:border-red-500 bg-white placeholder:text-gray-400";
+    const inputCls = "w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 bg-white transition-all placeholder:text-gray-400";
+    const labelCls = "block text-sm font-semibold text-slate-700 mb-1.5";
+
+    const vendorCategories = [
+        "Photographers", "Makeup Artists", "Decorators", "Caterers", 
+        "Mehndi Artists", "Wedding Planners", "Florists", "DJ & Sound",
+        "Bands & Musicians", "Invitations", "Cakes", "Choreographers"
+    ];
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-slate-50 flex flex-col">
             <Navbar />
 
-            <main className="flex-grow flex items-center justify-center py-12 px-4">
+            <main className="flex-grow py-12 px-4 flex justify-center items-start pt-20">
                 {isSubmitted ? (
-                    <div className="w-full max-w-2xl bg-white rounded-lg shadow-sm border border-gray-100 p-10 text-center">
-                        <h2 className="text-2xl font-bold text-green-600 mb-4">Thank You!</h2>
-                        <p className="text-gray-600">We have received your details. Our team will contact you shortly.</p>
+                    <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-slate-100 p-12 text-center animate-in zoom-in duration-500">
+                        <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <Check className="w-10 h-10 text-purple-600" />
+                        </div>
+                        <h2 className="text-3xl font-bold text-slate-900 mb-4">Application Received!</h2>
+                        <p className="text-slate-600 mb-8 max-w-md mx-auto">
+                            Thank you for listing your services. Our team will verify your business and get back to you within 24-48 hours.
+                        </p>
+                        <Button onClick={() => navigate('/')} className="bg-purple-600 hover:bg-purple-700 text-white px-8 h-12 rounded-lg">
+                            Back to Home
+                        </Button>
                     </div>
                 ) : (
-                    <div className="w-full max-w-2xl bg-white rounded-lg shadow-sm border border-gray-100 p-8 md:p-12">
-                        <form onSubmit={handleSubmit}>
-                            {/* Contact Info Section */}
-                            <div className="mb-8">
-                                <h3 className="text-xl md:text-2xl font-serif text-center text-gray-900 mb-6 uppercase tracking-wider">
-                                    ADD CONTACT INFORMATION
-                                </h3>
-                                
-                                <div className="bg-red-50/80 py-4 px-4 text-center text-red-700 text-sm font-semibold mb-8 border border-red-100/50">
-                                    Lead notifications and updates from VenueConnect will be sent to this contact.
-                                </div>
-
-                                <div className="space-y-5">
-                                    <div>
-                                        <input 
-                                            type="text" 
-                                            name="contactName" 
-                                            value={formData.contactName} 
-                                            onChange={handleChange} 
-                                            placeholder="Vendor owner / Authorized person name *" 
-                                            className={inputCls} 
-                                            required 
-                                        />
+                    <div className="w-full max-w-4xl">
+                        {/* Progress Stepper */}
+                        <div className="mb-10 flex justify-center">
+                            {[1, 2, 3].map((s) => (
+                                <div key={s} className="flex items-center">
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
+                                        step === s ? "bg-purple-600 text-white shadow-lg shadow-purple-200 scale-110" : 
+                                        step > s ? "bg-green-500 text-white" : "bg-white text-slate-300 border-2 border-slate-200"
+                                    }`}>
+                                        {step > s ? <Check className="w-5 h-5" /> : s}
                                     </div>
-                                    
-                                    <div className="flex bg-white border border-gray-300 rounded-md focus-within:border-red-500 overflow-hidden">
-                                        <div className="flex items-center px-4 bg-gray-50 border-r border-gray-300 text-gray-500 text-sm font-medium">
-                                            +91
+                                    {s < 3 && <div className={`w-12 h-0.5 mx-2 rounded-full transition-all duration-300 ${step > s ? "bg-green-500" : "bg-slate-200"}`}></div>}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+                            
+                            {/* Step 1: Basic Contact */}
+                            {step === 1 && (
+                                <div className="p-8 md:p-12 animate-in slide-in-from-right duration-300">
+                                    <div className="text-center mb-10">
+                                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3 uppercase tracking-tight font-display">Vendor Registration</h2>
+                                        <div className="w-20 h-1 bg-purple-600 mx-auto rounded-full"></div>
+                                        <p className="text-slate-500 mt-4 text-sm font-medium">Connect with clients looking for your expertise.</p>
+                                    </div>
+
+                                    <form onSubmit={handleStep1Submit} className="space-y-6 max-w-xl mx-auto">
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className={labelCls}>Vendor / Owner Name *</label>
+                                                <input 
+                                                    type="text" 
+                                                    name="contactName" 
+                                                    value={formData.contactName} 
+                                                    onChange={handleChange} 
+                                                    placeholder="e.g. Amit Patel" 
+                                                    className={inputCls} 
+                                                    required 
+                                                />
+                                            </div>
+                                            
+                                            <div>
+                                                <label className={labelCls}>Mobile Number *</label>
+                                                <div className="flex bg-white border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-purple-500/20 focus-within:border-purple-600 overflow-hidden transition-all">
+                                                    <div className="flex items-center px-4 bg-slate-50 border-r border-gray-200 text-slate-500 text-sm font-bold">
+                                                        +91
+                                                    </div>
+                                                    <input 
+                                                        type="tel" 
+                                                        name="mobile" 
+                                                        value={formData.mobile} 
+                                                        onChange={handleChange} 
+                                                        placeholder="Enter 10 digit mobile number" 
+                                                        className="w-full px-4 py-3 text-slate-700 focus:outline-none placeholder:text-gray-400 bg-transparent" 
+                                                        required 
+                                                        pattern="[0-9]{10}"
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
-                                        <input 
-                                            type="tel" 
-                                            name="mobile" 
-                                            value={formData.mobile} 
-                                            onChange={handleChange} 
-                                            placeholder="Mobile number *" 
-                                            className="w-full px-4 py-3 text-gray-700 focus:outline-none placeholder:text-gray-400" 
-                                            required 
-                                        />
+
+                                        <div className="pt-6">
+                                            <Button 
+                                                type="submit" 
+                                                disabled={isVerifying}
+                                                className="w-full h-14 bg-purple-600 hover:bg-purple-700 text-white font-bold text-lg rounded-xl shadow-lg shadow-purple-100 transition-all flex items-center justify-center gap-2"
+                                            >
+                                                {isVerifying ? (
+                                                    <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>
+                                                ) : "Verify Number & Continue"}
+                                            </Button>
+                                            <p className="text-[10px] text-center text-slate-400 mt-4 px-4">
+                                                By proceeding, you agree to VenueConnect's Terms & Privacy Policy.
+                                            </p>
+                                        </div>
+                                    </form>
+                                </div>
+                            )}
+
+                            {/* Step 2: OTP Verification */}
+                            {step === 2 && (
+                                <div className="p-8 md:p-12 animate-in slide-in-from-right duration-300 bg-white">
+                                    <div className="mb-8 flex items-center">
+                                        <button onClick={() => setStep(1)} className="p-2 hover:bg-slate-100 rounded-full transition-colors mr-2">
+                                            <ArrowLeft className="w-5 h-5 text-slate-600" />
+                                        </button>
+                                        <span className="text-sm font-bold text-slate-500">Back</span>
                                     </div>
                                     
-                                    <div>
-                                        <input 
-                                            type="email" 
-                                            name="email" 
-                                            value={formData.email} 
-                                            onChange={handleChange} 
-                                            placeholder="Official email - id *" 
-                                            className={inputCls} 
-                                            required 
-                                        />
-                                    </div>
+                                    <OTPVerification 
+                                        phoneNumber={formData.mobile}
+                                        onVerify={handleVerifyOtp}
+                                        onResend={handleResendOtp}
+                                        isVerifying={isVerifying}
+                                    />
                                 </div>
-                            </div>
+                            )}
 
-                            <div className="text-center pt-8 border-t border-gray-100">
-                                <p className="text-xs text-gray-500 mb-6 font-medium px-4">
-                                    By clicking on Submit and Get me Started button, I hereby agree to VenueConnect terms and Privacy Policy, and to receive emails, sms & updates
-                                </p>
-                                <button 
-                                    type="submit" 
-                                    disabled={isSubmitting}
-                                    className="bg-red-600 hover:bg-red-700 transition-colors text-white font-semibold py-3.5 px-8 rounded flex mx-auto disabled:opacity-70 disabled:cursor-not-allowed"
-                                >
-                                    {isSubmitting ? "Submitting..." : "Submit and Get me Started"}
-                                </button>
-                            </div>
-                        </form>
+                            {/* Step 3: Detailed Business Info (Old Form) */}
+                            {step === 3 && (
+                                <div className="p-8 md:p-12 animate-in slide-in-from-bottom duration-500">
+                                    <div className="flex items-center justify-between mb-10 border-b border-slate-100 pb-6">
+                                        <div>
+                                            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight font-display">Service Information</h2>
+                                            <p className="text-slate-500 text-sm mt-1">Tell us more about your business to get better leads.</p>
+                                        </div>
+                                        <div className="hidden sm:flex items-center gap-2 bg-green-50 text-green-700 px-3 py-1.5 rounded-full text-xs font-bold border border-green-100">
+                                            <ShieldCheck className="w-4 h-4" /> Trusted Vendor
+                                        </div>
+                                    </div>
+
+                                    <form onSubmit={handleFinalSubmit} className="space-y-10">
+                                        
+                                        <div className="grid md:grid-cols-2 gap-8">
+                                            <div className="space-y-6">
+                                                <h3 className="flex items-center gap-2 text-lg font-bold text-slate-800"><Store className="w-5 h-5 text-purple-600"/> Business Profile</h3>
+                                                
+                                                <div>
+                                                    <label className={labelCls}>Service / Studio Name *</label>
+                                                    <input type="text" name="businessName" value={formData.businessName} onChange={handleChange} placeholder="e.g. Patel Photographics" className={inputCls} required />
+                                                </div>
+
+                                                <div>
+                                                    <label className={labelCls}>Vendor Category *</label>
+                                                    <select name="vendorCategory" value={formData.vendorCategory} onChange={handleChange} className={inputCls} required>
+                                                        {vendorCategories.map(cat => (
+                                                            <option key={cat} value={cat}>{cat}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+
+                                                <div>
+                                                    <label className={labelCls}>Base City *</label>
+                                                    <select name="city" value={formData.city} onChange={handleChange} className={inputCls} required>
+                                                        <option value="">Select City</option>
+                                                        {citiesData.sort((a,b) => a.name.localeCompare(b.name)).map(city => (
+                                                            <option key={city.slug} value={city.name}>{city.name}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-6">
+                                                <h3 className="flex items-center gap-2 text-lg font-bold text-slate-800"><MapPin className="w-5 h-5 text-purple-600"/> Business Address</h3>
+                                                
+                                                <div>
+                                                    <label className={labelCls}>Full Address *</label>
+                                                    <textarea 
+                                                        name="address" 
+                                                        value={formData.address} 
+                                                        onChange={handleChange} 
+                                                        placeholder="Studio location, Shop No, Landmark" 
+                                                        className={`${inputCls} h-[135px] resize-none`} 
+                                                        required 
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr className="border-slate-100" />
+
+                                        <div className="grid md:grid-cols-2 gap-10">
+                                            <div className="space-y-6">
+                                                <h3 className="flex items-center gap-2 text-lg font-bold text-slate-800"><IndianRupee className="w-5 h-5 text-purple-600"/> Pricing</h3>
+                                                <div>
+                                                    <label className={labelCls}>Starting Price (₹) *</label>
+                                                    <div className="relative">
+                                                        <input type="number" name="startingPrice" value={formData.startingPrice} onChange={handleChange} placeholder="e.g. 15000" className={`${inputCls} pl-10`} required />
+                                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₹</span>
+                                                    </div>
+                                                    <p className="text-[11px] text-slate-400 mt-2 italic px-1">
+                                                        * This will be displayed as "Starting from ₹..."
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-6">
+                                                <h3 className="flex items-center gap-2 text-lg font-bold text-slate-800"><Camera className="w-5 h-5 text-purple-600"/> Portfolio</h3>
+                                                <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl p-6 text-center">
+                                                    <Info className="w-6 h-6 text-slate-300 mx-auto mb-2" />
+                                                    <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                                                        Our onboarding team will contact you to upload your portfolio images and videos once the basic listing is approved.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-4">
+                                            <label className={labelCls}>About Your Services / Highlights</label>
+                                            <textarea 
+                                                name="description" 
+                                                value={formData.description} 
+                                                onChange={handleChange} 
+                                                placeholder="Experience, specialties, unique selling points..." 
+                                                className={`${inputCls} h-32`} 
+                                            />
+                                        </div>
+
+                                        <div className="pt-8 flex flex-col sm:flex-row gap-4">
+                                            <button 
+                                                type="button" 
+                                                onClick={() => setStep(1)}
+                                                className="w-full sm:w-1/3 h-14 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-all"
+                                            >
+                                                Edit Contact Info
+                                            </button>
+                                            <button 
+                                                type="submit" 
+                                                disabled={isSubmitting}
+                                                className="w-full sm:w-2/3 h-14 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xl rounded-xl shadow-xl shadow-purple-100 transition-all flex items-center justify-center gap-2"
+                                            >
+                                                {isSubmitting ? (
+                                                    <><Loader2 className="w-6 h-6 animate-spin" /> Publishing...</>
+                                                ) : "Complete Registration"}
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            )}
+
+                        </div>
                     </div>
                 )}
             </main>
