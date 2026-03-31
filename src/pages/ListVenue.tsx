@@ -4,9 +4,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { sendOTP } from "@/lib/fast2sms";
-import OTPVerification from "@/components/OTPVerification";
 import { citiesData } from "@/lib/citiesData";
+import PricingPackages from "@/components/PricingPackages";
 import { Check, Loader2, ArrowLeft, Building2, MapPin, Users, IndianRupee, Info, Clock, Utensils, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -14,9 +13,7 @@ const ListVenue = () => {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isVerifying, setIsVerifying] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [generatedOtp, setGeneratedOtp] = useState("");
 
     const [formData, setFormData] = useState({
         // Step 1: Basic info
@@ -74,51 +71,17 @@ const ListVenue = () => {
 
     const handleStep1Submit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
-        // Generate a random 6-digit OTP
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        setGeneratedOtp(otp);
-        
-        setIsVerifying(true);
-        const result = await sendOTP(formData.mobile, otp);
-        setIsVerifying(false);
-
-        if (result.success) {
-            toast.success("OTP sent successfully to " + formData.mobile);
-            setStep(2);
-        } else {
-            toast.error(result.message);
-        }
+        setStep(2);
     };
 
-    const handleVerifyOtp = (otp: string) => {
-        // Allow any 6-digit OTP for testing purposes
-        if (otp.length === 6) {
-            toast.success("Mobile number verified (Test Mode)!");
-            setStep(3);
-        } else {
-            toast.error("Please enter a 6-digit OTP.");
-        }
-    };
-
-    const handleResendOtp = async () => {
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        setGeneratedOtp(otp);
-        
-        setIsVerifying(true);
-        const result = await sendOTP(formData.mobile, otp);
-        setIsVerifying(false);
-
-        if (result.success) {
-            toast.success("New OTP sent!");
-        } else {
-            toast.error(result.message);
-        }
-    };
-
-    const handleFinalSubmit = async (e: React.FormEvent) => {
+    const handleDetailsSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setStep(3);
+    };
+
+    const handleFinalSubmit = async (pkg: string) => {
         setIsSubmitting(true);
+        const finalData = { ...formData, selectedPackage: pkg };
 
         try {
             // 1. Send data to Webhook (Google Sheets + Email)
@@ -131,7 +94,7 @@ const ListVenue = () => {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             type: 'Comprehensive Venue Application',
-                            ...formData
+                            ...finalData
                         })
                     });
                 } catch (webhookErr) {
@@ -152,7 +115,7 @@ const ListVenue = () => {
                 rooms_count: parseInt(formData.roomsCount) || 0,
                 veg_price_per_plate: parseInt(formData.vegPrice) || 0,
                 nonveg_price_per_plate: parseInt(formData.nonVegPrice) || 0,
-                description: formData.description,
+                description: formData.description + `\n\nSelected Package: ${pkg}`,
                 has_ac: formData.hasAc,
                 has_wifi: formData.hasWifi,
                 alcohol_served: formData.alcoholServed,
@@ -267,12 +230,9 @@ const ListVenue = () => {
                                         <div className="pt-6">
                                             <Button 
                                                 type="submit" 
-                                                disabled={isVerifying}
                                                 className="w-full h-14 bg-red-600 hover:bg-red-700 text-white font-bold text-lg rounded-xl shadow-lg shadow-red-100 transition-all flex items-center justify-center gap-2"
                                             >
-                                                {isVerifying ? (
-                                                    <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>
-                                                ) : "Verify Number & Continue"}
+                                                Continue to Business Details
                                             </Button>
                                             <p className="text-[10px] text-center text-slate-400 mt-4 px-4">
                                                 By proceeding, you agree to VenueConnect's Terms & Privacy Policy and consent to receive updates.
@@ -282,27 +242,8 @@ const ListVenue = () => {
                                 </div>
                             )}
 
-                            {/* Step 2: OTP Verification */}
+                            {/* Step 2: Detailed Business Info */}
                             {step === 2 && (
-                                <div className="p-8 md:p-12 animate-in slide-in-from-right duration-300 bg-white">
-                                    <div className="mb-8 flex items-center">
-                                        <button onClick={() => setStep(1)} className="p-2 hover:bg-slate-100 rounded-full transition-colors mr-2">
-                                            <ArrowLeft className="w-5 h-5 text-slate-600" />
-                                        </button>
-                                        <span className="text-sm font-bold text-slate-500">Back to Contact Details</span>
-                                    </div>
-                                    
-                                    <OTPVerification 
-                                        phoneNumber={formData.mobile}
-                                        onVerify={handleVerifyOtp}
-                                        onResend={handleResendOtp}
-                                        isVerifying={isVerifying}
-                                    />
-                                </div>
-                            )}
-
-                            {/* Step 3: Detailed Business Info (Old Form) */}
-                            {step === 3 && (
                                 <div className="p-8 md:p-12 animate-in slide-in-from-bottom duration-500">
                                     <div className="flex items-center justify-between mb-10 border-b border-slate-100 pb-6">
                                         <div>
@@ -314,7 +255,7 @@ const ListVenue = () => {
                                         </div>
                                     </div>
 
-                                    <form onSubmit={handleFinalSubmit} className="space-y-10">
+                                    <form onSubmit={handleDetailsSubmit} className="space-y-10">
                                         
                                         {/* Basic Info Section */}
                                         <div className="grid md:grid-cols-2 gap-8">
@@ -518,16 +459,30 @@ const ListVenue = () => {
                                             </button>
                                             <button 
                                                 type="submit" 
-                                                disabled={isSubmitting}
                                                 className="w-full sm:w-2/3 h-14 bg-red-600 hover:bg-red-700 text-white font-bold text-xl rounded-xl shadow-xl shadow-red-100 transition-all flex items-center justify-center gap-2"
                                             >
-                                                {isSubmitting ? (
-                                                    <><Loader2 className="w-6 h-6 animate-spin" /> Submitting...</>
-                                                ) : "Submit Business Application"}
+                                                Choose Package
                                             </button>
                                         </div>
 
                                     </form>
+                                </div>
+                            )}
+
+                            {/* Step 3: Package Selection */}
+                            {step === 3 && (
+                                <div className="p-4 md:p-8 animate-in zoom-in duration-500">
+                                    <div className="mb-6 flex items-center">
+                                        <button onClick={() => setStep(2)} className="p-2 hover:bg-slate-100 rounded-full transition-colors mr-2">
+                                            <ArrowLeft className="w-5 h-5 text-slate-600" />
+                                        </button>
+                                        <span className="text-sm font-bold text-slate-500">Back to Business Details</span>
+                                    </div>
+                                    <div className="text-center mb-10">
+                                        <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Select your plan</h2>
+                                        <p className="text-slate-500 mt-2">Get verified leads and manage your venues efficiently.</p>
+                                    </div>
+                                    <PricingPackages onSelect={handleFinalSubmit} isLoading={isSubmitting} />
                                 </div>
                             )}
 
