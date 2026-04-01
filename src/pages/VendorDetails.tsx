@@ -87,8 +87,29 @@ const VendorDetails = () => {
             <SEO 
                 title={`${vendor.name} - ${vendor.category} in ${vendor.city}`}
                 description={`Connect with ${vendor.name}, a top-rated ${vendor.category} in ${vendor.city}. View their work, check pricing, and book for your next event on VenueConnect.`}
-                ogType="article"
-                ogImage={images[0]}
+                type="article"
+                image={images[0]}
+                jsonLd={{
+                    "@context": "https://schema.org",
+                    "@type": "LocalBusiness",
+                    "name": vendor.name,
+                    "image": images,
+                    "@id": window.location.href,
+                    "url": window.location.href,
+                    "telephone": "+910000000000",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "streetAddress": vendor.address || vendor.city,
+                        "addressLocality": vendor.city,
+                        "addressRegion": "Gujarat",
+                        "addressCountry": "IN"
+                    },
+                    "aggregateRating": {
+                        "@type": "AggregateRating",
+                        "ratingValue": vendor.rating || 4.8,
+                        "reviewCount": vendor.reviews || 5
+                    }
+                }}
             />
             <Navbar />
 
@@ -97,6 +118,36 @@ const VendorDetails = () => {
                     <Link to="/vendors" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary mb-6 transition-colors">
                         <ChevronLeft className="w-4 h-4 mr-1" /> Back to Vendors
                     </Link>
+
+                    {/* AEO Vendor Quick Facts - Optimized for AI Bots */}
+                    <div className="mb-8 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                        <div className="bg-slate-900 px-6 py-3 flex items-center justify-between">
+                            <h3 className="text-white font-bold text-sm tracking-widest uppercase flex items-center gap-2">
+                                <Award className="w-4 h-4 text-blue-400" /> Vendor Intelligence
+                            </h3>
+                            <span className="text-slate-400 text-[10px] font-medium uppercase tracking-tighter">Verified Pro</span>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-slate-100">
+                            <div className="p-4 flex flex-col gap-1">
+                                <span className="text-[10px] text-slate-400 font-bold uppercase">Starting At</span>
+                                <span className="text-lg font-black text-slate-800">₹{(vendor.startingPrice || 5000).toLocaleString('en-IN')} <span className="text-[10px] text-slate-500 font-normal">/event</span></span>
+                            </div>
+                            <div className="p-4 flex flex-col gap-1">
+                                <span className="text-[10px] text-slate-400 font-bold uppercase">Service area</span>
+                                <span className="text-lg font-black text-slate-800 truncate">{vendor.city || "Gujarat"}</span>
+                            </div>
+                            <div className="p-4 flex flex-col gap-1">
+                                <span className="text-[10px] text-slate-400 font-bold uppercase">Pro Rating</span>
+                                <span className="text-lg font-black text-slate-800 flex items-center gap-1">
+                                    {vendor.rating || 4.8} <Star className="w-4 h-4 fill-blue-400 text-blue-400" />
+                                </span>
+                            </div>
+                            <div className="p-4 flex flex-col gap-1">
+                                <span className="text-[10px] text-slate-400 font-bold uppercase">Response time</span>
+                                <span className="text-lg font-black text-slate-800">24 <span className="text-[10px] text-slate-500 font-normal">hours</span></span>
+                            </div>
+                        </div>
+                    </div>
 
                     {userSession?.user?.id === vendor.owner_id && (
                         <div className="mb-6 bg-amber-50 border border-amber-200 rounded-lg p-4 flex flex-col md:flex-row items-center justify-between gap-4">

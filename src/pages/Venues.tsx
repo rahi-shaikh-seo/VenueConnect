@@ -8,6 +8,7 @@ import VenueCard, { VenueData } from "@/components/VenueCard";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import SEOLinksDirectory from "@/components/SEOLinksDirectory";
 
 const Venues = () => {
     const [searchParams] = useSearchParams();
@@ -231,6 +232,8 @@ const Venues = () => {
                     </div>
                 </div>
             </main>
+
+            <SEOLinksDirectory city={searchCity} />
 
             <Footer />
         </div>

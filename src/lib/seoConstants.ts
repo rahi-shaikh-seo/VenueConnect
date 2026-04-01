@@ -1,0 +1,101 @@
+export const VENUE_CATEGORIES = [
+  "banquet-halls",
+  "party-plots",
+  "hotels",
+  "resorts",
+  "restaurants",
+  "farmhouses",
+  "clubs",
+  "cafes",
+  "lawns",
+  "marriage-halls",
+  "conference-rooms",
+  "party-halls",
+  "rooftop-spaces",
+  "poolside-spaces",
+  "heritage-venues",
+  "luxury-venues",
+  "garden-venues"
+];
+
+export const VENDOR_CATEGORIES = [
+  "photographers",
+  "makeup-artists",
+  "decorators",
+  "caterers",
+  "mehndi-artists",
+  "wedding-planners",
+  "djs",
+  "videographers",
+  "invitation-designers",
+  "wedding-cakes",
+  "florists",
+  "transport-services",
+  "security-services"
+];
+
+export const EVENT_TYPES = [
+  "wedding",
+  "birthday-party",
+  "engagement",
+  "corporate-event",
+  "reception",
+  "sangeet-ceremony",
+  "garba-night",
+  "pool-party",
+  "kitty-party",
+  "cocktail-party",
+  "baby-shower",
+  "anniversary-party",
+  "farewell-party",
+  "reunion-party",
+  "product-launch",
+  "conference",
+  "seminar",
+  "award-ceremony",
+  "walkin-interview",
+  "training",
+  "team-outing",
+  "stage-event",
+  "ring-ceremony",
+  "residential-conference",
+  "pre-wedding-mehendi-party",
+  "photo-shoots",
+  "naming-ceremony",
+  "musical-concert",
+  "mice",
+  "meeting",
+  "kids-birthday-party",
+  "holi-party",
+  "group-dining",
+  "get-together",
+  "game-watch",
+  "freshers-party",
+  "first-birthday-party",
+  "fashion-show",
+  "family-function",
+  "exhibition",
+  "corporate-training",
+  "corporate-party",
+  "corporate-offsite",
+  "cocktail-dinner",
+  "class-reunion",
+  "christian-communion",
+  "childrens-party",
+  "business-dinner",
+  "bridal-shower",
+  "brand-promotion",
+  "bachelor-party",
+  "aqueeqa-ceremony",
+  "annual-fest",
+  "adventure-party",
+  "haldi-ceremony"
+];
+
+export const formatSlug = (slug: string) => {
+  if (!slug) return "";
+  return slug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};

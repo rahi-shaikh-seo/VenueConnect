@@ -9,6 +9,7 @@ interface SEOProps {
   name?: string;
   url?: string;
   image?: string;
+  jsonLd?: object | string;
 }
 
 export default function SEO({ 
@@ -18,10 +19,12 @@ export default function SEO({
   type = "website", 
   keywords,
   url = "",
-  image = "https://venueconnect.in/og-image.jpg"
+  image = "https://venueconnect.in/og-image.jpg",
+  jsonLd
 }: SEOProps) {
   const location = useLocation();
   const canonicalUrl = url || `https://venueconnect.in${location.pathname}`;
+  
   return (
     <Helmet>
       {/* Standard metadata tags */}
@@ -45,6 +48,14 @@ export default function SEO({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       {image && <meta name="twitter:image" content={image} />}
+
+      {/* Structured Data (AEO Optimization) */}
+      {jsonLd && (
+        <script type="application/ld+json">
+          {typeof jsonLd === 'string' ? jsonLd : JSON.stringify(jsonLd)}
+        </script>
+      )}
     </Helmet>
   );
 }
+

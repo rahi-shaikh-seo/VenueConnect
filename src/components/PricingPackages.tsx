@@ -77,22 +77,22 @@ export default function PricingPackages({ onSelect, isLoading }: PricingPackages
 
     return (
         <div className="w-full">
-            <div className="max-w-5xl mx-auto mb-12 bg-[#1A1A1A] rounded-2xl p-6 md:p-8 border border-slate-800 shadow-xl overflow-hidden">
-                <h3 className="text-xl font-bold text-white mb-8 text-center">How Lead Forwarding Works</h3>
+            <div className="max-w-5xl mx-auto mb-12 bg-pink-50/50 rounded-2xl p-6 md:p-8 border border-pink-100 shadow-sm overflow-hidden">
+                <h3 className="text-xl font-bold text-slate-900 mb-8 text-center">How Lead Forwarding Works</h3>
                 <div className="flex flex-wrap items-center justify-center gap-y-5 gap-x-2 text-[13px] md:text-sm font-medium">
-                    <span className="bg-[#2A2A2A] text-slate-200 border border-slate-700 px-4 py-2 rounded-full inline-block">User sees listing</span>
-                    <ArrowRight className="w-4 h-4 text-slate-500 shrink-0" />
+                    <span className="bg-white text-slate-700 border border-slate-200 px-4 py-2 rounded-full inline-block shadow-sm">User sees listing</span>
+                    <ArrowRight className="w-4 h-4 text-pink-400 shrink-0" />
                     
-                    <span className="bg-[#2A2A2A] text-slate-200 border border-slate-700 px-4 py-2 rounded-full inline-block">Clicks "Send Enquiry"</span>
-                    <ArrowRight className="w-4 h-4 text-slate-500 shrink-0" />
+                    <span className="bg-white text-slate-700 border border-slate-200 px-4 py-2 rounded-full inline-block shadow-sm">Clicks "Send Enquiry"</span>
+                    <ArrowRight className="w-4 h-4 text-pink-400 shrink-0" />
                     
-                    <span className="bg-[#2A2A2A] text-slate-200 border border-slate-700 px-4 py-2 rounded-full inline-block">Fills form (name, phone, budget, date)</span>
-                    <ArrowRight className="w-4 h-4 text-slate-500 shrink-0" />
+                    <span className="bg-white text-slate-700 border border-slate-200 px-4 py-2 rounded-full inline-block shadow-sm">Fills form (name, phone, budget, date)</span>
+                    <ArrowRight className="w-4 h-4 text-pink-400 shrink-0" />
                     
-                    <span className="bg-[#E8F5E9] text-emerald-800 px-5 py-2 rounded-full font-bold shadow-lg shadow-emerald-500/10 inline-block">Lead goes to VenueConnect</span>
-                    <ArrowRight className="w-4 h-4 text-slate-500 shrink-0" />
+                    <span className="bg-pink-600 text-white px-5 py-2 rounded-full font-bold shadow-md shadow-pink-600/20 inline-block">Lead goes to VenueConnect</span>
+                    <ArrowRight className="w-4 h-4 text-pink-400 shrink-0" />
                     
-                    <span className="bg-[#2A2A2A] text-slate-200 border border-slate-700 px-4 py-2 rounded-full inline-block">Forwarded to paid subscriber via WhatsApp</span>
+                    <span className="bg-white text-slate-700 border border-slate-200 px-4 py-2 rounded-full inline-block shadow-sm">Forwarded to paid subscriber via WhatsApp</span>
                 </div>
             </div>
 
@@ -100,14 +100,14 @@ export default function PricingPackages({ onSelect, isLoading }: PricingPackages
                 {packages.map((pkg) => (
                 <div 
                     key={pkg.name} 
-                    className={`relative bg-[#1A1A1A] text-white rounded-2xl p-6 md:p-8 flex flex-col border ${
+                    className={`relative bg-white text-slate-900 rounded-2xl p-6 md:p-8 flex flex-col border ${
                         pkg.name === 'Professional' 
-                            ? 'border-emerald-500 shadow-lg shadow-emerald-900/20' 
-                            : 'border-slate-800'
+                            ? 'border-pink-500 shadow-lg shadow-pink-100 ring-2 ring-pink-500/20' 
+                            : 'border-slate-200 shadow-sm'
                     }`}
                 >
                     {pkg.badge && (
-                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-pink-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
                             {pkg.badge}
                         </div>
                     )}
@@ -116,7 +116,7 @@ export default function PricingPackages({ onSelect, isLoading }: PricingPackages
                         <div className="flex items-center gap-2 mb-2">
                             <h3 className="text-xl font-bold">{pkg.name}</h3>
                             {pkg.verifiedBadge && (
-                                <span className="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
+                                <span className="bg-blue-50 text-blue-600 border border-blue-100 text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
                                     <Check className="w-3 h-3" /> Verified
                                 </span>
                             )}
@@ -124,13 +124,13 @@ export default function PricingPackages({ onSelect, isLoading }: PricingPackages
                         
                         <div className="flex items-baseline gap-2 mb-3">
                             {pkg.originalPrice && (
-                                <span className="text-xl text-slate-400 line-through decoration-slate-400">{pkg.originalPrice}</span>
+                                <span className="text-xl text-slate-400 line-through decoration-slate-300">{pkg.originalPrice}</span>
                             )}
-                            <span className="text-4xl font-bold text-white">{pkg.price}</span>
-                            <span className="text-slate-400 text-sm">{pkg.period}</span>
+                            <span className="text-4xl font-bold text-slate-900">{pkg.price}</span>
+                            <span className="text-slate-500 text-sm">{pkg.period}</span>
                         </div>
                         
-                        <div className="bg-[#E8F5E9] text-emerald-800 text-sm font-semibold px-4 py-1.5 rounded-full inline-block mt-2">
+                        <div className="bg-pink-50 text-pink-700 border border-pink-100 text-sm font-semibold px-4 py-1.5 rounded-full inline-block mt-2">
                             {pkg.leads}
                         </div>
                     </div>
@@ -140,18 +140,18 @@ export default function PricingPackages({ onSelect, isLoading }: PricingPackages
                             <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">What you get</p>
                             {pkg.features.map((feat, i) => (
                                 <div key={i} className="flex items-start gap-3">
-                                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                                    <span className="text-slate-300 leading-relaxed text-[13px]">{feat}</span>
+                                    <Check className="w-4 h-4 text-pink-500 shrink-0 mt-0.5" />
+                                    <span className="text-slate-600 leading-relaxed text-[13px]">{feat}</span>
                                 </div>
                             ))}
                         </div>
                         
                         {pkg.notIncluded.length > 0 && (
-                            <div className="space-y-4 pt-4 border-t border-slate-800">
+                            <div className="space-y-4 pt-4 border-t border-slate-100">
                                 <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Not included</p>
                                 {pkg.notIncluded.map((feat, i) => (
                                     <div key={i} className="flex items-start gap-3">
-                                        <Minus className="w-4 h-4 text-slate-600 shrink-0 mt-0.5" />
+                                        <Minus className="w-4 h-4 text-slate-300 shrink-0 mt-0.5" />
                                         <span className="text-slate-500 leading-relaxed text-[13px]">{feat}</span>
                                     </div>
                                 ))}
@@ -159,9 +159,9 @@ export default function PricingPackages({ onSelect, isLoading }: PricingPackages
                         )}
                     </div>
                     
-                    <div className="mt-8 pt-6 border-t border-slate-800">
+                    <div className="mt-8 pt-6 border-t border-slate-100">
                         {pkg.extraLeads && (
-                            <div className="bg-[#2A2A2A] text-slate-300 text-xs text-center p-3 rounded-lg mb-4">
+                            <div className="bg-slate-50 text-slate-600 border border-slate-100 text-xs text-center p-3 rounded-lg mb-4">
                                 {pkg.extraLeads}
                             </div>
                         )}
@@ -170,8 +170,8 @@ export default function PricingPackages({ onSelect, isLoading }: PricingPackages
                             disabled={isLoading}
                             className={`w-full h-12 rounded-xl font-bold text-base transition-all border ${
                                 pkg.name === 'Professional' 
-                                    ? 'bg-transparent text-white border-white hover:bg-white/10' 
-                                    : 'bg-transparent border-slate-600 text-white hover:bg-slate-800'
+                                    ? 'bg-pink-600 text-white border-transparent hover:bg-pink-700 shadow-md shadow-pink-200' 
+                                    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
                             }`}
                         >
                             Get started {pkg.name === 'Starter' && '(Free)'}

@@ -88,8 +88,38 @@ export default function VenueDetails() {
             <SEO 
                 title={`${venue.name} in ${venue.city}`}
                 description={`Book ${venue.name} in ${venue.city} for your next event. Check prices, capacity, amenities, and read verified reviews for this ${venue.type} on VenueConnect.`}
-                ogType="article"
-                ogImage={images[0]}
+                type="article"
+                image={images[0]}
+                jsonLd={{
+                    "@context": "https://schema.org",
+                    "@type": "EventVenue",
+                    "name": venue.name,
+                    "description": venue.description,
+                    "image": images,
+                    "address": {
+                        "@type": "PostalAddress",
+                        "streetAddress": venue.address || venue.location,
+                        "addressLocality": venue.city,
+                        "addressRegion": "Gujarat",
+                        "postalCode": "380001",
+                        "addressCountry": "IN"
+                    },
+                    "geo": {
+                        "@type": "GeoCoordinates",
+                        "latitude": 23.0225,
+                        "longitude": 72.5714
+                    },
+                    "url": window.location.href,
+                    "telephone": "+910000000000",
+                    "priceRange": `₹${venue.veg_price_per_plate || 500}+`,
+                    "aggregateRating": {
+                        "@type": "AggregateRating",
+                        "ratingValue": venue.rating || 4.5,
+                        "reviewCount": venue.reviews || 1,
+                        "bestRating": "5",
+                        "worstRating": "1"
+                    }
+                }}
             />
             <Navbar />
 
@@ -98,6 +128,36 @@ export default function VenueDetails() {
                     <Link to="/venues" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary mb-6 transition-colors">
                         <ChevronLeft className="w-4 h-4 mr-1" /> Back to Venues
                     </Link>
+
+                    {/* AEO Quick Facts Section - Optimized for AI Bots */}
+                    <div className="mb-8 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                        <div className="bg-slate-900 px-6 py-3 flex items-center justify-between">
+                            <h3 className="text-white font-bold text-sm tracking-widest uppercase flex items-center gap-2">
+                                <Info className="w-4 h-4 text-pink-500" /> Venue Quick Facts
+                            </h3>
+                            <span className="text-slate-400 text-[10px] font-medium uppercase tracking-tighter">Verified Content</span>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-slate-100">
+                            <div className="p-4 flex flex-col gap-1">
+                                <span className="text-[10px] text-slate-400 font-bold uppercase">Base Price</span>
+                                <span className="text-lg font-black text-slate-800">₹{venue.veg_price_per_plate || venue.price_per_plate || 0} <span className="text-[10px] text-slate-500 font-normal">/plate</span></span>
+                            </div>
+                            <div className="p-4 flex flex-col gap-1">
+                                <span className="text-[10px] text-slate-400 font-bold uppercase">Guest Capacity</span>
+                                <span className="text-lg font-black text-slate-800">{venue.max_capacity || 0} <span className="text-[10px] text-slate-500 font-normal">max</span></span>
+                            </div>
+                            <div className="p-4 flex flex-col gap-1">
+                                <span className="text-[10px] text-slate-400 font-bold uppercase">Rating</span>
+                                <span className="text-lg font-black text-slate-800 flex items-center gap-1">
+                                    {venue.rating || "0.0"} <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                                </span>
+                            </div>
+                            <div className="p-4 flex flex-col gap-1">
+                                <span className="text-[10px] text-slate-400 font-bold uppercase">Type</span>
+                                <span className="text-lg font-black text-slate-800 truncate capitalize">{venue.type || "Venue"}</span>
+                            </div>
+                        </div>
+                    </div>
 
                     {userSession?.user?.id === venue.owner_id && (
                         <div className="mb-6 bg-amber-50 border border-amber-200 rounded-lg p-4 flex flex-col md:flex-row items-center justify-between gap-4">

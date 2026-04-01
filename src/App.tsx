@@ -32,6 +32,7 @@ import BlogPost from "./pages/BlogPost";
 import FAQs from "./pages/FAQs";
 import ScrollToTop from "./components/ScrollToTop";
 import FloatingScrollToTop from "./components/FloatingScrollToTop";
+import SEOLandingPage from "./pages/SEOLandingPage";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +81,15 @@ const App = () => (
           } />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Programmatic SEO Engine Routes - Venuelook Style */}
+          <Route path="/:citySlug/:categorySlug" element={<SEOLandingPage />} />
+          <Route path="/:citySlug/:localitySlug/:categorySlug" element={<SEOLandingPage />} />
+          <Route path="/venues-for/:eventSlug/:citySlug" element={<SEOLandingPage />} />
+          <Route path="/venues-for/:eventSlug/:citySlug/:localitySlug" element={<SEOLandingPage />} />
+          
+          {/* Legacy Programmatic SEO route */}
+          <Route path="/:type/:categorySlug/:citySlug" element={<SEOLandingPage />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

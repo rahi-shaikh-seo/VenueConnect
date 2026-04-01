@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { citiesData } from "@/lib/citiesData";
+import SearchableCitySelect from "@/components/SearchableCitySelect";
 import PricingPackages from "@/components/PricingPackages";
 import { Check, Loader2, ArrowLeft, Building2, MapPin, Users, IndianRupee, Info, Clock, Utensils, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -282,12 +283,12 @@ const ListVenue = () => {
 
                                                 <div>
                                                     <label className={labelCls}>City *</label>
-                                                    <select name="city" value={formData.city} onChange={handleChange} className={inputCls} required>
-                                                        <option value="">Select City</option>
-                                                        {citiesData.sort((a,b) => a.name.localeCompare(b.name)).map(city => (
-                                                            <option key={city.slug} value={city.name}>{city.name}</option>
-                                                        ))}
-                                                    </select>
+                                                    <SearchableCitySelect 
+                                                        value={formData.city}
+                                                        onChange={(val) => setFormData({ ...formData, city: val })}
+                                                        className={inputCls}
+                                                    />
+                                                    <input type="hidden" name="city" value={formData.city} required />
                                                 </div>
                                             </div>
 
