@@ -213,6 +213,12 @@ export const revalidate = 3600;
 export async function generateStaticParams() {
   const { createClient: createStaticClient } = await import("@/lib/supabase/static");
   const supabase = createStaticClient();
+
+  if (!supabase) {
+    console.warn("Supabase client is null during venues/[id] static generation. Skipping.");
+    return [];
+  }
+
   const { data } = await supabase.from('venues').select('id').limit(50);
   return data?.map((v) => ({ id: v.id })) || [];
 }
