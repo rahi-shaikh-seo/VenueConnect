@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { formatTitle } from "@/lib/seoContentEngine";
 import { citiesData } from "@/lib/citiesData";
