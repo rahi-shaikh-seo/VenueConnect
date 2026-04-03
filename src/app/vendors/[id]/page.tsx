@@ -52,8 +52,8 @@ export default async function VendorDetailsPage({ params }: PageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <main className="py-8 bg-slate-50">
+    <div className="min-h-screen bg-slate-50">
+      <main className="py-8">
         <div className="container px-4 md:px-6 mx-auto max-w-7xl">
           <Link href="/vendors" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary mb-6 transition-colors">
             <ChevronLeft className="w-4 h-4 mr-1" /> Back to Vendors
@@ -61,7 +61,7 @@ export default async function VendorDetailsPage({ params }: PageProps) {
 
           {/* Business Card Header */}
           <div className="mb-10 bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xl shadow-slate-200/50">
-            <div className="flex flex-col lg:flex-row h-full">
+            <div className="flex flex-col lg:flex-row min-h-[400px]">
               {/* Image Section */}
               <div className="lg:w-1/2 h-[300px] lg:h-auto relative overflow-hidden">
                 <img src={vendor.image || galleryImages[0]} alt={vendor.name} className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
@@ -80,32 +80,17 @@ export default async function VendorDetailsPage({ params }: PageProps) {
               {/* Info Section */}
               <div className="lg:w-1/2 p-10 flex flex-col justify-between">
                 <div>
-                  <div className="flex justify-between items-start mb-4">
-                    <h1 className="font-display text-4xl font-bold text-slate-900">{vendor.name}</h1>
+                  <div className="flex justify-between items-start mb-6">
+                    <div>
+                      <h1 className="font-display text-4xl md:text-5xl font-bold text-slate-900 mb-2 leading-tight">{vendor.name}</h1>
+                      <div className="flex items-center gap-2 text-slate-500 text-lg font-light">
+                        <MapPin className="w-5 h-5 text-primary" /> {vendor.location || `${vendor.city}, Gujarat`}
+                      </div>
+                    </div>
                     <div className="flex gap-2">
                       <Button size="icon" variant="ghost" className="rounded-full bg-slate-50 text-slate-400 hover:text-slate-900"><Heart className="w-5 h-5"/></Button>
                       <Button size="icon" variant="ghost" className="rounded-full bg-slate-50 text-slate-400 hover:text-slate-900"><Share2 className="w-5 h-5"/></Button>
                     </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-slate-500 mb-6 font-light">
-                    <MapPin className="w-4 h-4 text-primary" /> 
-                    <span>{vendor.location || `${vendor.city}, Gujarat`}</span>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-6 mb-8">
-                     <div className="space-y-1">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Starting Price</span>
-                        <div className="text-2xl font-black text-slate-900">
-                          {vendor.starting_price ? `₹${vendor.starting_price}` : "Price on Request"}
-                        </div>
-                     </div>
-                     <div className="space-y-1">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Client Rating</span>
-                        <div className="text-2xl font-black text-amber-500 flex items-center gap-2">
-                          {vendor.rating || "0.0"} <Star className="w-5 h-5 fill-amber-500" />
-                        </div>
-                     </div>
                   </div>
                 </div>
 
@@ -205,5 +190,5 @@ export async function generateStaticParams() {
   }
   
   const { data } = await supabase.from('vendors').select('id').limit(50);
-  return data?.map((v) => ({ id: v.id })) || [];
+  return data?.map((v: any) => ({ id: v.id })) || [];
 }
