@@ -8,8 +8,6 @@ import {
 import { Button } from "@/components/ui/button";
 import GetQuoteModal from "@/components/GetQuoteModal";
 import ReviewsList from "@/components/ReviewsList";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
@@ -56,9 +54,8 @@ export default async function VenueDetailsPage({ params }: PageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
-      <main className="flex-grow py-8 bg-slate-50">
+    <div className="min-h-screen bg-background">
+      <main className="py-8 bg-slate-50">
         <div className="container px-4 md:px-6 mx-auto max-w-7xl">
           <Link href="/venues" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary mb-6 transition-colors">
             <ChevronLeft className="w-4 h-4 mr-1" /> Back to Venues
@@ -75,11 +72,18 @@ export default async function VenueDetailsPage({ params }: PageProps) {
             <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-slate-100">
               <div className="p-4 flex flex-col gap-1">
                 <span className="text-[10px] text-slate-400 font-bold uppercase">Base Price</span>
-                <span className="text-lg font-black text-slate-800">₹{venue.veg_price_per_plate || venue.price_per_plate || 0} <span className="text-[10px] text-slate-500 font-normal">/plate</span></span>
+                <span className="text-lg font-black text-slate-800">
+                  {venue.veg_price_per_plate || venue.price_per_plate 
+                    ? `₹${venue.veg_price_per_plate || venue.price_per_plate}` 
+                    : "Price on Request"}
+                  {(venue.veg_price_per_plate || venue.price_per_plate) && <span className="text-[10px] text-slate-500 font-normal ml-1">/plate</span>}
+                </span>
               </div>
               <div className="p-4 flex flex-col gap-1">
                 <span className="text-[10px] text-slate-400 font-bold uppercase">Guest Capacity</span>
-                <span className="text-lg font-black text-slate-800">{venue.max_capacity || 0} <span className="text-[10px] text-slate-500 font-normal">max</span></span>
+                <span className="text-lg font-black text-slate-800">
+                  {venue.max_capacity ? `${venue.max_capacity} max` : "Contact for Capacity"}
+                </span>
               </div>
               <div className="p-4 flex flex-col gap-1">
                 <span className="text-[10px] text-slate-400 font-bold uppercase">Rating</span>
@@ -116,7 +120,7 @@ export default async function VenueDetailsPage({ params }: PageProps) {
                 </div>
                 <div className="flex items-center gap-1.5 text-slate-600 bg-white border px-3 py-1 rounded-full shadow-sm">
                   <Users className="w-4 h-4" /> 
-                  <span>Capacity: {venue.min_capacity || 0} - {venue.max_capacity || 0}</span>
+                  <span>Capacity: {venue.max_capacity ? `${venue.min_capacity || 0} - ${venue.max_capacity}` : "Contact for Details"}</span>
                 </div>
               </div>
             </div>
@@ -161,11 +165,11 @@ export default async function VenueDetailsPage({ params }: PageProps) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <span className="text-slate-500 text-xs font-bold uppercase tracking-wider block mb-1">Veg Plate</span>
-                    <div className="text-2xl font-black text-slate-900">₹{venue.veg_price_per_plate || 0}</div>
+                    <div className="text-2xl font-black text-slate-900">{venue.veg_price_per_plate ? `₹${venue.veg_price_per_plate}` : "On Request"}</div>
                   </div>
                   <div>
                     <span className="text-slate-500 text-xs font-bold uppercase tracking-wider block mb-1">Non-Veg Plate</span>
-                    <div className="text-2xl font-black text-slate-900">₹{venue.nonveg_price_per_plate || "N/A"}</div>
+                    <div className="text-2xl font-black text-slate-900">{venue.nonveg_price_per_plate ? `₹${venue.nonveg_price_per_plate}` : "On Request"}</div>
                   </div>
                   <div>
                     <span className="text-slate-500 text-xs font-bold uppercase tracking-wider block mb-1">Advance</span>
@@ -203,7 +207,6 @@ export default async function VenueDetailsPage({ params }: PageProps) {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

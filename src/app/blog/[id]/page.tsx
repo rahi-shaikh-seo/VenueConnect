@@ -1,6 +1,4 @@
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Calendar, Clock, ArrowLeft, Tag, ArrowRight } from "lucide-react";
 import { blogPosts, articleContent } from "@/lib/blog-data";
 import { Button } from "@/components/ui/button";
@@ -67,15 +65,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
 
   if (!post) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <div className="flex-grow flex flex-col items-center justify-center text-slate-400 gap-4">
-            <p>Post not found.</p>
-            <Button asChild variant="outline">
-                <Link href="/blog">Back to Blog</Link>
-            </Button>
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="text-center space-y-4">
+          <p className="text-slate-400">Post not found.</p>
+          <Button asChild variant="outline">
+            <Link href="/blog">Back to Blog</Link>
+          </Button>
         </div>
-        <Footer />
       </div>
     );
   }
@@ -84,9 +80,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
   const content = getContent(post.id, post);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col font-sans">
-      <Navbar />
-
+    <div className="min-h-screen bg-background font-sans">
       <main className="flex-grow">
         {/* Hero Image */}
         <div className="relative h-64 md:h-96 overflow-hidden bg-slate-900">
@@ -160,8 +154,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

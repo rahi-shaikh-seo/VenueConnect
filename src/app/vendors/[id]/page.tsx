@@ -7,8 +7,6 @@ import {
 import { Button } from "@/components/ui/button";
 import GetQuoteModal from "@/components/GetQuoteModal";
 import ReviewsList from "@/components/ReviewsList";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
@@ -54,9 +52,8 @@ export default async function VendorDetailsPage({ params }: PageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
-      <main className="flex-grow py-8 bg-slate-50">
+    <div className="min-h-screen bg-background">
+      <main className="py-8 bg-slate-50">
         <div className="container px-4 md:px-6 mx-auto max-w-7xl">
           <Link href="/vendors" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary mb-6 transition-colors">
             <ChevronLeft className="w-4 h-4 mr-1" /> Back to Vendors
@@ -98,8 +95,10 @@ export default async function VendorDetailsPage({ params }: PageProps) {
 
                   <div className="grid grid-cols-2 gap-6 mb-8">
                      <div className="space-y-1">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Base Package</span>
-                        <div className="text-2xl font-black text-slate-900">₹{vendor.starting_price || 0}</div>
+                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Starting Price</span>
+                        <div className="text-2xl font-black text-slate-900">
+                          {vendor.starting_price ? `₹${vendor.starting_price}` : "Price on Request"}
+                        </div>
                      </div>
                      <div className="space-y-1">
                         <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Client Rating</span>
@@ -190,7 +189,6 @@ export default async function VendorDetailsPage({ params }: PageProps) {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }
