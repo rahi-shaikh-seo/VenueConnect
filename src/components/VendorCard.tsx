@@ -1,3 +1,5 @@
+'use client';
+
 import { Star, MapPin, Send, CheckCircle2, IndianRupee, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

@@ -1,3 +1,5 @@
+"use client";
+
 import { Search, GitCompare, Send, Handshake } from "lucide-react";
 import { motion } from "framer-motion";
 

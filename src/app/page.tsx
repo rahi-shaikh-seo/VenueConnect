@@ -1,5 +1,3 @@
-"use client";
-
 import HeroSearch from "@/components/HeroSearch";
 import OccasionSlider from "@/components/OccasionSlider";
 import EventTypeExplorer from "@/components/EventTypeExplorer";

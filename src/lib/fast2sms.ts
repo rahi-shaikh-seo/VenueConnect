@@ -39,8 +39,9 @@ export const sendOTP = async (phoneNumber: string, otp: string) => {
     } else {
       return { success: false, message: data.message || "Failed to send OTP" };
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "An error occurred while sending OTP";
     console.error("Fast2SMS Error:", error);
-    return { success: false, message: error.message || "An error occurred while sending OTP" };
+    return { success: false, message };
   }
 };

@@ -3,7 +3,6 @@ import { Inter, Jost, Cormorant_Garamond } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-export const dynamic = 'force-dynamic';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
@@ -19,12 +18,16 @@ const cormorantGaramond = Cormorant_Garamond({
   variable: "--font-cormorant",
 });
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1.0,
+};
+
 export const metadata: Metadata = {
   title: "VenueConnect | Book Wedding & Event Venues in Gujarat",
   description: "Find and book the best wedding venues, banquet halls, party plots & event spaces in Gujarat. Compare prices, capacity, catering options in Ahmedabad, Surat, Rajkot, Vadodara and across Gujarat.",
   keywords: "wedding venues Gujarat, banquet hall Ahmedabad, party plot Surat, event venue Rajkot, marriage hall Vadodara, farmhouse wedding Gujarat, corporate event venue Gujarat, birthday party venues Gujarat, wedding reception hall, venue booking Gujarat",
   authors: [{ name: "VenueConnect" }],
-  viewport: "width=device-width, initial-scale=1.0",
   robots: "index, follow",
   alternates: {
     canonical: "https://venueconnect.in/",

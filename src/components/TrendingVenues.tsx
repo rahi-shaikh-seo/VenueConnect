@@ -1,3 +1,5 @@
+"use client";
+
 import { TrendingUp, Eye, Clock, Star, MapPin, Users, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";

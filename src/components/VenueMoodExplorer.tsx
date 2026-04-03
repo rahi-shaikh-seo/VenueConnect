@@ -1,3 +1,5 @@
+"use client";
+
 import { Sparkles, Crown, TreePine, Building2, Castle, Flower2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";

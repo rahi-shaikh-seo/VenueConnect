@@ -1,3 +1,5 @@
+'use client';
+
 import { Search, MapPin, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";

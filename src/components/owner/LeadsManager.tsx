@@ -93,7 +93,7 @@ export default function LeadsManager() {
                     </TableHeader>
                     <TableBody>
                         {leads.map((lead) => (
-                            <TableRow key={lead.id} className="group">
+                            <TableRow key={lead.id as string} className="group">
                                 <TableCell className="font-medium align-top py-4">
                                     <div className="flex flex-col gap-1">
                                         <span className="text-slate-900">{String(lead.customer_name)}</span>

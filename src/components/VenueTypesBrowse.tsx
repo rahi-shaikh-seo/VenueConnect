@@ -1,3 +1,5 @@
+"use client";
+
 import { Building2, Home, TreePine, Hotel, Waves, UtensilsCrossed, Users2, Building } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
