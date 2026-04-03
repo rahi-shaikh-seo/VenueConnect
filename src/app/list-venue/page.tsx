@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { citiesData } from "@/lib/citiesData";
-import SearchableCitySelect from "@/components/SearchableCitySelect";
+import DistrictCitySelect from "@/components/DistrictCitySelect";
 import PricingPackages from "@/components/PricingPackages";
 import { Check, Loader2, ArrowLeft, Building2, MapPin, Users, IndianRupee, Info, Clock, Utensils, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -281,11 +281,10 @@ export default function ListVenuePage() {
                                                 </div>
 
                                                 <div>
-                                                    <label className={labelCls}>City *</label>
-                                                    <SearchableCitySelect 
-                                                        value={formData.city}
-                                                        onChange={(val) => setFormData({ ...formData, city: val })}
-                                                        className={inputCls}
+                                                    <label className={labelCls}>District & City *</label>
+                                                    <DistrictCitySelect 
+                                                        onSelect={(val) => setFormData({ ...formData, city: val })}
+                                                        initialValue={formData.city}
                                                     />
                                                     <input type="hidden" name="city" value={formData.city} required />
                                                 </div>
