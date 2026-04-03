@@ -22,6 +22,8 @@ const Navbar = () => {
   const supabase = createClient();
 
   useEffect(() => {
+    if (!supabase) return;
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       if (session?.user?.id) fetchUserRole(session.user.id);
@@ -35,7 +37,7 @@ const Navbar = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [supabase]);
 
   const fetchUserRole = async (userId: string) => {
     const { data } = await supabase
