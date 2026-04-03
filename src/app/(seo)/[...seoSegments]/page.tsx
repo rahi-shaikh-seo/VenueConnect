@@ -93,7 +93,7 @@ export default async function ConsolidatedSEOPage({ params }: PageProps) {
   const { citySlug, categorySlug, localitySlug, isNearMe } = parsed;
   const baseUrl = "https://venueconnect.in";
   const data = generateSEOContent(baseUrl, citySlug, categorySlug, localitySlug, undefined, isNearMe);
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const tableName = categorySlug.includes('photographer') || categorySlug.includes('makeup') ? "vendors" : "venues";
   const cityTitle = formatTitle(citySlug);

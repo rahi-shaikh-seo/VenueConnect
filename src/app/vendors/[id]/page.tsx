@@ -18,7 +18,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: vendor } = await supabase.from('vendors').select('name, description, image, category').eq('id', id).single();
 
   if (!vendor) return { title: "Vendor Not Found | VenueConnect" };
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function VendorDetailsPage({ params }: PageProps) {
   const { id } = await params;
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: vendor, error } = await supabase
     .from('vendors')
