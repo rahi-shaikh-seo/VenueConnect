@@ -1,6 +1,6 @@
 import { Sparkles, Crown, TreePine, Building2, Castle, Flower2 } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const moods = [
   {
@@ -92,7 +92,7 @@ const VenueMoodExplorer = () => {
                 transition={{ delay: i * 0.1 }}
               >
                 <Link
-                  to={`/venues?q=${encodeURIComponent(mood.name)}`}
+                  href={`/venues?q=${encodeURIComponent(mood.name)}`}
                   className="group relative h-72 rounded-2xl overflow-hidden cursor-pointer block"
                 >
                   <img

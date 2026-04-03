@@ -1,11 +1,15 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 
 export const OwnerRoute = ({ children }: { children: React.ReactNode }) => {
     const [loading, setLoading] = useState(true);
     const [isOwner, setIsOwner] = useState(false);
+    const router = useRouter();
+    const supabase = createClient();
 
     useEffect(() => {
         checkOwnerStatus();
@@ -26,7 +30,6 @@ export const OwnerRoute = ({ children }: { children: React.ReactNode }) => {
                 .eq('id', user.id)
                 .single();
 
-            // Allow both 'owner' and 'admin' (super admin) to access Owner pages
             if (profile && (profile.role === 'owner' || profile.role === 'admin')) {
                 setIsOwner(true);
             } else {
@@ -48,7 +51,8 @@ export const OwnerRoute = ({ children }: { children: React.ReactNode }) => {
     }
 
     if (!isOwner) {
-        return <Navigate to="/" replace />;
+        router.push('/');
+        return null;
     }
 
     return <>{children}</>;

@@ -1,6 +1,6 @@
 import { MapPin, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const areas: Record<string, string[]> = {
   Ahmedabad: [
@@ -60,7 +60,7 @@ const LocalAreaDiscovery = () => {
                 <MapPin className="w-5 h-5 text-primary" />
                 <h3 className="font-display text-2xl font-semibold text-foreground">{city}</h3>
                 <Link
-                  to={`/venues?city=${encodeURIComponent(city)}`}
+                  href={`/venues?city=${encodeURIComponent(city)}`}
                   className="ml-auto text-xs text-primary hover:underline font-medium"
                 >
                   All in {city} →
@@ -71,7 +71,7 @@ const LocalAreaDiscovery = () => {
                 {localities.map((area) => (
                   <Link
                     key={area}
-                    to={`/venues?city=${encodeURIComponent(city)}&area=${encodeURIComponent(area)}`}
+                    href={`/venues?city=${encodeURIComponent(city)}&area=${encodeURIComponent(area)}`}
                     className="group flex items-center justify-between px-4 py-3 rounded-lg bg-primary/5 hover:bg-primary hover:text-white transition-all duration-200"
                     title={`Venues in ${area}, ${city}`}
                   >

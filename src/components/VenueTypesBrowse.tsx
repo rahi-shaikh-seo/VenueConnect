@@ -1,6 +1,6 @@
 import { Building2, Home, TreePine, Hotel, Waves, UtensilsCrossed, Users2, Building } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const venueTypes = [
   {
@@ -92,7 +92,7 @@ const VenueTypesBrowse = () => {
                 transition={{ delay: i * 0.05 }}
               >
                 <Link
-                  to={`/venues?type=${encodeURIComponent(type.name.replace(/s$/, ''))}`}
+                  href={`/venues?type=${encodeURIComponent(type.name.replace(/s$/, ''))}`}
                   className="group relative h-48 rounded-xl overflow-hidden cursor-pointer block"
                 >
                   <img

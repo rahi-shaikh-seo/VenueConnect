@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Building, MapPin, Eye, Edit, Store, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export default function MyListings() {
     const [venues, setVenues] = useState<Record<string, unknown>[]>([]);
     const [vendors, setVendors] = useState<Record<string, unknown>[]>([]);
     const [loading, setLoading] = useState(true);
+    const supabase = createClient();
 
     useEffect(() => {
         fetchListings();
@@ -58,7 +59,7 @@ export default function MyListings() {
                     <h2 className="text-xl font-bold text-slate-900">My Listings</h2>
                     <p className="text-sm text-slate-500">Manage your active venues and vendor profiles.</p>
                 </div>
-                <Link to="/list-venue">
+                <Link href="/list-venue">
                     <Button>Add New Listing</Button>
                 </Link>
             </div>
@@ -71,7 +72,7 @@ export default function MyListings() {
                     <h3 className="text-xl font-display font-semibold text-slate-900 mb-2">No listings yet</h3>
                     <p className="text-slate-500 max-w-sm mb-6">List your business or vendor services to start receiving leads from customers.</p>
                     <Button asChild className="bg-primary hover:bg-primary/90 text-white font-medium shadow-md transition-all">
-                        <Link to="/list-venue" className="gap-2 flex items-center">
+                        <Link href="/list-venue" className="gap-2 flex items-center">
                             <Building className="w-4 h-4"/> Create Your First Listing
                         </Link>
                     </Button>
@@ -152,7 +153,7 @@ function ListingCard({ data, type }: { data: Record<string, unknown>, type: 'ven
                 <Button variant="outline" size="sm" className="w-full bg-white gap-2 text-slate-600 hover:text-slate-900">
                     <Edit className="w-3.5 h-3.5" /> Edit
                 </Button>
-                <Link to={`/${type}s/${id}`} className="w-full">
+                <Link href={`/${type}s/${id}`} className="w-full">
                     <Button variant="outline" size="sm" className="w-full bg-white gap-2 text-slate-600 hover:text-primary hover:border-primary/30">
                         <Eye className="w-3.5 h-3.5" /> View
                     </Button>

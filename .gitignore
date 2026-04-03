@@ -10,6 +10,9 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.next/
+out/
+build/
 *.local
 
 # Editor directories and files
@@ -22,3 +25,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+
+# Temporary files
+*.xlsx
+*.xlsx.xla
+*.sql
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!components.json
+!next.config.mjs
+!extracted_categories.json
+!extracted_seo_data.json

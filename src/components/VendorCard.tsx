@@ -1,8 +1,8 @@
 import { Star, MapPin, Send, CheckCircle2, IndianRupee, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 
 export interface VendorData {
@@ -26,6 +26,7 @@ interface VendorCardProps {
 const VendorCard = ({ vendor }: VendorCardProps) => {
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const supabase = createClient();
 
     useEffect(() => {
         checkFavoriteStatus();
@@ -96,7 +97,7 @@ const VendorCard = ({ vendor }: VendorCardProps) => {
     };
 
     return (
-        <Link to={`/vendors/${vendor.id}`} className="block group h-full">
+        <Link href={`/vendors/${vendor.id}`} className="block group h-full">
             <div className="bg-white rounded-xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 h-full flex flex-col relative">
                 
                 {/* Favorite Button */}

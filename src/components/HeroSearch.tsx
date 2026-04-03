@@ -1,24 +1,21 @@
+"use client";
+
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { gujaratCities } from "@/lib/cities";
 
 const EVENT_SUGGESTIONS = [
-  // Wedding
   "Wedding", "Wedding Reception", "Wedding Anniversary", "Ring Ceremony",
   "Pre Wedding Mehendi Party", "Sangeet Ceremony", "Bachelor Party", "Bridal Shower",
-  // Birthday
   "Birthday Party", "First Birthday Party", "Kids Birthday Party",
-  // Festivals
   "Holi Party",
-  // Corporate
   "Brand Promotion", "Business Dinner", "Conference", "Corporate Event",
   "Corporate Offsite", "Corporate Party", "Corporate Training", "Dealers Meet",
   "Exhibition", "Fashion Show", "Meeting", "Musical Concert", "Product Launch",
   "Team Building", "Team Outing", "Training", "Walkin Interview", "Annual Fest", "MICE",
-  // Other
   "Baby Shower", "Childrens Party", "Christian Communion", "Class Reunion",
   "Cocktail Dinner", "Engagement", "House Party", "Family Function",
   "Family Get Together", "Farewell", "Freshers Party", "Game Watch", "Get Together",
@@ -28,7 +25,7 @@ const EVENT_SUGGESTIONS = [
 ];
 
 const HeroSearch = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [serviceType, setServiceType] = useState("venues");
   const [city, setCity] = useState("");
   const [searchText, setSearchText] = useState("");
@@ -54,10 +51,10 @@ const HeroSearch = () => {
     if (city) params.append("city", city);
     if (searchText) params.append("q", searchText);
     if (serviceType === "venues") {
-      navigate(`/venues?${params.toString()}`);
+      router.push(`/venues?${params.toString()}`);
     } else {
       params.append("category", serviceType);
-      navigate(`/vendors?${params.toString()}`);
+      router.push(`/vendors?${params.toString()}`);
     }
   };
 
@@ -86,7 +83,7 @@ const HeroSearch = () => {
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="h-px w-6 bg-white/30" />
             <span className="text-[10.5px] font-semibold tracking-[3px] uppercase text-white/55">
-              Gujarat's Premier Venue Platform
+              Gujarat&apos;s Premier Venue Platform
             </span>
             <div className="h-px w-6 bg-white/30" />
           </div>
@@ -185,7 +182,7 @@ const HeroSearch = () => {
                   key={label}
                   onClick={() => {
                     setSearchText(label);
-                    navigate(`/venues?q=${encodeURIComponent(label)}`);
+                    router.push(`/venues?q=${encodeURIComponent(label)}`);
                   }}
                   className="text-xs text-white/45 hover:text-white/80 transition-colors bg-white/5 border border-white/10 rounded-full px-3 py-1"
                 >
@@ -199,14 +196,14 @@ const HeroSearch = () => {
           <div className="flex gap-3 justify-center flex-wrap mt-2">
             <Button
               size="lg"
-              onClick={() => navigate('/list-venue')}
+              onClick={() => router.push('/list-venue')}
               className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-xs font-semibold tracking-wider uppercase shadow-lg"
             >
               List a Venue
             </Button>
             <Button
               size="lg"
-              onClick={() => navigate('/list-vendor')}
+              onClick={() => router.push('/list-vendor')}
               className="bg-white/10 backdrop-blur-sm border border-white/45 text-white hover:bg-white/20 hover:border-white px-8 py-6 text-xs font-semibold tracking-wider uppercase"
             >
               List a Vendor Service

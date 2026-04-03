@@ -92,6 +92,20 @@ export const EVENT_TYPES = [
   "haldi-ceremony"
 ];
 
+// Unified Core Categories for Hyper-Local Targeting (8 categories from user)
+export const SEO_PRIORITY_CATEGORIES = [
+  { slug: "banquet-halls", name: "Banquet Halls" },
+  { slug: "party-plots", name: "Party Plots & Lawns" },
+  { slug: "hotels", name: "Wedding Hotels" },
+  { slug: "farmhouses", name: "Farmhouses & Villas" },
+  { slug: "marriage-halls", name: "Marriage Gardens" },
+  { slug: "conference-rooms", name: "Conference & Meeting Halls" },
+  { slug: "birthday-party-venues", name: "Birthday Party Venues" },
+  { slug: "photographers", name: "Photographers & Videographers" }
+];
+
+export const NEAR_ME_PATTERN = "-near-me-in-";
+
 export const formatSlug = (slug: string) => {
   if (!slug) return "";
   return slug

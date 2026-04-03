@@ -1,33 +1,36 @@
-import { Link, useLocation } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Home, Building2, Store, MapPin } from "lucide-react";
 
 const MobileBottomNav = () => {
-  const location = useLocation();
-  const isActive = (path: string) => location.pathname === path;
+  const pathname = usePathname();
+  const isActive = (path: string) => pathname === path;
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
       <div className="flex items-center justify-around h-16 px-2">
         {/* Home */}
-        <Link to="/" className={`flex flex-col items-center gap-0.5 flex-1 py-2 transition-colors ${isActive('/') ? 'text-primary' : 'text-slate-500'}`}>
+        <Link href="/" className={`flex flex-col items-center gap-0.5 flex-1 py-2 transition-colors ${isActive('/') ? 'text-primary' : 'text-slate-500'}`}>
           <Home className={`w-5 h-5 ${isActive('/') ? 'fill-primary text-primary' : ''}`} />
           <span className="text-[10px] font-semibold">Home</span>
         </Link>
 
         {/* Venue */}
-        <Link to="/venues" className={`flex flex-col items-center gap-0.5 flex-1 py-2 transition-colors ${isActive('/venues') ? 'text-primary' : 'text-slate-500'}`}>
+        <Link href="/venues" className={`flex flex-col items-center gap-0.5 flex-1 py-2 transition-colors ${isActive('/venues') ? 'text-primary' : 'text-slate-500'}`}>
           <Building2 className={`w-5 h-5 ${isActive('/venues') ? 'text-primary' : ''}`} />
           <span className="text-[10px] font-semibold">Venue</span>
         </Link>
 
         {/* Vendors */}
-        <Link to="/vendors" className={`flex flex-col items-center gap-0.5 flex-1 py-2 transition-colors ${isActive('/vendors') ? 'text-primary' : 'text-slate-500'}`}>
+        <Link href="/vendors" className={`flex flex-col items-center gap-0.5 flex-1 py-2 transition-colors ${isActive('/vendors') ? 'text-primary' : 'text-slate-500'}`}>
           <Store className={`w-5 h-5 ${isActive('/vendors') ? 'text-primary' : ''}`} />
           <span className="text-[10px] font-semibold">Vendors</span>
         </Link>
 
         {/* Cities */}
-        <Link to="/cities" className={`flex flex-col items-center gap-0.5 flex-1 py-2 transition-colors ${isActive('/cities') ? 'text-primary' : 'text-slate-500'}`}>
+        <Link href="/cities" className={`flex flex-col items-center gap-0.5 flex-1 py-2 transition-colors ${isActive('/cities') ? 'text-primary' : 'text-slate-500'}`}>
           <MapPin className={`w-5 h-5 ${isActive('/cities') ? 'text-primary' : ''}`} />
           <span className="text-[10px] font-semibold">Cities</span>
         </Link>

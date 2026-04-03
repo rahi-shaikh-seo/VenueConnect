@@ -1,6 +1,6 @@
 import { Search, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 // Each entry: label shown, and the URL it navigates to on the /venues page
 const searches: { label: string; url: string }[] = [
@@ -63,7 +63,7 @@ const PopularSearches = () => {
               transition={{ delay: i * 0.02 }}
             >
               <Link
-                to={item.url}
+                href={item.url}
                 className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary/5 hover:bg-primary hover:text-white border border-primary/20 hover:border-primary transition-all duration-200"
                 title={item.label}
               >
@@ -81,7 +81,7 @@ const PopularSearches = () => {
             Can't find what you're looking for?
           </p>
           <Link
-            to="/venues"
+            href="/venues"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
           >
             <TrendingUp className="w-4 h-4" />

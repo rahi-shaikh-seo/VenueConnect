@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useRef } from "react";
 
 const vendors = [
@@ -33,7 +33,7 @@ const row2 = [...vendors.slice(11, 22)].reverse();
 
 const VendorCard = ({ name, image }: { name: string; image: string }) => (
   <Link
-    to={`/vendors?category=${encodeURIComponent(name.toLowerCase())}`}
+    href={`/vendors?category=${encodeURIComponent(name.toLowerCase())}`}
     className="flex-shrink-0 w-[160px] cursor-pointer group block"
   >
     <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-border/50 hover:shadow-md hover:-translate-y-1 transition-all duration-300">

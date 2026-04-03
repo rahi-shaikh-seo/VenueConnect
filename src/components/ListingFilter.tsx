@@ -1,6 +1,6 @@
 import { Search, MapPin, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
 interface ListingFilterProps {
@@ -41,7 +41,9 @@ const Pill = ({
 );
 
 const ListingFilter = ({ type }: ListingFilterProps) => {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
 
     const [location, setLocation] = useState(searchParams.get("city") || "");
     const [area, setArea] = useState(searchParams.get("area") || "");
@@ -82,7 +84,19 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
     ].filter(Boolean).length;
 
     const applyFilters = () => {
-        const p = new URLSearchParams();
+        const p = new URLSearchParams(searchParams.toString());
+        
+        // Reset location and area first to avoid stale data
+        p.delete("city");
+        p.delete("area");
+        p.delete("type");
+        p.delete("price");
+        p.delete("capacity");
+        p.delete("ac");
+        p.delete("wifi");
+        p.delete("alcohol");
+        p.delete("rooms");
+
         if (location.trim()) p.set("city", location.trim());
         if (area.trim()) p.set("area", area.trim());
         selectedTypes.forEach(t => p.append("type", t));
@@ -94,14 +108,15 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
             if (selectedAmenities.includes("rooms")) p.set("rooms", "true");
         }
         selectedPrices.forEach(pr => p.append("price", pr));
-        setSearchParams(p);
+        
+        router.push(`${pathname}?${p.toString()}`);
     };
 
     const clearAll = () => {
         setLocation(""); setArea("");
         setSelectedTypes([]); setSelectedCapacity("");
         setSelectedPrices([]); setSelectedAmenities([]);
-        setSearchParams(new URLSearchParams());
+        router.push(pathname);
     };
 
     return (

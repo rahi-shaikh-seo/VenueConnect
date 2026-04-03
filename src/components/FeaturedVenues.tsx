@@ -1,7 +1,7 @@
 import { Star, Users, MapPin, Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const venues = [
   {
@@ -91,7 +91,7 @@ const FeaturedVenues = () => {
               transition={{ delay: i * 0.1 }}
             >
               <Link
-                to="/venues"
+                href="/venues"
                 className="group bg-white rounded-xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 cursor-pointer block h-full"
               >
                 <div className="relative h-52 overflow-hidden">
@@ -153,7 +153,7 @@ const FeaturedVenues = () => {
         </div>
 
         <div className="text-center mt-10">
-          <Link to="/venues">
+          <Link href="/venues">
             <Button variant="outline" size="lg" className="border-primary/30 text-primary hover:bg-primary/5">
               View All Venues →
             </Button>

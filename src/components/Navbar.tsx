@@ -1,8 +1,11 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,10 +15,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [session, setSession] = useState<any>(null);
   const [userRole, setUserRole] = useState<string>('user');
+  const supabase = createClient();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -44,13 +48,13 @@ const Navbar = () => {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    navigate("/");
+    router.push("/");
   };
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
       <div className="container flex items-center justify-between h-20 px-6">
-        <Link to="/" className="flex items-center hover:opacity-80 transition-opacity">
+        <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
           <img
             src="/venue-connect.png"
             alt="VenueConnect"
@@ -59,23 +63,23 @@ const Navbar = () => {
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
-          <Link to="/" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
+          <Link href="/" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
             Home
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
           </Link>
-          <Link to="/venues" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
+          <Link href="/venues" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
             Venues
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
           </Link>
-          <Link to="/vendors" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
+          <Link href="/vendors" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
             Vendors
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
           </Link>
-          <Link to="/cities" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
+          <Link href="/cities" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
             Cities
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
           </Link>
-          <Link to="/blog" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
+          <Link href="/blog" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
             Blog
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
           </Link>
@@ -89,7 +93,7 @@ const Navbar = () => {
             className="border-primary/30 text-primary hover:bg-primary/5 hover:border-primary font-medium"
             asChild
           >
-            <Link to="/list-business">List Your Business</Link>
+            <Link href="/list-business">List Your Business</Link>
           </Button>
 
           {session ? (
@@ -111,19 +115,19 @@ const Navbar = () => {
                 </div>
                 {userRole === 'admin' && (
                   <DropdownMenuItem asChild>
-                    <Link to="/admin" className="cursor-pointer text-indigo-700 font-medium">Admin Dashboard</Link>
+                    <Link href="/admin" className="cursor-pointer text-indigo-700 font-medium">Admin Dashboard</Link>
                   </DropdownMenuItem>
                 )}
                 {userRole === 'owner' && (
                   <DropdownMenuItem asChild>
-                    <Link to="/owner" className="cursor-pointer text-amber-700 font-medium">Lister Dashboard</Link>
+                    <Link href="/owner" className="cursor-pointer text-amber-700 font-medium">Lister Dashboard</Link>
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuItem asChild>
-                  <Link to="/profile" className="cursor-pointer">My Profile</Link>
+                  <Link href="/profile" className="cursor-pointer">My Profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/profile" className="cursor-pointer">Saved Shortlist</Link>
+                  <Link href="/profile" className="cursor-pointer">Saved Shortlist</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive focus:text-destructive">
@@ -137,7 +141,7 @@ const Navbar = () => {
               className="bg-primary hover:bg-primary/90 text-white font-medium shadow-md hover:shadow-lg transition-all"
               asChild
             >
-              <Link to="/login">Login</Link>
+          <Link href="/login">Login</Link>
             </Button>
           )}
         </div>
@@ -164,26 +168,26 @@ const Navbar = () => {
 
       {open && (
         <div className="md:hidden border-t bg-white p-6 space-y-4 shadow-lg">
-          <Link to="/" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
+          <Link href="/" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             Home
           </Link>
-          <Link to="/venues" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
+          <Link href="/venues" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             Venues
           </Link>
-          <Link to="/vendors" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
+          <Link href="/vendors" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             Vendors
           </Link>
-          <Link to="/cities" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
+          <Link href="/cities" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             Cities
           </Link>
-          <Link to="/blog" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
+          <Link href="/blog" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             Blog
           </Link>
-          <Link to="/faqs" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
+          <Link href="/faqs" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             FAQs
           </Link>
 
-          <Link to="/list-business" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
+          <Link href="/list-business" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             List Your Business
           </Link>
 
@@ -202,13 +206,13 @@ const Navbar = () => {
                   )}
                 </div>
                 {userRole === 'admin' && (
-                  <Link to="/admin" className="block px-2 py-2 text-indigo-700 font-medium" onClick={() => setOpen(false)}>Admin Dashboard</Link>
+                  <Link href="/admin" className="block px-2 py-2 text-indigo-700 font-medium" onClick={() => setOpen(false)}>Admin Dashboard</Link>
                 )}
                 {userRole === 'owner' && (
-                  <Link to="/owner" className="block px-2 py-2 text-amber-700 font-medium" onClick={() => setOpen(false)}>Lister Dashboard</Link>
+                  <Link href="/owner" className="block px-2 py-2 text-amber-700 font-medium" onClick={() => setOpen(false)}>Lister Dashboard</Link>
                 )}
-                <Link to="/profile" className="block px-2 py-2 hover:text-primary" onClick={() => setOpen(false)}>My Profile</Link>
-                <Link to="/profile" className="block px-2 py-2 hover:text-primary" onClick={() => setOpen(false)}>Saved Shortlist</Link>
+                <Link href="/profile" className="block px-2 py-2 hover:text-primary" onClick={() => setOpen(false)}>My Profile</Link>
+                <Link href="/profile" className="block px-2 py-2 hover:text-primary" onClick={() => setOpen(false)}>Saved Shortlist</Link>
               </div>
               <Button
                 variant="destructive"
@@ -224,7 +228,7 @@ const Navbar = () => {
             </>
           ) : (
             <Button size="sm" className="w-full bg-primary hover:bg-primary/90" asChild onClick={() => setOpen(false)}>
-              <Link to="/login">Login</Link>
+              <Link href="/login">Login</Link>
             </Button>
           )}
         </div>

@@ -13,7 +13,7 @@ export const citiesData: City[] = [
     venues: 450, 
     vendors: 1200, 
     slug: "ahmedabad", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Sabarmati_riverside.jpg/800px-Sabarmati_riverside.jpg",
+    image: "https://images.unsplash.com/photo-1621250284428-1b2f4477699f?w=800&q=80",
     localities: ["satellite", "vastrapur", "bopal", "sg-highway", "prahlad-nagar", "paldi", "navrangpura", "chandkheda", "thaltej", "bodakdev", "maninagar", "gota", "science-city", "nikol", "bapunagar"]
   },
   { 
@@ -21,7 +21,7 @@ export const citiesData: City[] = [
     venues: 380, 
     vendors: 950, 
     slug: "surat", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Bharthana_Althan_area.jpg/800px-Bharthana_Althan_area.jpg",
+    image: "https://images.unsplash.com/photo-1624454002302-36b824d7bd0a?w=800&q=80",
     localities: ["vesu", "adajan", "varachha", "piplod", "dumas-road", "city-light", "bhatar", "katargam", "rander", "udhna", "palsana"]
   },
   { 
@@ -29,7 +29,7 @@ export const citiesData: City[] = [
     venues: 290, 
     vendors: 800, 
     slug: "vadodara", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/LakshmiVilas_Palace.jpg/800px-LakshmiVilas_Palace.jpg",
+    image: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=800&q=80",
     localities: ["alkapuri", "gotri", "makarpura", "vasna", "manjalpur", "fatehgunj", "karelibaug", "sama", "waghodia", "ajwa-road"]
   },
   { 
@@ -37,7 +37,7 @@ export const citiesData: City[] = [
     venues: 210, 
     vendors: 550, 
     slug: "rajkot", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/High_street_-_150_ft_Ring_road_Rajkot.jpg/800px-High_street_-_150_ft_Ring_road_Rajkot.jpg",
+    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80",
     localities: ["kalawad-road", "university-road", "raiya-road", "mavdi", "150-feet-ring-road", "nana-mava", "amin-marg", "kuvadava-road", "gondal-road"]
   },
   { 
@@ -45,7 +45,7 @@ export const citiesData: City[] = [
     venues: 150, 
     vendors: 400, 
     slug: "gandhinagar", 
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Akshardam_Temple.jpg/800px-Akshardam_Temple.jpg",
+    image: "https://images.unsplash.com/photo-1544013919-450bc9170395?w=800&q=80",
     localities: ["sector-21", "sector-11", "kd-circle", "infocity", "gift-city", "raysan", "koba"]
   },
   { name: "Bhavnagar", venues: 90, vendors: 250, slug: "bhavnagar", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Takhteshwar_Temple.jpg/800px-Takhteshwar_Temple.jpg" },

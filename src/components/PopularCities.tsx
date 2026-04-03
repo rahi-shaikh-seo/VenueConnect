@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { MapPin, ArrowRight } from "lucide-react";
 import { citiesData } from "@/lib/citiesData";
@@ -40,7 +40,7 @@ const PopularCities = () => {
               transition={{ delay: i * 0.05 }}
             >
               <Link
-                to={`/venues?city=${encodeURIComponent(city.name)}`}
+                href={`/venues?city=${encodeURIComponent(city.name)}`}
                 className="group block relative rounded-2xl overflow-hidden aspect-square shadow-lg hover:shadow-2xl transition-all duration-300"
               >
                 {/* City Image */}
@@ -80,7 +80,7 @@ const PopularCities = () => {
         </div>
         
         <div className="mt-8 text-center">
-            <Link to="/cities" className="inline-flex items-center justify-center gap-2 pt-2 pb-2 pl-4 pr-6 bg-primary text-white rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
+            <Link href="/cities" className="inline-flex items-center justify-center gap-2 pt-2 pb-2 pl-4 pr-6 bg-primary text-white rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
                 View All Cities <ArrowRight className="w-4 h-4 ml-1" />
             </Link>
         </div>

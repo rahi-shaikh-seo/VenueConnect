@@ -1,9 +1,11 @@
+"use client";
+
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { User, Phone, Calendar, Users, MessageSquare, IndianRupee, Mail } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 interface GetQuoteModalProps {
     businessName: string;
@@ -16,6 +18,7 @@ interface GetQuoteModalProps {
 const GetQuoteModal = ({ businessName, listingId, listingType, ownerId, triggerButton }: GetQuoteModalProps) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const supabase = createClient();
 
     // Form state
     const [name, setName] = useState("");

@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { Star, User, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -23,6 +25,7 @@ const ReviewsList = ({ listingId, listingType }: ReviewsListProps) => {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentUser, setCurrentUser] = useState<any>(null);
+    const supabase = createClient();
 
     // Form state
     const [rating, setRating] = useState(5);

@@ -1,6 +1,6 @@
 import { CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 const benefits = [
@@ -43,7 +43,7 @@ const VenueOwnerCTA = () => {
               ))}
             </div>
             <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-medium px-8 w-full sm:w-auto" asChild>
-              <Link to="/list-venue">
+              <Link href="/list-venue">
                 List Your Business <ArrowRight className="w-4 h-4 ml-3" />
               </Link>
             </Button>

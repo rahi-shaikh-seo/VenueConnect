@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { formatTitle } from "@/lib/seoContentEngine";
 import { citiesData } from "@/lib/citiesData";
 import { VENUE_CATEGORIES } from "@/lib/seoConstants";
+import { MapPin } from "lucide-react";
 
 interface SEOLinksDirectoryProps {
   city?: string | null;
@@ -52,7 +53,7 @@ export default function SEOLinksDirectory({ city }: SEOLinksDirectoryProps) {
           {categoryLinks.map((link, idx) => (
             <Link 
               key={idx} 
-              to={link.url} 
+              href={link.url} 
               className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-pink-500 hover:shadow-md transition-all group"
             >
               <span className="text-sm font-bold text-slate-700 group-hover:text-pink-600">{link.text}</span>
@@ -66,7 +67,7 @@ export default function SEOLinksDirectory({ city }: SEOLinksDirectoryProps) {
           {localityLinks.map((link, idx) => (
             <Link 
               key={idx} 
-              to={link.url} 
+              href={link.url} 
               className="text-slate-500 hover:text-pink-600 hover:underline truncate transition-colors"
             >
               • {link.text}
@@ -79,7 +80,7 @@ export default function SEOLinksDirectory({ city }: SEOLinksDirectoryProps) {
            <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Major Destinations in Gujarat</h4>
            <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm">
               {citiesData.filter(c => c.localities).map(c => (
-                <Link key={c.slug} to={`/${c.slug}/banquet-halls`} className="text-slate-600 font-medium hover:text-pink-600 flex items-center gap-1">
+                <Link key={c.slug} href={`/${c.slug}/banquet-halls`} className="text-slate-600 font-medium hover:text-pink-600 flex items-center gap-1">
                   <MapPin className="w-3 h-3" /> {c.name}
                 </Link>
               ))}

@@ -1,5 +1,7 @@
-import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom';
+"use client";
+
+import { usePathname } from 'next/navigation';
+import Head from 'next/head';
 
 interface SEOProps {
   title: string;
@@ -22,11 +24,11 @@ export default function SEO({
   image = "https://venueconnect.in/og-image.jpg",
   jsonLd
 }: SEOProps) {
-  const location = useLocation();
-  const canonicalUrl = url || `https://venueconnect.in${location.pathname}`;
+  const pathname = usePathname();
+  const canonicalUrl = url || `https://venueconnect.in${pathname}`;
   
   return (
-    <Helmet>
+    <Head>
       {/* Standard metadata tags */}
       <title>{title}</title>
       <meta name='description' content={description} />
@@ -55,7 +57,6 @@ export default function SEO({
           {typeof jsonLd === 'string' ? jsonLd : JSON.stringify(jsonLd)}
         </script>
       )}
-    </Helmet>
+    </Head>
   );
 }
-

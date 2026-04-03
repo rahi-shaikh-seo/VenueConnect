@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const occasions = [
   { icon: "💑", name: "Wedding" },
@@ -78,7 +78,7 @@ const OccasionSlider = () => {
             {occasions.map((occasion, index) => (
               <Link
                 key={index}
-                to={occasion.name === "Banquet Hall" ? "/venues?type=Banquet+Hall" : `/venues?q=${occasion.name}`}
+                href={occasion.name === "Banquet Hall" ? "/venues?type=Banquet+Hall" : `/venues?q=${occasion.name}`}
                 onClick={() => setSelectedIndex(index)}
                 className={`flex-shrink-0 w-[160px] group cursor-pointer transition-all duration-300 ${selectedIndex === index ? 'scale-105' : ''
                   }`}

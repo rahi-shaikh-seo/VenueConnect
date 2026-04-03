@@ -1,7 +1,7 @@
 import { Clock, MapPin, Users, Send, CheckCircle2, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const recentVenues = [
   {
@@ -68,7 +68,7 @@ const RecentlyAddedVenues = () => {
             </h2>
           </div>
           
-          <Link to="/venues">
+          <Link href="/venues">
             <Button variant="outline" className="hidden md:flex border-primary/30 text-primary hover:bg-primary/5">
               View All New
             </Button>
@@ -85,7 +85,7 @@ const RecentlyAddedVenues = () => {
               transition={{ delay: i * 0.1 }}
             >
               <Link 
-                to="/venues"
+                href="/venues"
                 className="group bg-white rounded-xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 block h-full"
               >
                 <div className="relative h-52 overflow-hidden">

@@ -1,8 +1,8 @@
 import { Star, Users, MapPin, Send, CheckCircle2, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import GetQuoteModal from "./GetQuoteModal";
 
@@ -30,6 +30,7 @@ interface VenueCardProps {
 const VenueCard = ({ venue }: VenueCardProps) => {
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const supabase = createClient();
 
     useEffect(() => {
         checkFavoriteStatus();
@@ -101,7 +102,7 @@ const VenueCard = ({ venue }: VenueCardProps) => {
 
     return (
         <div className="bg-white rounded-xl overflow-hidden border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 h-full flex flex-col relative group">
-            <Link to={`/venues/${venue.id}`} className="block relative">
+            <Link href={`/venues/${venue.id}`} className="block relative">
                 {/* Favorite Button */}
                 <button
                     onClick={toggleFavorite}
@@ -141,7 +142,7 @@ const VenueCard = ({ venue }: VenueCardProps) => {
             </Link>
 
             <div className="p-5 flex flex-col flex-grow relative overflow-hidden bg-white">
-                <Link to={`/venues/${venue.id}`} className="block hover:text-primary transition-colors">
+                <Link href={`/venues/${venue.id}`} className="block hover:text-primary transition-colors">
                     <h3 className="font-display font-semibold text-foreground text-xl leading-tight mb-2 z-10 relative truncate">
                         {venue.name}
                     </h3>
@@ -176,13 +177,13 @@ const VenueCard = ({ venue }: VenueCardProps) => {
                     </div>
 
                     <div className="flex items-center justify-center gap-2 text-[11px] sm:text-xs text-blue-500 font-semibold uppercase tracking-wider">
-                        <Link to={`/venues/${venue.id}#amenities`} className="hover:text-blue-700 transition-colors">Amenities</Link>
+                        <Link href={`/venues/${venue.id}#amenities`} className="hover:text-blue-700 transition-colors">Amenities</Link>
                         <span className="text-gray-300">|</span>
-                        <Link to={`/venues/${venue.id}#about`} className="hover:text-blue-700 transition-colors">Best For</Link>
+                        <Link href={`/venues/${venue.id}#about`} className="hover:text-blue-700 transition-colors">Best For</Link>
                         <span className="text-gray-300">|</span>
-                        <Link to={`/venues/${venue.id}#photos`} className="hover:text-blue-700 transition-colors">Photos</Link>
+                        <Link href={`/venues/${venue.id}#photos`} className="hover:text-blue-700 transition-colors">Photos</Link>
                         <span className="text-gray-300">|</span>
-                        <Link to={`/venues/${venue.id}#reviews`} className="hover:text-blue-700 transition-colors">Reviews</Link>
+                        <Link href={`/venues/${venue.id}#reviews`} className="hover:text-blue-700 transition-colors">Reviews</Link>
                     </div>
                 </div>
             </div>

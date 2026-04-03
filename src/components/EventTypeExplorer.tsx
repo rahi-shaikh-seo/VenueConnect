@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const eventTypes = [
   {
@@ -81,7 +81,7 @@ const EventTypeExplorer = () => {
               transition={{ delay: i * 0.05 }}
             >
               <Link
-                to={`/venues?q=${event.name}`}
+                href={`/venues?q=${event.name}`}
                 className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer block"
               >
                 <img

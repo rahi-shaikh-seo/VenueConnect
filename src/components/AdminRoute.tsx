@@ -1,19 +1,22 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 
 export const AdminRoute = ({ children }: { children: React.ReactNode }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const supabase = createClient();
 
   useEffect(() => {
     const checkAdmin = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
-          navigate('/login');
+          router.push('/login');
           return;
         }
 
@@ -25,21 +28,21 @@ export const AdminRoute = ({ children }: { children: React.ReactNode }) => {
 
         if (error || profile?.role !== 'admin') {
           toast.error("Unauthorized Access", { description: "You do not have permission to view this page." });
-          navigate('/');
+          router.push('/');
           return;
         }
 
         setIsAdmin(true);
       } catch (err) {
         console.error(err);
-        navigate('/');
+        router.push('/');
       } finally {
         setLoading(false);
       }
     };
 
     checkAdmin();
-  }, [navigate]);
+  }, [router]);
 
   if (loading) {
     return (

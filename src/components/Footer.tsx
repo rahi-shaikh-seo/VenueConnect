@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Building2, Mail, Phone, MapPin, Instagram, Facebook, Twitter, Linkedin, Heart } from "lucide-react";
 import { gujaratCities } from "@/lib/cities";
 
@@ -66,11 +66,11 @@ const Footer = () => {
           <div>
             <h4 className="text-[10px] tracking-[3px] uppercase font-semibold text-white/80 mb-8 border-b border-white/10 pb-4 inline-block">Quick Links</h4>
             <ul className="space-y-3 mt-4">
-              <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors inline-block">About Us</Link></li>
-              <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors inline-block">Contact Us</Link></li>
-              <li><Link to="/blog" className="text-muted-foreground hover:text-primary transition-colors inline-block">Blog</Link></li>
-              <li><Link to="/list-venue" className="text-muted-foreground hover:text-primary transition-colors inline-block">List Your Business</Link></li>
-              <li><Link to="/faqs" className="text-muted-foreground hover:text-primary transition-colors inline-block">FAQs</Link></li>
+              <li><Link href="/about" className="text-muted-foreground hover:text-primary transition-colors inline-block">About Us</Link></li>
+              <li><Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors inline-block">Contact Us</Link></li>
+              <li><Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors inline-block">Blog</Link></li>
+              <li><Link href="/list-venue" className="text-muted-foreground hover:text-primary transition-colors inline-block">List Your Business</Link></li>
+              <li><Link href="/faqs" className="text-muted-foreground hover:text-primary transition-colors inline-block">FAQs</Link></li>
             </ul>
           </div>
 
@@ -78,7 +78,7 @@ const Footer = () => {
             <h4 className="text-[10px] tracking-[3px] uppercase font-semibold text-white/80 mb-8 border-b border-white/10 pb-4 inline-block">Top Destinations</h4>
             <div className="space-y-4">
               {gujaratCities.slice(0, 5).map(c => (
-                <Link key={c} to={`/venues?city=${encodeURIComponent(c)}`} className="block text-sm text-white/50 hover:text-primary transition-colors font-light">
+                <Link key={c} href={`/venues?city=${encodeURIComponent(c)}`} className="block text-sm text-white/50 hover:text-primary transition-colors font-light">
                   Venues in {c}
                 </Link>
               ))}
@@ -121,11 +121,11 @@ const Footer = () => {
             © {new Date().getFullYear()} VenueConnect. All rights reserved.
           </p>
           <div className="flex flex-wrap justify-center items-center gap-6 text-xs text-white/40 font-light">
-            <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+            <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
             <span className="w-1 h-1 rounded-full bg-white/20" />
-            <Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
+            <Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
             <span className="w-1 h-1 rounded-full bg-white/20" />
-            <Link to="/sitemap" className="hover:text-primary transition-colors">Sitemap</Link>
+            <Link href="/sitemap" className="hover:text-primary transition-colors">Sitemap</Link>
           </div>
         </div>
       </div>
