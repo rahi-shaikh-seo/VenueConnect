@@ -27,8 +27,12 @@ export const metadata: Metadata = {
   title: "VenueConnect | Book Wedding & Event Venues in Gujarat",
   description: "Find and book the best wedding venues, banquet halls, party plots & event spaces in Gujarat. Compare prices, capacity, catering options in Ahmedabad, Surat, Rajkot, Vadodara and across Gujarat.",
   keywords: "wedding venues Gujarat, banquet hall Ahmedabad, party plot Surat, event venue Rajkot, marriage hall Vadodara, farmhouse wedding Gujarat, corporate event venue Gujarat, birthday party venues Gujarat, wedding reception hall, venue booking Gujarat",
-  authors: [{ name: "VenueConnect" }],
-  robots: "index, follow",
+   authors: [{ name: "VenueConnect" }],
+   robots: "index, follow",
+   icons: {
+     icon: "/favicon.svg",
+     apple: "/favicon.svg",
+   },
   alternates: {
     canonical: "https://venueconnect.in/",
   },

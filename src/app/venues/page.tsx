@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { MapPin, Search, SlidersHorizontal } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import ListingFilter from "@/components/ListingFilter";
 import VenueCard, { VenueData } from "@/components/VenueCard";
@@ -129,7 +130,7 @@ function VenuesContent() {
                                     <div className="flex flex-wrap gap-2 mb-3">
                                         {searchCity && (
                                             <span className="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full">
-                                                📍 {searchCity}
+                                                <MapPin className="w-3 h-3" /> {searchCity}
                                             </span>
                                         )}
                                         {searchArea && (

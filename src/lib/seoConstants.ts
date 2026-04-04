@@ -19,19 +19,36 @@ export const VENUE_CATEGORIES = [
 ];
 
 export const VENDOR_CATEGORIES = [
-  "photographers",
-  "makeup-artists",
-  "decorators",
+  "accessories",
+  "anchor",
+  "astrologers",
+  "bridal-outfits",
   "caterers",
-  "mehndi-artists",
-  "wedding-planners",
+  "choreography",
+  "cooking-classes",
+  "fireworks",
+  "decorators",
+  "detective-services",
   "djs",
-  "videographers",
-  "invitation-designers",
-  "wedding-cakes",
-  "florists",
+  "grooms-outfits",
+  "gym",
+  "hathi-ghoda-car",
+  "honeymoon-planning",
+  "invitations",
+  "jaan-stay",
+  "jewellery",
+  "makeup-artists",
+  "mehndi-artists",
+  "bands-musicians",
+  "pandit",
+  "photographers",
+  "return-gift",
+  "sounds-led-lights",
   "transport-services",
-  "security-services"
+  "venues",
+  "videographers",
+  "wedding-cakes",
+  "wedding-artists"
 ];
 
 export const EVENT_TYPES = [

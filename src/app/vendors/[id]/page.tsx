@@ -1,9 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
-import { 
-  Star, MapPin, CheckCircle2, ChevronLeft, Heart, Share2, 
-  Camera, Music, Info, Phone, Award, Mail, Instagram, Globe, MessageSquare
-} from "lucide-react";
+import { Star, MapPin, CheckCircle2, ChevronLeft, Heart, Share2, Camera, Music, Info, Phone, Award, Mail, Instagram, Globe, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import GetQuoteModal from "@/components/GetQuoteModal";
 import ReviewsList from "@/components/ReviewsList";

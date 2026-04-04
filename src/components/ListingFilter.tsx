@@ -10,7 +10,16 @@ interface ListingFilterProps {
 }
 
 const VENUE_TYPES = ['Banquet Hall', 'Farmhouse', 'Hotel', 'Resort', 'Party Plot', 'Lawn', 'Convention Centre'];
-const VENDOR_TYPES = ['Photographers', 'Makeup Artists', 'Decorators', 'Caterers', 'Mehndi Artists', 'DJ', 'Florists', 'Event Planners'];
+const VENDOR_TYPES = [
+    "Accessories", "Anchor", "Astrologers", "Bridal Outfits", "Catering",
+    "Choreography", "Cooking Classes", "Crackers and Fireworks", "Decorators",
+    "Detective Services", "DJ", "Groom's Outfits", "GYM",
+    "Hathi, Ghoda and Car", "Honeymoon Planning", "Invitation/Wedding Card",
+    "Jaan Stay", "Jewellery", "Makeup and Hair", "Mehendi",
+    "Music band", "Pandit", "Photography", "Return Gift",
+    "Sounds, Led and Lights", "Transportation", "Venues", 
+    "Videography", "Wedding Cake", "Wedding Song Artist and Dance Artist"
+];
 
 const VENUE_CAPACITIES = ['Under 100', '100 - 500', '500 - 1000', '1000+'];
 
