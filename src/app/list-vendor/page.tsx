@@ -104,14 +104,14 @@ export default function ListVendorPage() {
     const labelCls = "block text-sm font-semibold text-slate-700 mb-1.5";
 
     const vendorCategories = [
-        "Accessories", "Anchor", "Astrologers", "Bridal Outfits", "Catering",
-        "Choreography", "Cooking Classes", "Crackers and Fireworks", "Decorators",
-        "Detective Services", "DJ", "Groom's Outfits", "GYM",
-        "Hathi, Ghoda and Car", "Honeymoon Planning", "Invitation/Wedding Card",
-        "Jaan Stay", "Jewellery", "Makeup and Hair", "Mehendi",
-        "Music band", "Pandit", "Photography", "Return Gift",
-        "Sounds, Led and Lights", "Transportation", "Venues", 
-        "Videography", "Wedding Cake", "Wedding Song Artist and Dance Artist"
+        "Accessories", "Anchor", "Astrologers", "Bridal Outfits", "Caterers",
+        "Choreography", "Cooking Classes", "Fireworks", "Decorators",
+        "Detective Services", "DJs", "Grooms Outfits", "Gym",
+        "Hathi Ghoda and Car", "Honeymoon Planning", "Invitations",
+        "Jaan Stay", "Jewellery", "Makeup Artists", "Mehndi Artists",
+        "Bands Musicians", "Pandit", "Photographers", "Return Gift",
+        "Sounds LED Lights", "Transport Services", "Venues", 
+        "Videographers", "Wedding Cakes", "Wedding Artists"
     ];
 
     return (
