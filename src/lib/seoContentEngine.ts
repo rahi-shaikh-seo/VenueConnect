@@ -156,9 +156,14 @@ export const generateSEOContent = (
     if (citySlug) breadcrumbs.push({ name: city, item: `${baseUrl}/${citySlug}` });
     if (localitySlug) breadcrumbs.push({ name: locality, item: `${baseUrl}/${citySlug}/${localitySlug}` });
     if (categorySlug) {
-        const path = isNearMe 
-            ? `${categorySlug}-near-me-in-${citySlug}`
-            : `${citySlug}/${localitySlug ? localitySlug + '/' : ''}${categorySlug}`;
+        let path = "";
+        if (isNearMe) {
+            path = `${categorySlug}-near-me-in-${citySlug}`;
+        } else if (localitySlug) {
+            path = `${categorySlug}-in-${localitySlug}`;
+        } else {
+            path = `${categorySlug}-in-${citySlug}`;
+        }
         breadcrumbs.push({ name: category, item: `${baseUrl}/${path}` });
     }
 
@@ -178,7 +183,7 @@ export const generateSEOContent = (
         "@type": "LocalBusiness",
         "name": `VenueConnect — ${h1}`,
         "description": description,
-        "url": `${baseUrl}/${citySlug}/${categorySlug || ''}`,
+        "url": `${baseUrl}/${categorySlug ? categorySlug + '-in-' + citySlug : citySlug}`,
         "telephone": "+91-9601015102",
         "priceRange": "₹–₹₹₹",
         "areaServed": {
@@ -195,7 +200,7 @@ export const generateSEOContent = (
         "@type": "WebPage",
         "name": title,
         "description": description,
-        "url": `${baseUrl}/${citySlug}/${categorySlug || ''}`,
+        "url": `${baseUrl}/${categorySlug ? categorySlug + '-in-' + citySlug : citySlug}`,
         "inLanguage": "en-IN",
         "isPartOf": { "@type": "WebSite", "name": "VenueConnect", "url": "https://venueconnect.in" }
     });

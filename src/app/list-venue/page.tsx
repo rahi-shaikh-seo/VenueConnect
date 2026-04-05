@@ -7,8 +7,9 @@ import { createClient } from "@/lib/supabase/client";
 import { citiesData } from "@/lib/citiesData";
 import DistrictCitySelect from "@/components/DistrictCitySelect";
 import PricingPackages from "@/components/PricingPackages";
-import { Check, Loader2, ArrowLeft, Building2, MapPin, Users, IndianRupee, Info, Clock, Utensils, ShieldCheck } from "lucide-react";
+import { Check, Loader2, ArrowLeft, Building2, MapPin, Users, IndianRupee, Info, Clock, Utensils, ShieldCheck, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import MultiImageUpload from "@/components/MultiImageUpload";
 
 export default function ListVenuePage() {
     const router = useRouter();
@@ -40,7 +41,8 @@ export default function ListVenuePage() {
         advancePayment: "25",
         operatingHours: "09:00 AM - 11:00 PM",
         amenities: [] as string[],
-        cuisines: [] as string[]
+        cuisines: [] as string[],
+        images: [] as string[]
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -126,6 +128,7 @@ export default function ListVenuePage() {
                 operating_hours: formData.operatingHours,
                 amenities: formData.amenities,
                 cuisines: formData.cuisines,
+                images: formData.images,
                 status: 'pending'
             }]);
 
@@ -435,6 +438,14 @@ export default function ListVenuePage() {
                                                 </div>
                                             </div>
                                         </div>
+
+                                            <div className="space-y-4">
+                                                <h3 className="flex items-center gap-2 text-lg font-bold text-slate-800"><ImageIcon className="w-5 h-5 text-red-600"/> Venue Gallery / Photos</h3>
+                                                <MultiImageUpload 
+                                                    onImagesChange={(urls) => setFormData(prev => ({ ...prev, images: urls }))} 
+                                                    maxImages={8} 
+                                                />
+                                            </div>
 
                                         {/* Description */}
                                         <div className="space-y-4">

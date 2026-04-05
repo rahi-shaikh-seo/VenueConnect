@@ -7,8 +7,9 @@ import { createClient } from "@/lib/supabase/client";
 import PricingPackages from "@/components/PricingPackages";
 import DistrictCitySelect from "@/components/DistrictCitySelect";
 import { citiesData } from "@/lib/citiesData";
-import { Check, Loader2, ArrowLeft, Store, MapPin, IndianRupee, Info, ShieldCheck, Tag, Camera } from "lucide-react";
+import { Check, Loader2, ArrowLeft, Store, MapPin, IndianRupee, Info, ShieldCheck, Tag, Camera, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import MultiImageUpload from "@/components/MultiImageUpload";
 
 export default function ListVendorPage() {
     const router = useRouter();
@@ -81,6 +82,7 @@ export default function ListVendorPage() {
                 vendor_category: formData.vendorCategory,
                 veg_price_per_plate: parseInt(formData.startingPrice) || 0, // Reuse field for starting price
                 description: formData.description + `\n\nSelected Package: ${pkg}`,
+                images: formData.images, // Now correctly passing image URLs
                 status: 'pending'
             }]);
 
@@ -286,13 +288,11 @@ export default function ListVendorPage() {
                                             </div>
 
                                             <div className="space-y-6">
-                                                <h3 className="flex items-center gap-2 text-lg font-bold text-slate-800"><Camera className="w-5 h-5 text-purple-600"/> Portfolio</h3>
-                                                <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl p-6 text-center">
-                                                    <Info className="w-6 h-6 text-slate-300 mx-auto mb-2" />
-                                                    <p className="text-xs text-slate-500 font-medium leading-relaxed">
-                                                        Our onboarding team will contact you to upload your portfolio images and videos once the basic listing is approved.
-                                                    </p>
-                                                </div>
+                                                <h3 className="flex items-center gap-2 text-lg font-bold text-slate-800"><ImageIcon className="w-5 h-5 text-purple-600"/> Portfolio / Work Photos</h3>
+                                                <MultiImageUpload 
+                                                    onImagesChange={(urls) => setFormData(prev => ({ ...prev, images: urls }))} 
+                                                    maxImages={6} 
+                                                />
                                             </div>
                                         </div>
 
