@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
+import { gujaratCities } from "@/lib/cities";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -69,10 +70,23 @@ const Navbar = () => {
             Home
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
           </Link>
-          <Link href="/venues" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
+          <a href="/venues" onClick={async (e) => {
+            e.preventDefault();
+            try {
+              const res = await fetch("https://ipapi.co/json/");
+              const data = await res.json();
+              if (data.city && gujaratCities.some(c => c.toLowerCase() === data.city.toLowerCase())) {
+                router.push(`/${data.city.toLowerCase()}`);
+              } else {
+                router.push("/ahmedabad");
+              }
+            } catch (err) {
+              router.push("/ahmedabad");
+            }
+          }} className="cursor-pointer text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
             Venues
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
-          </Link>
+          </a>
           <Link href="/vendors" className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group">
             Vendors
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
@@ -173,9 +187,23 @@ const Navbar = () => {
           <Link href="/" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             Home
           </Link>
-          <Link href="/venues" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
+          <a href="/venues" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={async (e) => {
+            e.preventDefault();
+            try {
+              const res = await fetch("https://ipapi.co/json/");
+              const data = await res.json();
+              if (data.city && gujaratCities.some(c => c.toLowerCase() === data.city.toLowerCase())) {
+                router.push(`/${data.city.toLowerCase()}`);
+              } else {
+                router.push("/ahmedabad");
+              }
+            } catch (err) {
+              router.push("/ahmedabad");
+            }
+            setOpen(false);
+          }}>
             Venues
-          </Link>
+          </a>
           <Link href="/vendors" className="block text-sm font-medium py-3 hover:text-primary transition-colors" onClick={() => setOpen(false)}>
             Vendors
           </Link>

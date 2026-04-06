@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { MapPin, Star, ArrowRight, Building2, Sparkles } from 'lucide-react';
 
 import { createClient } from '@/lib/supabase/server';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { getSEOPageBySlug, generateSEOPage, type SEOPageRow } from '@/lib/seo/pageGenerator';
 import { buildMetadata, buildMetadataFromSlugs } from '@/lib/seo/metaBuilder';
 import { unslugify } from '@/lib/seo/slugify';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { RelatedSearches } from '@/components/seo/RelatedSearches';
 import { SEOPageSchema, type ListingItem } from '@/components/seo/SchemaMarkup';
+import { PopularPlacesExpandable } from '@/components/seo/PopularPlacesExpandable';
 
 // ─── ISR: regenerate every hour ─────────────────────────────────────────────
 export const revalidate = 3600;
@@ -60,8 +62,16 @@ interface VendorRow {
 function parseSEOSlug(slugArr: string[]): ParsedSlug | null {
   const rawSlug = slugArr.join('/');
   const flat = slugArr.join('-');
+  
   const inIndex = flat.indexOf('-in-');
-  if (inIndex === -1) return null;
+  if (inIndex === -1) {
+    // Check if it's a single keyword maybe representing a city (like /ahmedabad)
+    // Default to 'venues' category for SEO
+    if (slugArr.length === 1) {
+      return { categorySlug: 'venues', citySlug: flat, rawSlug };
+    }
+    return null;
+  }
 
   const categorySlug = flat.slice(0, inIndex);
   const citySlug = flat.slice(inIndex + 4);
@@ -71,8 +81,12 @@ function parseSEOSlug(slugArr: string[]): ParsedSlug | null {
 
 // ─── Static Generation ───────────────────────────────────────────────────────
 export async function generateStaticParams() {
-  const supabase = await createClient();
-  if (!supabase) return [];
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  
+  if (!supabaseUrl || !supabaseKey) return [];
+  
+  const supabase = createSupabaseClient(supabaseUrl, supabaseKey);
 
   const { data } = await supabase
     .from('seo_pages')
@@ -109,11 +123,13 @@ async function fetchVenues(categorySlug: string, citySlug: string, areaSlug?: st
 
   query = query.ilike('locations.city', `%${unslugify(citySlug)}%`);
   if (areaSlug) query = query.ilike('locations.area', `%${unslugify(areaSlug)}%`);
-  query = query.ilike('categories.slug', categorySlug);
+  if (categorySlug !== 'venues' && categorySlug !== 'vendors') {
+    query = query.ilike('categories.slug', categorySlug);
+  }
 
   const { data, error } = await query.limit(40);
   if (error) console.error('[fetchVenues]', error.message);
-  return (data as VenueRow[]) ?? [];
+  return ((data as unknown) as VenueRow[]) ?? [];
 }
 
 async function fetchVendors(categorySlug: string, citySlug: string, areaSlug?: string): Promise<VendorRow[]> {
@@ -129,11 +145,13 @@ async function fetchVendors(categorySlug: string, citySlug: string, areaSlug?: s
 
   query = query.ilike('locations.city', `%${unslugify(citySlug)}%`);
   if (areaSlug) query = query.ilike('locations.area', `%${unslugify(areaSlug)}%`);
-  query = query.ilike('categories.slug', categorySlug);
+  if (categorySlug !== 'venues' && categorySlug !== 'vendors') {
+    query = query.ilike('categories.slug', categorySlug);
+  }
 
   const { data, error } = await query.limit(40);
   if (error) console.error('[fetchVendors]', error.message);
-  return (data as VendorRow[]) ?? [];
+  return ((data as unknown) as VendorRow[]) ?? [];
 }
 
 async function resolveOrCreateSEOPage(parsed: ParsedSlug, categorySlug: string, citySlug: string, areaSlug?: string): Promise<SEOPageRow | null> {
@@ -143,12 +161,19 @@ async function resolveOrCreateSEOPage(parsed: ParsedSlug, categorySlug: string, 
   const existing = await getSEOPageBySlug(parsed.rawSlug);
   if (existing) return existing;
 
+  const categoryQuery = (categorySlug === 'venues' || categorySlug === 'vendors') 
+    ? Promise.resolve({ data: null }) 
+    : supabase.from('categories').select('id').eq('slug', categorySlug).maybeSingle();
+
   const [{ data: catRow }, { data: cityRow }] = await Promise.all([
-    supabase.from('categories').select('id').eq('slug', categorySlug).maybeSingle(),
+    categoryQuery,
     supabase.from('locations').select('id').eq('city_slug', citySlug).maybeSingle(),
   ]);
 
-  if (!catRow?.id || !cityRow?.id) return null;
+  // If this is a specific category (not "venues"), require the catRow
+  if ((categorySlug !== 'venues' && categorySlug !== 'vendors' && !catRow?.id) || !cityRow?.id) {
+    return null;
+  }
 
   let areaId: string | undefined;
   if (areaSlug) {
@@ -302,26 +327,108 @@ export default async function SEOPage({ params }: PageProps) {
         )}
       </section>
 
-      {/* ── SEO Article ── */}
-      {seoPage && (
-        <section className="bg-white border-t py-12 px-4">
-          <div className="max-w-3xl mx-auto prose prose-gray lg:prose-lg">
-            <h2>About {categoryLabel} in {locationLabel}</h2>
-            <p>
-              Looking for the best {categoryLabel.toLowerCase()} in {locationLabel}?
-              VenueConnect helps you discover, compare, and book premium listings — all in one place.
-              Whether you&apos;re planning a wedding, corporate event, or private gathering,
-              our curated directory ensures you find exactly what you need.
-            </p>
-            <p>
-              All listings on VenueConnect are verified by our team before going live.
-              You can trust every profile you see here is a real, active business in {locationLabel}.
-            </p>
+      {/* ── Table & Lead Form Section ── */}
+      {hasListings && (
+        <section className="max-w-6xl mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                Party Places & Event {categoryLabel} in {locationLabel} with Starting Prices
+              </h2>
+              <div className="overflow-x-auto bg-white rounded-lg shadow-sm border border-gray-100">
+                <table className="w-full text-sm text-left">
+                  <thead className="text-xs text-gray-700 bg-gray-50 border-b">
+                    <tr>
+                      <th className="px-6 py-4 font-semibold text-nowrap">Venue Name</th>
+                      <th className="px-6 py-4 font-semibold text-nowrap">Capacity</th>
+                      <th className="px-6 py-4 font-semibold text-nowrap">Starting Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {allListings.slice(0, 30).map((v, idx) => {
+                      const capacity = (v as any).capacity;
+                      const capText = capacity ? (capacity > 100 ? `upto ${capacity} Guests` : `10 - ${capacity} Guests`) : "Varies";
+                      const priceMatches = v.price_range?.match(/\d+/g);
+                      let priceVal = priceMatches ? priceMatches[0] : "";
+                      if (!priceVal && v.price_range?.includes("₹")) priceVal = v.price_range.replace(/[^0-9]/g, '');
+                      if (!priceVal && v.price_range) priceVal = "800"; // fallback dummy for visual
+                      const finalPrice = priceVal ? `Rs. ${priceVal} per plate` : (v.price_range || "On Request");
+
+                      return (
+                        <tr key={v.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
+                          <td className="px-6 py-4 font-medium text-gray-900 border-b border-gray-50">{v.name}</td>
+                          <td className="px-6 py-4 text-gray-600 border-b border-gray-50 text-nowrap">{capText}</td>
+                          <td className="px-6 py-4 text-gray-600 border-b border-gray-50 text-nowrap">{finalPrice}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Lead Form */}
+            <div className="relative">
+              <div className="bg-[#1a1215] rounded-xl p-6 text-white h-fit sticky top-24 shadow-2xl border border-gray-800">
+                <div className="text-center mb-6">
+                  <h3 className="text-xl font-bold tracking-tight mb-2">GET UPTO 10 % DISCOUNT</h3>
+                  <p className="text-sm text-gray-300">Share your details & get best suited venues for your event</p>
+                </div>
+                <form className="space-y-3">
+                  <select defaultValue={citySlug} className="w-full bg-white text-gray-900 rounded border-0 px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                    <option value="">Select City</option>
+                    <option value={citySlug}>{locationLabel}</option>
+                  </select>
+                  <input type="text" placeholder="Your Name" className="w-full bg-white text-gray-900 rounded border-0 px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500" />
+                  <input type="email" placeholder="Email" className="w-full bg-white text-gray-900 rounded border-0 px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500" />
+                  <input type="tel" placeholder="Your Number" className="w-full bg-white text-gray-900 rounded border-0 px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500" />
+                  <select defaultValue="" className="w-full bg-white text-gray-900 rounded border-0 px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                    <option value="">Select Occasion</option>
+                    <option value="Wedding">Wedding</option>
+                    <option value="Party">Party</option>
+                    <option value="Corporate">Corporate Event</option>
+                  </select>
+                  <input type="date" className="w-full bg-white text-gray-900 rounded border-0 px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500" />
+                  <button type="button" className="w-full bg-black text-white font-bold rounded py-3 mt-4 hover:bg-gray-800 transition border border-gray-700">Get Expert's Callback</button>
+                </form>
+              </div>
+            </div>
           </div>
         </section>
       )}
 
-      {/* ── Related Searches ── */}
+      {/* ── Banner: Have a Space? ── */}
+      <section className="bg-[#6c6c6c] text-white py-6 mt-8">
+        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-6">
+          <h3 className="text-xl md:text-2xl font-semibold">Have a Space ?</h3>
+          <Link href="/list-your-venue" className="border border-white hover:bg-white hover:text-black transition-colors px-6 py-2 rounded font-medium text-sm">
+            List With VenueConnect
+          </Link>
+        </div>
+      </section>
+
+      {/* ── SEO Article & Links ── */}
+      <section className="bg-white py-12 px-4 shadow-inner">
+        <div className="max-w-6xl mx-auto">
+          {seoPage ? (
+            <div className="prose prose-gray max-w-none mb-12 text-sm text-gray-700 leading-relaxed">
+              <div dangerouslySetInnerHTML={{ __html: String(seoPage.custom_content?.seo_text || '') || `
+                <p>Founded historically, <strong>${locationLabel}</strong> is the largest city in its region. The city is a rising center of education, scientific industries, and information technology. It is divided into two parts - the old city and the new city. The city experiences a thriving culture and is the epicentre of all kinds of cultural activities and diverse traditions of different ethnic and religious communities. This city is so perfect that people come here and mostly never leave. Locals are well known for their hospitality and if you visit ${locationLabel}, you will surely receive the warmest of welcomes.</p>
+                <p>Planning events in ${locationLabel}? VenueConnect has the largest number of venue options from budget party places to luxury wedding venues. You may leave your venue and event requirements with us and we will do our best to recommend the best-suited venue and event themes for you to choose from. Every event experience is hand-curated by us.</p>
+                <p>Asking the internet for the best party places near me and getting no satisfactory answers? VenueConnect has got all your answers in one place. Book your event/party now!</p>
+              `}} />
+            </div>
+          ) : (
+            <div className="prose prose-gray max-w-none mb-12 text-sm text-gray-700 leading-relaxed">
+              <p>Founded historically, <strong>{locationLabel}</strong> is the largest city in its region. The city is a rising center of education, scientific industries, and information technology. It is divided into two parts - the old city and the new city. The city experiences a thriving culture and is the epicentre of all kinds of cultural activities and diverse traditions of different ethnic and religious communities. From grand ashrams to scintillating lakes, it is a major tourist destination and witnesses tourists from all around the country.</p>
+              <p>Planning events in {locationLabel}? VenueConnect has the largest number of venue options from budget party places to luxury wedding venues. You may leave your venue and event requirements with us and we will do our best to recommend the best-suited venue and event themes for you to choose from.</p>
+              <p>Asking the internet for the best party places near me and getting no satisfactory answers? VenueConnect has got all your answers in one place. Book your event/party now!</p>
+            </div>
+          )}
+
+          <PopularPlacesExpandable locationLabel={locationLabel} citySlug={citySlug} />
+        </div>
+      </section>
       <RelatedSearches
         categorySlug={categorySlug}
         categoryName={categoryLabel}

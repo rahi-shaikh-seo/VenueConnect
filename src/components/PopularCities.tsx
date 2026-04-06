@@ -42,7 +42,7 @@ const PopularCities = () => {
               transition={{ delay: i * 0.05 }}
             >
               <Link
-                href={`/venues?city=${encodeURIComponent(city.name)}`}
+                href={`/${encodeURIComponent(city.name.toLowerCase())}`}
                 className="group block relative rounded-2xl overflow-hidden aspect-square shadow-lg hover:shadow-2xl transition-all duration-300"
               >
                 {/* City Image */}

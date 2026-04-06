@@ -47,9 +47,22 @@ const HeroSearch = () => {
   }, []);
 
   const handleSearch = () => {
+    // If a city is selected and there's no specific text query, use SEO route
+    if (city && !searchText) {
+      if (serviceType === "venues") {
+        router.push(`/${encodeURIComponent(city.toLowerCase())}`);
+      } else {
+        const slugType = serviceType.toLowerCase().replace(/ /g, '-');
+        router.push(`/${slugType}-in-${encodeURIComponent(city.toLowerCase())}`);
+      }
+      return;
+    }
+
+    // Fallback to query param based searching if text search is used
     const params = new URLSearchParams();
     if (city) params.append("city", city);
     if (searchText) params.append("q", searchText);
+    
     if (serviceType === "venues") {
       router.push(`/venues?${params.toString()}`);
     } else {
