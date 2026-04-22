@@ -163,7 +163,7 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
     });
 
     return (
-        <div className="w-full bg-white border-b border-slate-100 sticky top-0 z-[100] shadow-sm">
+        <div className="w-full bg-white border-b border-slate-100 relative z-[100] shadow-sm">
             <div className="max-w-7xl mx-auto px-4 pt-4 pb-2">
                 {/* Desktop Grid | Mobile Single Button */}
                 <div className="flex flex-col md:grid md:grid-cols-6 items-center gap-4 md:gap-6 mb-4">
@@ -183,10 +183,10 @@ const ListingFilter = ({ type }: ListingFilterProps) => {
                         </div>
                         <Button 
                             onClick={() => setShowMore(!showMore)}
-                            variant="outline"
-                            className="w-10 h-10 p-0 border-slate-200 rounded-xl bg-white text-slate-900 shadow-sm"
+                            variant="default"
+                            className="h-10 px-4 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold shadow-sm text-xs uppercase tracking-wider"
                         >
-                            <SlidersHorizontal size={16} />
+                            Filter
                         </Button>
                     </div>
 
