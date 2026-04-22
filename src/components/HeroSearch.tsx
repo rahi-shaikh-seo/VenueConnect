@@ -212,23 +212,7 @@ const HeroSearch = () => {
             </div>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mt-2">
-            <Button
-              size="lg"
-              onClick={() => router.push('/list-venue')}
-              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-6 rounded-xl text-[10px] font-bold tracking-widest uppercase shadow-2xl shadow-primary/20 hover:-translate-y-1 transition-all"
-            >
-              List a Venue
-            </Button>
-            <Button
-              size="lg"
-              onClick={() => router.push('/list-vendor')}
-              className="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/30 text-white hover:bg-white/20 hover:border-white/60 px-8 py-6 rounded-xl text-[10px] font-bold tracking-widest uppercase hover:-translate-y-1 transition-all"
-            >
-              List a Vendor
-            </Button>
-          </div>
+
         </div>
       </div>
 
