@@ -116,8 +116,8 @@ export default async function VenuesPage({ searchParams }: { searchParams: Promi
                 </div>
             </section>
 
-            {/* 2. ELITE DISCOVERY SCANNER (Sticky Filters) */}
-            <div className="sticky top-20 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm">
+            {/* 2. ELITE DISCOVERY SCANNER (Filters) */}
+            <div className="relative z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm">
                 <ListingFilter type="venues" />
             </div>
 

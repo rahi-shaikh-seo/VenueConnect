@@ -183,7 +183,7 @@ const Navbar = () => {
         </div>
 
         {/* ── MOBILE HEADER ── */}
-        <div className="lg:hidden absolute left-0 right-0 top-0 h-14 flex items-center justify-between px-4 bg-[#e8e8e8] z-50">
+        <div className="lg:hidden absolute left-0 right-0 top-0 h-14 flex items-center justify-between px-4 bg-white border-b border-slate-100 shadow-sm z-50">
           {/* Left: Logo */}
           <Link href="/" className="flex items-center hover:opacity-80 transition-opacity" onClick={() => setOpen(false)}>
             <img src="/venue-connect.png" alt="VenueConnect" className="h-9 w-auto" />

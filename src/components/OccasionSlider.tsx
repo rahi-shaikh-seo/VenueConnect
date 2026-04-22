@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const occasions = [
-  { name: "Wedding",      icon: <img src="/wedding-icon.png" alt="Wedding" className="w-[1em] h-[1em] object-contain inline-block" />, slug: "wedding-venues" },
+  { name: "Wedding",      icon: "💖", slug: "wedding-venues" },
   { name: "Birthday",     icon: "🎂", slug: "banquet-halls" },
   { name: "Corporate",    icon: "💼", slug: "banquet-halls" },
   { name: "Engagement",   icon: "💍", slug: "wedding-venues" },
